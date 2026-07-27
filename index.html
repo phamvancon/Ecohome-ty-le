@@ -288,7 +288,7 @@
 
                     <form onsubmit="handleAdminLogin(event)" class="space-y-3 pt-2">
                         <div class="relative flex items-center">
-                            <input type="password" id="admin-pass-input" placeholder="Nhập mật khẩu (215151365)..." required enterkeyhint="go" autocomplete="current-password"
+                            <input type="password" id="admin-pass-input" placeholder="Nhập mật khẩu (xxxx)..." required enterkeyhint="go" autocomplete="current-password"
                                 class="w-full pl-4 pr-12 py-3 text-center text-sm font-semibold tracking-wider bg-slate-50 border border-slate-300 rounded-xl focus:ring-2 focus:ring-emerald-500 focus:bg-white outline-none transition shadow-sm">
                             <button type="button" onclick="togglePasswordVisibility()" class="absolute right-3 text-slate-400 hover:text-slate-600 active:text-emerald-600 focus:outline-none p-2 text-sm transition" title="Ẩn/Hiện mật khẩu">
                                 <i id="toggle-pass-icon" class="fa-solid fa-eye-slash"></i>
@@ -314,6 +314,9 @@
                         </button>
                         <button onclick="switchAdminTab('quick-check')" id="tab-btn-quick-check" class="py-2.5 px-4 border-b-2 border-transparent hover:text-slate-700 flex items-center gap-2">
                             <i class="fa-solid fa-bolt text-amber-500"></i> Điểm Danh Hàng Loạt
+                        </button>
+                        <button onclick="switchAdminTab('manual-add')" id="tab-btn-manual-add" class="py-2.5 px-4 border-b-2 border-transparent hover:text-slate-700 flex items-center gap-2">
+                            <i class="fa-solid fa-calculator text-blue-500"></i> Cộng Dồn Thủ Công
                         </button>
                         <button onclick="switchAdminTab('manage')" id="tab-btn-manage" class="py-2.5 px-4 border-b-2 border-transparent hover:text-slate-700 flex items-center gap-2">
                             <i class="fa-solid fa-list-check"></i> Quản Lý Căn Hộ
@@ -384,24 +387,102 @@
                     <div id="tab-content-quick-check" class="hidden space-y-4">
                         <div class="bg-amber-50 border border-amber-200 rounded-xl p-4 text-xs text-amber-800 space-y-1">
                             <div class="font-bold flex items-center gap-1.5 text-amber-900">
-                                <i class="fa-solid fa-lightbulb text-amber-600"></i> Điểm danh hàng loạt siêu tốc
+                                <i class="fa-solid fa-lightbulb text-amber-600"></i> Điểm danh hàng loạt siêu tốc theo danh sách nạp
                             </div>
-                            <p>Nhập hoặc Dán danh sách các <strong>Mã Căn Hộ</strong> đã đăng ký có mặt tại hội nghị. Hệ thống sẽ tự động tìm và đổi trạng thái sang <strong>"Đã Tham Dự"</strong>.</p>
+                            <p>Nhập hoặc Dán danh sách các <strong>Mã Căn Hộ</strong> đã đăng ký tham dự. Hệ thống sẽ tự động đối soát trong cơ sở dữ liệu và chuyển trạng thái hàng loạt sang Cloud.</p>
                         </div>
 
+                        <!-- Textarea & Action buttons for Quick Batch Attendance -->
+                        <div class="space-y-3 bg-slate-50 p-4 rounded-2xl border border-slate-200">
+                            <label class="block text-xs font-bold text-slate-700">
+                                Dán danh sách Mã căn hộ (Phân cách bởi Dấu phẩy, Dấu chấm phẩy, Khoảng trắng hoặc Xuống dòng):
+                            </label>
+                            <textarea id="quick-check-input" rows="6" placeholder="Ví dụ copy từ danh sách Excel:&#10;NO1-0101, NO1-0102&#10;NO2-0305 NO2-0306&#10;NO3-0508; NO4-0809" 
+                                class="w-full p-3 text-xs font-mono bg-white border border-slate-300 rounded-xl focus:ring-2 focus:ring-amber-500 focus:border-amber-500 outline-none transition"></textarea>
+                            
+                            <div class="flex flex-col sm:flex-row items-center justify-between gap-3 pt-1">
+                                <div class="text-[11px] text-slate-500 flex items-center gap-1">
+                                    <i class="fa-solid fa-circle-info text-amber-600"></i>
+                                    <span>Hệ thống tự động lọc mã trùng và áp dụng ngay trên Cloud.</span>
+                                </div>
+                                <div class="flex items-center gap-2 w-full sm:w-auto">
+                                    <button onclick="executeQuickAttendance(false)" class="flex-1 sm:flex-none px-3 py-2 bg-slate-200 hover:bg-slate-300 text-slate-700 font-semibold rounded-xl text-xs transition">
+                                        <i class="fa-solid fa-user-xmark mr-1"></i>Hủy Điểm Danh
+                                    </button>
+                                    <button onclick="executeQuickAttendance(true)" class="flex-1 sm:flex-none px-4 py-2 bg-amber-500 hover:bg-amber-600 text-white font-bold rounded-xl text-xs shadow transition flex items-center justify-center gap-1">
+                                        <i class="fa-solid fa-user-check"></i>Đánh Dấu Đã Tham Dự
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- TAB 3: MANUAL INCREMENTAL CUMULATIVE ADDITION -->
+                    <div id="tab-content-manual-add" class="hidden space-y-5">
+                        <div class="bg-blue-50 border border-blue-200 rounded-2xl p-4 text-xs text-blue-900 space-y-1">
+                            <div class="font-bold flex items-center gap-1.5 text-blue-950 text-sm">
+                                <i class="fa-solid fa-circle-plus text-blue-600"></i> Cộng dồn diện tích / tỷ lệ % thủ công
+                            </div>
+                            <p class="text-slate-600">Nhập diện tích ($m^2$) hoặc tỷ lệ $\%$ đóng góp để cộng trực tiếp vào tổng tích lũy tham dự hội nghị. Hệ thống tự động quy đổi tương đương và cập nhật bảng tính.</p>
+                        </div>
+
+                        <!-- Manual Add Form -->
+                        <div class="bg-slate-50 border border-slate-200 rounded-2xl p-4 space-y-4">
+                            <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                                <div>
+                                    <label class="block text-xs font-bold text-slate-700 mb-1">Diện tích cộng thêm (m²):</label>
+                                    <div class="relative">
+                                        <input type="number" step="0.01" id="manual-area-input" oninput="onManualInputAreaChange()" placeholder="Ví dụ: 150.5"
+                                            class="w-full px-3 py-2 text-xs font-bold bg-white border border-slate-300 rounded-xl focus:ring-2 focus:ring-blue-500 outline-none">
+                                        <span class="absolute right-3 top-1/2 -translate-y-1/2 text-xs font-bold text-slate-400">m²</span>
+                                    </div>
+                                </div>
+                                <div>
+                                    <label class="block text-xs font-bold text-slate-700 mb-1">Hoặc Tỷ lệ cộng thêm (%):</label>
+                                    <div class="relative">
+                                        <input type="number" step="0.001" id="manual-percent-input" oninput="onManualInputPercentChange()" placeholder="Ví dụ: 0.543"
+                                            class="w-full px-3 py-2 text-xs font-bold bg-white border border-slate-300 rounded-xl focus:ring-2 focus:ring-blue-500 outline-none">
+                                        <span class="absolute right-3 top-1/2 -translate-y-1/2 text-xs font-bold text-slate-400">%</span>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div>
+                                <label class="block text-xs font-bold text-slate-700 mb-1">Ghi chú / Nội dung lượt cộng dồn:</label>
+                                <input type="text" id="manual-note-input" placeholder="Ví dụ: Bổ sung đoàn đại diện tầng 5-10, Căn hộ bổ sung trực tiếp..."
+                                    class="w-full px-3 py-2 text-xs bg-white border border-slate-300 rounded-xl focus:ring-2 focus:ring-blue-500 outline-none">
+                            </div>
+
+                            <button onclick="executeAddManualIncrement()" class="w-full py-2.5 bg-blue-600 hover:bg-blue-700 text-white font-bold rounded-xl text-xs transition shadow flex items-center justify-center gap-2">
+                                <i class="fa-solid fa-plus"></i> Xác Nhận Cộng Vào Tổng Tích Lũy
+                            </button>
+                        </div>
+
+                        <!-- Manual Add History Table -->
                         <div class="space-y-2">
-                            <label class="block text-xs font-bold text-slate-700">Mã căn hộ tham dự (Phân cách bằng phẩy, khoảng trắng hoặc xuống dòng):</label>
-                            <textarea id="quick-check-input" rows="6" placeholder="A1-01, A1-02, A1-05, A2-10, B1-04..."
-                                class="w-full p-3 text-xs font-mono bg-slate-50 border border-slate-300 rounded-xl focus:ring-2 focus:ring-emerald-500 focus:bg-white outline-none"></textarea>
-                        </div>
+                            <div class="flex items-center justify-between text-xs">
+                                <span class="font-bold text-slate-800">Lịch Sử Các Lượt Cộng Dồn Thủ Công:</span>
+                                <button onclick="clearAllManualIncrements()" class="text-rose-600 hover:text-rose-800 font-semibold text-[11px] flex items-center gap-1">
+                                    <i class="fa-solid fa-trash-can"></i> Xóa tất cả lượt cộng
+                                </button>
+                            </div>
 
-                        <div class="flex justify-end gap-2">
-                            <button onclick="executeQuickAttendance(true)" class="px-4 py-2 bg-emerald-600 hover:bg-emerald-700 text-white font-semibold rounded-lg text-xs shadow transition">
-                                <i class="fa-solid fa-check-double mr-1"></i> Đánh Dấu THAM DỰ
-                            </button>
-                            <button onclick="executeQuickAttendance(false)" class="px-4 py-2 bg-slate-200 hover:bg-slate-300 text-slate-700 font-semibold rounded-lg text-xs transition">
-                                Hủy Tham Dự
-                            </button>
+                            <div class="max-h-52 overflow-y-auto border border-slate-200 rounded-xl custom-scrollbar">
+                                <table class="w-full text-left text-xs">
+                                    <thead class="bg-slate-100 font-bold text-slate-600 sticky top-0">
+                                        <tr>
+                                            <th class="p-2.5">Thời gian</th>
+                                            <th class="p-2.5">Nội dung / Ghi chú</th>
+                                            <th class="p-2.5 text-right">Diện tích (m²)</th>
+                                            <th class="p-2.5 text-right">Tỷ lệ (%)</th>
+                                            <th class="p-2.5 text-center">Xóa</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody id="manual-history-table-body" class="divide-y divide-slate-100">
+                                        <!-- Dynamic manual increment logs -->
+                                    </tbody>
+                                </table>
+                            </div>
                         </div>
                     </div>
 
@@ -527,6 +608,7 @@
         let state = {
             totalAreaOverride: DEFAULT_TOTAL_AREA,
             apartments: [], // Array of { id: 'A1-01', area: 68.5, attended: false }
+            manualEntries: [], // Array of { id, area, percent, note, createdAt }
             isAdminAuthenticated: false,
             hasFiredConfetti: false,
             isInitialLoadDone: false
@@ -594,14 +676,19 @@
                 showToast("Lỗi đồng bộ dữ liệu căn hộ từ Cloud!", "error");
             });
 
-            // Realtime Listener for Global Settings
+            // Realtime Listener for Global Settings & Manual Increments
             onSnapshot(settingsDocRef, (docSnap) => {
                 if (docSnap.exists()) {
                     const data = docSnap.data();
                     if (data && typeof data.totalAreaOverride === 'number' && data.totalAreaOverride > 0) {
                         state.totalAreaOverride = data.totalAreaOverride;
-                        render();
                     }
+                    if (data && Array.isArray(data.manualEntries)) {
+                        state.manualEntries = data.manualEntries;
+                    } else {
+                        state.manualEntries = [];
+                    }
+                    render();
                 }
             }, (error) => {
                 console.error("Settings Realtime listener error:", error);
@@ -611,23 +698,27 @@
         function render() {
             const effectiveTotalArea = state.totalAreaOverride > 0 ? state.totalAreaOverride : DEFAULT_TOTAL_AREA;
             
-            let attendedArea = 0;
+            let attendedApartmentArea = 0;
             let attendedUnits = 0;
 
             state.apartments.forEach(apt => {
                 if (apt.attended) {
-                    attendedArea += apt.area;
+                    attendedApartmentArea += apt.area;
                     attendedUnits++;
                 }
             });
 
+            // Sum up manual cumulative additions
+            const manualAreaSum = (state.manualEntries || []).reduce((sum, item) => sum + (parseFloat(item.area) || 0), 0);
+            const totalAttendedArea = attendedApartmentArea + manualAreaSum;
+
             const totalUnits = state.apartments.length;
-            const percentArea = effectiveTotalArea > 0 ? (attendedArea / effectiveTotalArea) * 100 : 0;
+            const percentArea = effectiveTotalArea > 0 ? (totalAttendedArea / effectiveTotalArea) * 100 : 0;
             const percentUnits = totalUnits > 0 ? (attendedUnits / totalUnits) * 100 : 0;
-            const missingArea = Math.max(0, effectiveTotalArea - attendedArea);
+            const missingArea = Math.max(0, effectiveTotalArea - totalAttendedArea);
 
             document.getElementById('metric-total-area').innerText = formatNumber(effectiveTotalArea);
-            document.getElementById('metric-attended-area').innerText = formatNumber(attendedArea);
+            document.getElementById('metric-attended-area').innerText = formatNumber(totalAttendedArea);
             document.getElementById('metric-missing-area').innerText = `${formatNumber(missingArea)} m²`;
             document.getElementById('metric-total-units').innerText = totalUnits;
             document.getElementById('metric-attended-units').innerText = attendedUnits;
@@ -655,6 +746,7 @@
             renderTable();
             if (state.isAdminAuthenticated) {
                 renderAdminTable();
+                renderManualHistoryTable();
             }
         }
 
@@ -830,10 +922,11 @@
         }
 
         function switchAdminTab(tabName) {
-            const tabs = ['import', 'quick-check', 'manage', 'settings'];
+            const tabs = ['import', 'quick-check', 'manual-add', 'manage', 'settings'];
             tabs.forEach(t => {
                 const btn = document.getElementById(`tab-btn-${t}`);
                 const content = document.getElementById(`tab-content-${t}`);
+                if (!btn || !content) return;
                 if (t === tabName) {
                     btn.className = "py-2.5 px-4 border-b-2 border-emerald-600 text-emerald-600 font-bold flex items-center gap-2";
                     content.classList.remove('hidden');
@@ -842,6 +935,89 @@
                     content.classList.add('hidden');
                 }
             });
+            if (tabName === 'manual-add') {
+                renderManualHistoryTable();
+            }
+        }
+
+        // Auto convert inputs for Manual Accumulation
+        function onManualInputAreaChange() {
+            const total = state.totalAreaOverride > 0 ? state.totalAreaOverride : DEFAULT_TOTAL_AREA;
+            const areaVal = parseFloat(document.getElementById('manual-area-input').value) || 0;
+            const pct = total > 0 ? (areaVal / total) * 100 : 0;
+            document.getElementById('manual-percent-input').value = pct > 0 ? pct.toFixed(3) : '';
+        }
+
+        function onManualInputPercentChange() {
+            const total = state.totalAreaOverride > 0 ? state.totalAreaOverride : DEFAULT_TOTAL_AREA;
+            const pctVal = parseFloat(document.getElementById('manual-percent-input').value) || 0;
+            const area = (total * pctVal) / 100;
+            document.getElementById('manual-area-input').value = area > 0 ? area.toFixed(2) : '';
+        }
+
+        async function executeAddManualIncrement() {
+            const area = parseFloat(document.getElementById('manual-area-input').value) || 0;
+            const percent = parseFloat(document.getElementById('manual-percent-input').value) || 0;
+            const note = document.getElementById('manual-note-input').value.trim() || 'Cộng dồn thủ công';
+
+            if (area <= 0) {
+                showToast("Vui lòng nhập diện tích hoặc % hợp lệ!", "error");
+                return;
+            }
+
+            const newEntry = {
+                id: 'man_' + Date.now(),
+                area: Math.round(area * 100) / 100,
+                percent: Math.round(percent * 1000) / 1000,
+                note: note,
+                createdAt: new Date().toLocaleTimeString('vi-VN', { hour: '2-digit', minute: '2-digit' })
+            };
+
+            const updatedEntries = [...(state.manualEntries || []), newEntry];
+
+            await setDoc(settingsDocRef, { manualEntries: updatedEntries }, { merge: true });
+
+            document.getElementById('manual-area-input').value = '';
+            document.getElementById('manual-percent-input').value = '';
+            document.getElementById('manual-note-input').value = '';
+
+            showToast(`Đã cộng dồn +${formatNumber(newEntry.area)} m² (${newEntry.percent.toFixed(2)}%) vào Cloud!`, "success");
+        }
+
+        function renderManualHistoryTable() {
+            const tbody = document.getElementById('manual-history-table-body');
+            if (!tbody) return;
+
+            const entries = state.manualEntries || [];
+            if (entries.length === 0) {
+                tbody.innerHTML = `<tr><td colspan="5" class="p-4 text-center text-slate-400">Chưa có lượt cộng dồn thủ công nào</td></tr>`;
+                return;
+            }
+
+            tbody.innerHTML = entries.map((item) => `
+                <tr class="hover:bg-slate-50 border-b border-slate-100">
+                    <td class="p-2.5 font-mono text-slate-500">${item.createdAt || '--:--'}</td>
+                    <td class="p-2.5 font-semibold text-slate-800">${item.note || 'Cộng dồn'}</td>
+                    <td class="p-2.5 text-right font-bold text-blue-600">+${formatNumber(item.area)}</td>
+                    <td class="p-2.5 text-right font-mono text-emerald-600">+${(item.percent || 0).toFixed(3)}%</td>
+                    <td class="p-2.5 text-center">
+                        <button onclick="deleteManualIncrement('${item.id}')" class="text-rose-500 hover:text-rose-700 px-2 py-0.5">
+                            <i class="fa-solid fa-xmark"></i>
+                        </button>
+                    </td>
+                </tr>
+            `).join('');
+        }
+
+        async function deleteManualIncrement(id) {
+            const updated = (state.manualEntries || []).filter(item => item.id !== id);
+            await setDoc(settingsDocRef, { manualEntries: updated }, { merge: true });
+            showToast("Đã xóa lượt cộng dồn!", "info");
+        }
+
+        async function clearAllManualIncrements() {
+            await setDoc(settingsDocRef, { manualEntries: [] }, { merge: true });
+            showToast("Đã xóa toàn bộ các lượt cộng dồn thủ công!", "info");
         }
 
         function handleFileUpload(event) {
@@ -1004,9 +1180,12 @@
 
         async function executeQuickAttendance(statusBool) {
             const raw = document.getElementById('quick-check-input').value.trim();
-            if (!raw) return;
+            if (!raw) {
+                showToast("Vui lòng nhập hoặc dán danh sách mã căn hộ!", "error");
+                return;
+            }
 
-            const codes = raw.split(/[\s,\n]+/).map(c => c.trim().toUpperCase()).filter(Boolean);
+            const codes = raw.split(/[\s,\n;]+/).map(c => c.trim().toUpperCase()).filter(Boolean);
             if (codes.length === 0) return;
 
             const batch = writeBatch(db);
@@ -1022,10 +1201,11 @@
 
             if (updateCount > 0) {
                 await batch.commit();
-                showToast(`Đã cập nhật trạng thái Cloud cho ${updateCount} căn hộ!`, "success");
+                const statusText = statusBool ? "Đã Tham Dự" : "Chưa Tham Dự";
+                showToast(`Đã cập nhật trạng thái "${statusText}" trên Cloud cho ${updateCount} căn hộ!`, "success");
                 document.getElementById('quick-check-input').value = '';
             } else {
-                showToast("Không tìm thấy mã căn hộ tương ứng!", "error");
+                showToast("Không tìm thấy mã căn hộ tương ứng trong danh sách dữ liệu!", "error");
             }
         }
 
@@ -1157,6 +1337,11 @@
         window.handleFileUpload = handleFileUpload;
         window.handlePasteImport = handlePasteImport;
         window.executeQuickAttendance = executeQuickAttendance;
+        window.onManualInputAreaChange = onManualInputAreaChange;
+        window.onManualInputPercentChange = onManualInputPercentChange;
+        window.executeAddManualIncrement = executeAddManualIncrement;
+        window.deleteManualIncrement = deleteManualIncrement;
+        window.clearAllManualIncrements = clearAllManualIncrements;
         window.toggleAttendance = toggleAttendance;
         window.deleteApartment = deleteApartment;
         window.requestClearAllData = requestClearAllData;
