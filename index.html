@@ -121,7 +121,6 @@
                     </div>
 
                     <div class="flex items-center justify-between md:justify-end space-x-2 sm:space-x-3">
-                        <!-- Theme Toggle Button -->
                         <button onclick="toggleTheme()" class="px-3 py-2 text-xs font-bold bg-slate-200 dark:bg-slate-800 hover:bg-slate-300 dark:hover:bg-slate-700 text-slate-700 dark:text-amber-300 rounded-xl transition border border-slate-300 dark:border-slate-700 flex items-center gap-1.5 shadow-sm" title="Đổi giao diện Sáng / Tối">
                             <i id="theme-icon" class="fa-solid fa-sun text-amber-500 dark:text-amber-300"></i>
                             <span id="theme-text" class="hidden sm:inline">Giao diện</span>
@@ -185,7 +184,6 @@
                     </div>
                 </div>
 
-                <!-- Visual Progress Bar Container -->
                 <div class="relative pt-6 pb-2">
                     <div class="absolute top-0 left-[50%] -translate-x-1/2 flex flex-col items-center z-20">
                         <span class="text-[10px] sm:text-xs font-black text-rose-700 dark:text-rose-300 bg-rose-100 dark:bg-rose-950/90 border border-rose-400 dark:border-rose-500/50 px-2.5 py-1 rounded-full shadow-lg flex items-center gap-1">
@@ -209,8 +207,6 @@
             </div>
 
             <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
-                
-                <!-- KPI 1: Total Area -->
                 <div class="glass-card rounded-2xl p-5 border border-slate-300 dark:border-slate-800 hover:border-slate-400 transition">
                     <div class="flex items-center justify-between text-slate-500 dark:text-slate-400 mb-3">
                         <span class="text-xs font-bold uppercase tracking-wider">Tổng Diện Tích Dự Án</span>
@@ -225,7 +221,6 @@
                     <p class="text-[11px] text-slate-500 dark:text-slate-400 mt-2">Theo diện tích sở hữu Ecohome Nhơn Bình</p>
                 </div>
 
-                <!-- KPI 2: Attended Area -->
                 <div class="glass-card rounded-2xl p-5 border border-emerald-300 dark:border-emerald-500/20 hover:border-emerald-500/40 transition">
                     <div class="flex items-center justify-between mb-3">
                         <span class="text-xs font-bold uppercase tracking-wider text-emerald-700 dark:text-emerald-400">Diện Tích Đã Tham Dự</span>
@@ -243,7 +238,6 @@
                     </div>
                 </div>
 
-                <!-- KPI 3: Total Apartments -->
                 <div class="glass-card rounded-2xl p-5 border border-slate-300 dark:border-slate-800 hover:border-slate-400 transition">
                     <div class="flex items-center justify-between text-slate-500 dark:text-slate-400 mb-3">
                         <span class="text-xs font-bold uppercase tracking-wider">Tổng Số Căn Hộ</span>
@@ -258,7 +252,6 @@
                     <p class="text-[11px] text-slate-500 dark:text-slate-400 mt-2">Dữ liệu căn hộ đồng bộ Cloud</p>
                 </div>
 
-                <!-- KPI 4: Attended Apartments -->
                 <div class="glass-card rounded-2xl p-5 border border-teal-300 dark:border-teal-500/20 hover:border-teal-500/40 transition">
                     <div class="flex items-center justify-between mb-3">
                         <span class="text-xs font-bold uppercase tracking-wider text-teal-700 dark:text-teal-400">Căn Hộ Đã Đăng Ký</span>
@@ -275,7 +268,6 @@
                         <span id="metric-units-percent" class="font-bold text-teal-600 dark:text-teal-300 font-mono">0.0%</span>
                     </div>
                 </div>
-
             </div>
 
             <div class="glass-card-light rounded-3xl overflow-hidden shadow-2xl text-slate-800 border border-slate-200">
@@ -287,7 +279,6 @@
                         <p class="text-xs text-slate-500 mt-0.5">Tra cứu mã căn hộ để kiểm tra trạng thái đăng ký tham dự hội nghị</p>
                     </div>
 
-                    <!-- Search & Filter Controls -->
                     <div class="flex flex-col sm:flex-row items-center gap-2.5">
                         <div class="relative w-full sm:w-64">
                             <i class="fa-solid fa-magnifying-glass absolute left-3 top-1/2 -translate-y-1/2 text-slate-400 text-xs"></i>
@@ -303,7 +294,6 @@
                     </div>
                 </div>
 
-                <!-- Table Content Container -->
                 <div class="overflow-x-auto max-h-[500px] custom-scrollbar">
                     <table class="w-full text-left text-xs text-slate-700">
                         <thead class="bg-slate-100 text-slate-600 font-extrabold uppercase tracking-wider sticky top-0 z-10 border-b border-slate-200">
@@ -317,7 +307,6 @@
                             </tr>
                         </thead>
                         <tbody id="apartment-table-body" class="divide-y divide-slate-200/80">
-                            <!-- Dynamic Table Rows populated via JS -->
                         </tbody>
                     </table>
                 </div>
@@ -340,7 +329,6 @@
     </div><!-- END PUBLIC VIEW -->
 
     <div id="admin-page-view" class="hidden min-h-screen w-full flex-col bg-slate-100 dark:bg-slate-950 text-slate-900 dark:text-slate-100 z-50">
-        <!-- Admin Navigation Header -->
         <header class="glass-card sticky top-0 z-30 border-b border-slate-300 dark:border-slate-800 shadow-xl">
             <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-3.5 flex flex-col sm:flex-row items-center justify-between gap-4">
                 <div class="flex items-center space-x-3.5">
@@ -415,7 +403,6 @@
             <!-- ADMIN PANEL WORKSPACE -->
             <div id="admin-panel-view" class="hidden space-y-6">
                 
-                <!-- Smart Admin Summary Header Bar -->
                 <div id="admin-summary-overview" class="glass-card rounded-2xl p-5 shadow-xl border border-slate-300 dark:border-slate-800 flex flex-col md:flex-row items-center justify-between gap-4">
                     <div class="flex items-center gap-4">
                         <div class="w-12 h-12 rounded-2xl bg-emerald-500/20 border border-emerald-500/30 flex items-center justify-center text-emerald-600 dark:text-emerald-400 text-xl shrink-0">
@@ -481,7 +468,6 @@
                         </button>
                     </div>
 
-                    <!-- Option A: Upload Excel/CSV File -->
                     <div class="border-2 border-dashed border-slate-300 dark:border-slate-700 hover:border-emerald-500 rounded-2xl p-6 text-center bg-white/50 dark:bg-slate-900/50 hover:bg-slate-50 dark:hover:bg-slate-900/90 transition cursor-pointer relative group"
                          onclick="document.getElementById('excel-file-input').click()">
                         <input type="file" id="excel-file-input" accept=".xlsx, .xls, .csv" class="hidden" onchange="handleFileUpload(event)">
@@ -503,7 +489,6 @@
                         <div class="flex-grow border-t border-slate-300 dark:border-slate-800"></div>
                     </div>
 
-                    <!-- Option B: Paste Textarea -->
                     <div class="space-y-2">
                         <label class="block text-xs font-bold text-slate-700 dark:text-slate-300">
                             Dán danh sách Mã căn & Diện tích (Ví dụ định dạng: MãCăn, DiệnTích):
@@ -583,7 +568,6 @@
                         <p class="text-slate-600 dark:text-slate-400">Nhập danh sách các mã căn hộ do 1 đại diện nắm giữ. Hệ thống tự động quét, lấy diện tích từ danh sách căn hộ đã nạp, quy đổi tỷ lệ %, và hỗ trợ điểm danh hàng loạt trên Cloud.</p>
                     </div>
 
-                    <!-- Proxy Input Box -->
                     <div class="bg-white/80 dark:bg-slate-900/90 border border-slate-300 dark:border-slate-800 rounded-2xl p-4 space-y-4">
                         <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
                             <div>
@@ -604,7 +588,6 @@
                                 class="w-full p-3 text-xs font-mono bg-slate-50 dark:bg-slate-950 border border-slate-300 dark:border-slate-700 rounded-xl focus:ring-2 focus:ring-purple-500 text-slate-900 dark:text-white outline-none transition"></textarea>
                         </div>
 
-                        <!-- Live Summary Box for Proxy -->
                         <div id="proxy-live-summary" class="grid grid-cols-1 sm:grid-cols-3 gap-3 p-3 bg-purple-50/50 dark:bg-purple-950/30 border border-purple-200 dark:border-purple-800/50 rounded-xl text-xs">
                             <div class="text-center p-2 bg-white dark:bg-slate-900 rounded-lg shadow-sm">
                                 <span class="block text-slate-500 text-[11px] font-medium">Số Căn Tìm Thấy</span>
@@ -661,7 +644,6 @@
                         </span>
                     </div>
 
-                    <!-- ADMIN BLOCK RENAMING PANEL -->
                     <div class="bg-indigo-50 dark:bg-indigo-950/50 border border-indigo-300 dark:border-indigo-500/30 rounded-2xl p-4 space-y-3">
                         <div class="flex items-center justify-between">
                             <div>
@@ -675,12 +657,10 @@
                             </button>
                         </div>
                         <div id="block-rename-inputs" class="grid grid-cols-2 sm:grid-cols-5 gap-2 text-xs">
-                            <!-- Dynamic Inputs for renaming blocks populated via JS -->
                         </div>
                     </div>
 
                     <div id="building-stats-grid" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 pt-2">
-                        <!-- Dynamic Building Cards loaded via JS -->
                     </div>
                 </div>
 
@@ -700,7 +680,6 @@
                         </div>
                     </div>
 
-                    <!-- Admin Search & Filter Toolbar -->
                     <div class="grid grid-cols-1 sm:grid-cols-12 gap-2 bg-slate-100 dark:bg-slate-900/90 p-3 rounded-2xl border border-slate-300 dark:border-slate-800">
                         <div class="sm:col-span-5 relative">
                             <i class="fa-solid fa-magnifying-glass absolute left-3 top-1/2 -translate-y-1/2 text-slate-400 text-xs"></i>
@@ -743,7 +722,6 @@
                         </div>
                     </div>
 
-                    <!-- Quick Filter Chips Bar -->
                     <div class="flex items-center gap-2 overflow-x-auto pb-1 text-xs">
                         <span class="text-slate-500 font-bold text-[11px] shrink-0 mr-1">Lọc nhanh:</span>
                         <button onclick="setAdminQuickFilter('all', 'all')" class="px-3 py-1 bg-slate-200 dark:bg-slate-800 hover:bg-slate-300 dark:hover:bg-slate-700 text-slate-700 dark:text-slate-300 rounded-xl font-bold text-[11px] border border-slate-300 dark:border-slate-700 transition shrink-0">
@@ -780,7 +758,6 @@
                                 </tr>
                             </thead>
                             <tbody id="admin-table-body" class="divide-y divide-slate-200 dark:divide-slate-800/80 text-slate-800 dark:text-slate-300">
-                                <!-- Dynamic Rows -->
                             </tbody>
                         </table>
                     </div>
@@ -858,8 +835,8 @@
         /* Application Global State */
         let state = {
             totalAreaOverride: DEFAULT_TOTAL_AREA,
-            apartments: [], /* Array of { id: 'B1-0101', area: 68.5, attended: false } */
-            manualEntries: [], /* Array of { id, area, percent, note, createdAt } */
+            apartments: [],
+            manualEntries: [],
             blockNames: { ...DEFAULT_BLOCK_NAMES },
             isAdminAuthenticated: false,
             hasFiredConfetti: false,
@@ -876,18 +853,8 @@
                     origin: { y: 0.6 }
                 });
                 setTimeout(() => {
-                    confetti({
-                        particleCount: 60,
-                        angle: 60,
-                        spread: 60,
-                        origin: { x: 0 }
-                    });
-                    confetti({
-                        particleCount: 60,
-                        angle: 120,
-                        spread: 60,
-                        origin: { x: 1 }
-                    });
+                    confetti({ particleCount: 60, angle: 60, spread: 60, origin: { x: 0 } });
+                    confetti({ particleCount: 60, angle: 120, spread: 60, origin: { x: 1 } });
                 }, 200);
             }
         }
@@ -991,7 +958,6 @@
         }
 
         function setupRealtimeListeners() {
-            /* Realtime Listener for Apartments List */
             onSnapshot(apartmentsColRef, (snapshot) => {
                 const loadedList = [];
                 snapshot.forEach((docSnap) => {
@@ -1003,7 +969,6 @@
                     });
                 });
 
-                /* Auto initialize dataset if cloud collection is empty */
                 if (loadedList.length === 0 && !state.isInitialLoadDone) {
                     state.isInitialLoadDone = true;
                     loadFullEcohomeDataset(false);
@@ -1019,7 +984,6 @@
                 showToast("Lỗi đồng bộ dữ liệu căn hộ!", "error");
             });
 
-            /* Realtime Listener for Settings */
             onSnapshot(settingsDocRef, (docSnap) => {
                 if (docSnap.exists()) {
                     const data = docSnap.data();
@@ -1054,7 +1018,6 @@
                 }
             });
 
-            /* Cumulative manual additions */
             const manualAreaSum = (state.manualEntries || []).reduce((sum, item) => sum + (parseFloat(item.area) || 0), 0);
             const totalAttendedArea = attendedApartmentArea + manualAreaSum;
 
@@ -1149,7 +1112,6 @@
             }).join('');
         }
 
-        /* Admin Navigation & Views */
         function openAdminView() {
             const adminView = document.getElementById('admin-page-view');
             const publicView = document.getElementById('public-view');
@@ -1175,11 +1137,7 @@
                 document.getElementById('admin-auth-view')?.classList.remove('hidden');
                 document.getElementById('admin-panel-view')?.classList.add('hidden');
                 document.getElementById('admin-logout-btn')?.classList.add('hidden');
-                setTimeout(() => {
-                    document.getElementById('admin-pass-input')?.focus();
-                }, 100);
             }
-            window.location.hash = 'admin';
         }
 
         function closeAdminView() {
@@ -1190,52 +1148,50 @@
                 adminView.classList.remove('flex');
             }
             if (publicView) publicView.classList.remove('hidden');
-            if (window.location.hash === '#admin') {
-                history.pushState("", document.title, window.location.pathname + window.location.search);
-            }
         }
 
         function handleAdminLogin(event) {
-            if (event) event.preventDefault();
+            event.preventDefault();
             const passInput = document.getElementById('admin-pass-input');
             const errorMsg = document.getElementById('auth-error-msg');
             const rememberChk = document.getElementById('remember-session-chk');
 
-            if (passInput && passInput.value === ADMIN_PASS) {
+            if (passInput.value.trim() === ADMIN_PASS) {
                 state.isAdminAuthenticated = true;
                 if (rememberChk && rememberChk.checked) {
                     localStorage.setItem('admin_authenticated', 'true');
                 } else {
                     sessionStorage.setItem('admin_authenticated', 'true');
                 }
-                if (errorMsg) errorMsg.classList.add('hidden');
+                
+                errorMsg.classList.add('hidden');
                 passInput.value = '';
+                showToast("Đăng nhập thành công!", "success");
 
                 document.getElementById('admin-auth-view')?.classList.add('hidden');
                 document.getElementById('admin-panel-view')?.classList.remove('hidden');
                 document.getElementById('admin-logout-btn')?.classList.remove('hidden');
 
-                showToast("Đăng nhập Admin thành công!", "success");
                 renderAdminOverviewHeader();
                 renderAdminTable();
                 renderManualHistoryTable();
                 renderBuildingStats();
             } else {
-                if (errorMsg) errorMsg.classList.remove('hidden');
-                showToast("Mật khẩu không chính xác!", "error");
+                errorMsg.classList.remove('hidden');
+                showToast("Mật khẩu không đúng!", "error");
             }
         }
 
         function handleAdminLogout() {
             state.isAdminAuthenticated = false;
-            localStorage.removeItem('admin_authenticated');
             sessionStorage.removeItem('admin_authenticated');
+            localStorage.removeItem('admin_authenticated');
 
             document.getElementById('admin-auth-view')?.classList.remove('hidden');
             document.getElementById('admin-panel-view')?.classList.add('hidden');
             document.getElementById('admin-logout-btn')?.classList.add('hidden');
 
-            showToast("Đã đăng xuất khỏi tài khoản Admin", "info");
+            showToast("Đã đăng xuất phiên Quản trị!", "info");
         }
 
         function togglePasswordVisibility() {
@@ -1253,26 +1209,27 @@
         }
 
         function renderAdminOverviewHeader() {
-            const effectiveTotalArea = state.totalAreaOverride > 0 ? state.totalAreaOverride : DEFAULT_TOTAL_AREA;
-            const attendedApartmentArea = state.apartments.filter(a => a.attended).reduce((sum, a) => sum + a.area, 0);
-            const manualAreaSum = (state.manualEntries || []).reduce((sum, item) => sum + (parseFloat(item.area) || 0), 0);
-            const totalAttendedArea = attendedApartmentArea + manualAreaSum;
-            const percentArea = effectiveTotalArea > 0 ? (totalAttendedArea / effectiveTotalArea) * 100 : 0;
-
+            const badge = document.getElementById('admin-summary-badge');
             const percentEl = document.getElementById('admin-summary-percent');
             const areaEl = document.getElementById('admin-summary-area');
-            const badgeEl = document.getElementById('admin-summary-badge');
 
-            if (percentEl) percentEl.innerText = `${percentArea.toFixed(2)}%`;
-            if (areaEl) areaEl.innerText = `(${formatNumber(totalAttendedArea)} / ${formatNumber(effectiveTotalArea)} m²)`;
+            const effectiveTotal = state.totalAreaOverride > 0 ? state.totalAreaOverride : DEFAULT_TOTAL_AREA;
+            let attendedApartmentArea = 0;
+            state.apartments.forEach(a => { if (a.attended) attendedApartmentArea += a.area; });
+            const manualAreaSum = (state.manualEntries || []).reduce((sum, item) => sum + (parseFloat(item.area) || 0), 0);
+            const totalAttended = attendedApartmentArea + manualAreaSum;
+            const percent = effectiveTotal > 0 ? (totalAttended / effectiveTotal) * 100 : 0;
 
-            if (badgeEl) {
-                if (percentArea >= 50) {
-                    badgeEl.className = "px-2.5 py-0.5 rounded-full text-[11px] font-bold bg-emerald-500/20 text-emerald-700 dark:text-emerald-300 border border-emerald-500/30";
-                    badgeEl.innerText = "Đã đủ mốc 50%";
+            if (percentEl) percentEl.innerText = `${percent.toFixed(2)}%`;
+            if (areaEl) areaEl.innerText = `(${formatNumber(totalAttended)} / ${formatNumber(effectiveTotal)} m²)`;
+
+            if (badge) {
+                if (percent >= 50) {
+                    badge.className = "px-2.5 py-0.5 rounded-full text-[11px] font-bold bg-emerald-500/20 text-emerald-800 dark:text-emerald-300 border border-emerald-500/30";
+                    badge.innerHTML = `<i class="fa-solid fa-check mr-1"></i>Đã đạt 50%`;
                 } else {
-                    badgeEl.className = "px-2.5 py-0.5 rounded-full text-[11px] font-bold bg-amber-500/20 text-amber-700 dark:text-amber-300 border border-amber-500/30";
-                    badgeEl.innerText = "Chưa đạt 50%";
+                    badge.className = "px-2.5 py-0.5 rounded-full text-[11px] font-bold bg-amber-500/20 text-amber-800 dark:text-amber-300 border border-amber-500/30";
+                    badge.innerHTML = `Chưa đạt 50%`;
                 }
             }
         }
@@ -1280,20 +1237,15 @@
         function switchAdminTab(tabName) {
             const tabs = ['import', 'manual-add', 'proxy', 'stats', 'manage'];
             tabs.forEach(t => {
-                const content = document.getElementById(`tab-content-${t}`);
                 const btn = document.getElementById(`tab-btn-${t}`);
-                if (content) {
+                const content = document.getElementById(`tab-content-${t}`);
+                if (btn && content) {
                     if (t === tabName) {
+                        btn.className = "py-2.5 px-4 border-b-2 border-emerald-500 text-emerald-600 dark:text-emerald-400 flex items-center gap-2 bg-emerald-500/10 rounded-xl";
                         content.classList.remove('hidden');
                     } else {
+                        btn.className = "py-2.5 px-4 border-b-2 border-transparent hover:text-slate-900 dark:hover:text-white flex items-center gap-2 rounded-xl transition";
                         content.classList.add('hidden');
-                    }
-                }
-                if (btn) {
-                    if (t === tabName) {
-                        btn.className = "py-2.5 px-4 border-b-2 border-emerald-500 text-emerald-600 dark:text-emerald-400 flex items-center gap-2 bg-emerald-500/10 rounded-xl font-bold";
-                    } else {
-                        btn.className = "py-2.5 px-4 border-b-2 border-transparent text-slate-500 dark:text-slate-400 hover:text-slate-900 dark:hover:text-white flex items-center gap-2 rounded-xl transition font-bold";
                     }
                 }
             });
@@ -1303,7 +1255,6 @@
             if (tabName === 'manual-add') renderManualHistoryTable();
         }
 
-        /* Excel File Upload Handler */
         function handleFileUpload(event) {
             const file = event.target.files[0];
             if (!file) return;
@@ -1313,44 +1264,163 @@
                 try {
                     const data = new Uint8Array(e.target.result);
                     const workbook = XLSX.read(data, { type: 'array' });
-                    const firstSheet = workbook.Sheets[workbook.SheetNames[0]];
-                    const jsonData = XLSX.utils.sheet_to_json(firstSheet, { header: 1 });
-
                     let importedApts = [];
 
-                    for (let i = 0; i < jsonData.length; i++) {
-                        const row = jsonData[i];
-                        if (!row || row.length < 2) continue;
-                        
-                        let idStr = String(row[0] || '').trim().toUpperCase();
-                        let areaNum = parseFloat(String(row[1] || '').replace(',', '.'));
+                    for (const sheetName of workbook.SheetNames) {
+                        const sheet = workbook.Sheets[sheetName];
+                        const jsonData = XLSX.utils.sheet_to_json(sheet, { header: 1, raw: false, defval: '' });
+                        if (!jsonData || jsonData.length === 0) continue;
 
-                        if (!idStr || isNaN(areaNum) || areaNum <= 0) continue;
+                        let codeColIndex = -1;
+                        let areaColIndex = -1;
+                        let attendedColIndex = -1;
+                        let headerRowIndex = -1;
 
-                        importedApts.push({
-                            id: idStr,
-                            area: areaNum,
-                            attended: false
-                        });
+                        for (let r = 0; r < Math.min(jsonData.length, 25); r++) {
+                            const row = jsonData[r];
+                            if (!row || !Array.isArray(row)) continue;
+
+                            for (let c = 0; c < row.length; c++) {
+                                const cellVal = String(row[c] || '').trim().toLowerCase();
+                                
+                                if (codeColIndex === -1 && (
+                                    cellVal.includes('mã căn') || cellVal.includes('ma can') || 
+                                    cellVal.includes('căn hộ') || cellVal.includes('can ho') ||
+                                    cellVal.includes('số căn') || cellVal.includes('so can') ||
+                                    cellVal.includes('mã ch') || cellVal === 'căn' || cellVal === 'can' ||
+                                    cellVal.includes('mã số') || (cellVal.includes('mã') && !cellVal.includes('chủ sở hữu'))
+                                )) {
+                                    codeColIndex = c;
+                                    headerRowIndex = r;
+                                }
+
+                                if (areaColIndex === -1 && (
+                                    cellVal.includes('diện tích') || cellVal.includes('dien tich') || 
+                                    cellVal.includes('dt') || cellVal.includes('m2') || cellVal.includes('m²') ||
+                                    cellVal.includes('d.tích') || cellVal.includes('d.tich')
+                                )) {
+                                    areaColIndex = c;
+                                    if (headerRowIndex === -1) headerRowIndex = r;
+                                }
+
+                                if (attendedColIndex === -1 && (
+                                    cellVal.includes('tham dự') || cellVal.includes('tham du') ||
+                                    cellVal.includes('điểm danh') || cellVal.includes('diem danh') ||
+                                    cellVal.includes('có mặt') || cellVal.includes('co mat') ||
+                                    cellVal.includes('trạng thái') || cellVal.includes('trang thai')
+                                )) {
+                                    attendedColIndex = c;
+                                }
+                            }
+
+                            if (codeColIndex !== -1 && areaColIndex !== -1) break;
+                        }
+
+                        if (codeColIndex === -1 || areaColIndex === -1) {
+                            let colStats = [];
+                            
+                            for (let r = Math.max(0, headerRowIndex + 1); r < jsonData.length; r++) {
+                                const row = jsonData[r];
+                                if (!row || !Array.isArray(row)) continue;
+
+                                for (let c = 0; c < row.length; c++) {
+                                    if (!colStats[c]) colStats[c] = { codeScore: 0, numScore: 0 };
+                                    const val = String(row[c] || '').trim();
+                                    
+                                    if (/^[A-Z0-9]{1,6}[-\/\.\s]?[0-9]{2,5}$/i.test(val) || /^NO\d/i.test(val) || /^B\d/i.test(val)) {
+                                        colStats[c].codeScore++;
+                                    }
+
+                                    const num = parseFloat(val.replace(',', '.').replace(/[^0-9\.]/g, ''));
+                                    if (!isNaN(num) && num >= 15 && num <= 500) {
+                                        colStats[c].numScore++;
+                                    }
+                                }
+                            }
+
+                            if (codeColIndex === -1) {
+                                let maxCode = 0;
+                                colStats.forEach((st, idx) => {
+                                    if (st && st.codeScore > maxCode) {
+                                        maxCode = st.codeScore;
+                                        codeColIndex = idx;
+                                    }
+                                });
+                            }
+
+                            if (areaColIndex === -1) {
+                                let maxNum = 0;
+                                colStats.forEach((st, idx) => {
+                                    if (st && idx !== codeColIndex && st.numScore > maxNum) {
+                                        maxNum = st.numScore;
+                                        areaColIndex = idx;
+                                    }
+                                });
+                            }
+                        }
+
+                        if (codeColIndex === -1) codeColIndex = 0;
+                        if (areaColIndex === -1) areaColIndex = codeColIndex === 0 ? 1 : 0;
+
+                        const startRow = headerRowIndex !== -1 ? headerRowIndex + 1 : 0;
+
+                        for (let r = startRow; r < jsonData.length; r++) {
+                            const row = jsonData[r];
+                            if (!row || !Array.isArray(row)) continue;
+
+                            let rawCode = String(row[codeColIndex] || '').trim();
+                            if (!rawCode) continue;
+
+                            const lowerCode = rawCode.toLowerCase();
+                            if (lowerCode.includes('tổng') || lowerCode.includes('tong') || 
+                                lowerCode.includes('căn hộ') || lowerCode.includes('mã căn') || 
+                                lowerCode.includes('stt') || lowerCode.includes('cộng') ||
+                                lowerCode.includes('bảng') || lowerCode.includes('danh sách')) {
+                                continue;
+                            }
+
+                            let formattedCode = rawCode.toUpperCase().replace(/\s+/g, '');
+                            let rawArea = String(row[areaColIndex] || '').replace(',', '.').replace(/[^0-9\.]/g, '');
+                            let areaNum = parseFloat(rawArea);
+
+                            if (isNaN(areaNum) || areaNum <= 0) {
+                                areaNum = 50.0;
+                            }
+
+                            let isAttended = false;
+                            if (attendedColIndex !== -1 && row[attendedColIndex]) {
+                                const attVal = String(row[attendedColIndex]).trim().toLowerCase();
+                                if (attVal === 'x' || attVal === '1' || attVal.includes('có') || attVal.includes('đã') || attVal.includes('tham dự')) {
+                                    isAttended = true;
+                                }
+                            }
+
+                            importedApts.push({
+                                id: formattedCode,
+                                area: Math.round(areaNum * 100) / 100,
+                                attended: isAttended
+                            });
+                        }
+
+                        if (importedApts.length > 0) break;
                     }
 
                     if (importedApts.length === 0) {
-                        showToast("Không tìm thấy dữ liệu căn hộ hợp lệ trong file!", "error");
+                        showToast("Không tìm thấy dữ liệu căn hộ hợp lệ trong tệp Excel!", "error");
                         return;
                     }
 
                     await saveBatchApartmentsToCloud(importedApts, true);
-                    showToast(`Đã nạp thành công ${importedApts.length} căn hộ từ file!`, "success");
+                    showToast(`Đã nạp thành công ${importedApts.length} căn hộ từ tệp Excel!`, "success");
                 } catch (err) {
                     console.error("Excel parse error:", err);
-                    showToast("Lỗi khi đọc file Excel/CSV!", "error");
+                    showToast("Lỗi khi đọc tệp Excel/CSV! Vui lòng kiểm tra định dạng tệp.", "error");
                 }
             };
             reader.readAsArrayBuffer(file);
             event.target.value = '';
         }
 
-        /* Paste Text Import Handler */
         async function handlePasteImport() {
             const inputVal = document.getElementById('paste-import-input')?.value || '';
             if (!inputVal.trim()) {
@@ -1387,7 +1457,6 @@
             document.getElementById('paste-import-input').value = '';
         }
 
-        /* Manual Area/Percent Input Converters */
         function onManualInputAreaChange() {
             const areaInput = document.getElementById('manual-add-area');
             const percentInput = document.getElementById('manual-add-percent');
@@ -1479,7 +1548,6 @@
             `).join('');
         }
 
-        /* Proxy Multi-Unit Functions */
         function calculateProxySummary() {
             const inputVal = document.getElementById('proxy-codes-input')?.value || '';
             const codes = inputVal.split(/[,|\n\t\s]+/).map(c => c.trim().toUpperCase()).filter(c => c.length > 0);
@@ -1862,7 +1930,6 @@
             let totalDatasetArea = 0;
 
             blocks.forEach(b => {
-                /* 276 apartments per block x 5 blocks = 1,380 EcoHome Nhơn Bình apartments */
                 for (let i = 1; i <= 276; i++) {
                     const floor = Math.floor((i - 1) / 18) + 1;
                     const room = ((i - 1) % 18) + 1;
@@ -1934,7 +2001,6 @@
             }, 3000);
         }
 
-        /* Expose window handlers */
         window.toggleTheme = toggleTheme;
         window.triggerCelebrationConfetti = triggerCelebrationConfetti;
         window.triggerManualConfetti = triggerCelebrationConfetti;
@@ -1971,7 +2037,6 @@
         window.exportApartmentsToExcel = exportApartmentsToExcel;
         window.renderAdminTable = renderAdminTable;
 
-        /* Initialize Firebase, Clock, Theme on DOM load */
         window.addEventListener('DOMContentLoaded', () => {
             applyTheme(state.theme);
             initFirebaseAndSync();
