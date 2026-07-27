@@ -68,7 +68,7 @@
                         <i class="fa-solid fa-wand-magic-sparkles text-amber-300"></i>
                         <span>Pháo hoa</span>
                     </button>
-                    <button onclick="openAdminModal()" class="px-4 py-2 bg-emerald-500 hover:bg-emerald-600 text-white rounded-lg font-medium text-sm transition shadow-md hover:shadow-lg flex items-center gap-2 border border-emerald-400/40">
+                    <button onclick="openAdminView()" class="px-4 py-2 bg-emerald-500 hover:bg-emerald-600 text-white rounded-lg font-medium text-sm transition shadow-md hover:shadow-lg flex items-center gap-2 border border-emerald-400/40">
                         <i class="fa-solid fa-user-shield"></i>
                         <span>Quản Lý (Admin)</span>
                     </button>
@@ -278,335 +278,346 @@
         </div>
     </footer>
 
+    </div><!-- END PUBLIC VIEW CONTAINER -->
 
-    <!-- MODAL: ADMIN MANAGEMENT PANEL -->
-    <div id="admin-modal" class="fixed inset-0 bg-slate-900/60 backdrop-blur-sm z-50 flex items-center justify-center p-4 opacity-0 pointer-events-none transition-opacity duration-300">
-        <div class="bg-white rounded-2xl shadow-2xl border border-slate-200 w-full max-w-3xl overflow-hidden transform scale-95 transition-transform duration-300 flex flex-col max-h-[90vh]">
-            
-            <!-- Modal Header -->
-            <div class="bg-gradient-to-r from-slate-900 to-teal-950 text-white px-6 py-4 flex items-center justify-between">
-                <div class="flex items-center space-x-2">
-                    <i class="fa-solid fa-sliders text-emerald-400"></i>
-                    <h3 id="admin-modal-title" class="font-bold text-base">Hệ Thống Quản Trị Admin</h3>
-                </div>
-                <button onclick="closeAdminModal()" class="text-slate-400 hover:text-white transition w-8 h-8 rounded-lg hover:bg-white/10 flex items-center justify-center">
-                    <i class="fa-solid fa-xmark text-lg"></i>
-                </button>
-            </div>
-
-            <!-- Modal Body (Dynamic depending on auth state) -->
-            <div class="p-6 overflow-y-auto custom-scrollbar flex-1 space-y-6">
-
-                <!-- STATE 1: AUTHENTICATION FORM -->
-                <div id="admin-auth-view" class="max-w-md mx-auto py-8 text-center space-y-4">
-                    <div class="w-16 h-16 bg-emerald-50 text-emerald-600 rounded-2xl flex items-center justify-center mx-auto text-2xl border border-emerald-100 shadow-inner">
-                        <i class="fa-solid fa-lock"></i>
+    <!-- DEDICATED FULL-PAGE ADMIN VIEW -->
+    <div id="admin-page-view" class="hidden min-h-screen flex-col bg-slate-100 text-slate-800 z-50">
+        <!-- Dedicated Admin Header Bar -->
+        <header class="bg-gradient-to-r from-slate-900 via-teal-950 to-slate-900 text-white shadow-lg sticky top-0 z-30">
+            <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-4 flex flex-col sm:flex-row items-center justify-between gap-4">
+                <div class="flex items-center space-x-3">
+                    <div class="bg-emerald-500/20 p-2.5 rounded-xl border border-emerald-500/30">
+                        <i class="fa-solid fa-user-shield text-2xl text-emerald-400"></i>
                     </div>
                     <div>
-                        <h4 class="font-bold text-slate-800 text-lg">Yêu Cầu Mật Khẩu Admin</h4>
-                        <p class="text-xs text-slate-500 mt-1">Vui lòng nhập mật khẩu quản trị viên để mở khóa các tính năng nạp dữ liệu và cấu hình hệ thống.</p>
+                        <div class="flex items-center space-x-2">
+                            <span class="px-2.5 py-0.5 rounded-full text-xs font-semibold bg-emerald-500/30 text-emerald-200 border border-emerald-400/30">Giao Diện Quản Trị Admin</span>
+                            <span id="admin-sync-badge" class="text-xs text-teal-200/80"><i class="fa-solid fa-cloud text-emerald-300 mr-1"></i>Firebase Cloud Realtime</span>
+                        </div>
+                        <h1 class="text-lg md:text-xl font-extrabold tracking-tight text-white mt-0.5">
+                            NHÀ CHUNG CƯ ECOHOME NHƠN BÌNH 2026
+                        </h1>
                     </div>
-
-                    <form onsubmit="handleAdminLogin(event)" class="space-y-3 pt-2">
-                        <div class="relative flex items-center">
-                            <input type="password" id="admin-pass-input" placeholder="Nhập mật khẩu (xxxx)..." required enterkeyhint="go" autocomplete="current-password"
-                                class="w-full pl-4 pr-12 py-3 text-center text-sm font-semibold tracking-wider bg-slate-50 border border-slate-300 rounded-xl focus:ring-2 focus:ring-emerald-500 focus:bg-white outline-none transition shadow-sm">
-                            <button type="button" onclick="togglePasswordVisibility()" class="absolute right-3 text-slate-400 hover:text-slate-600 active:text-emerald-600 focus:outline-none p-2 text-sm transition" title="Ẩn/Hiện mật khẩu">
-                                <i id="toggle-pass-icon" class="fa-solid fa-eye-slash"></i>
-                            </button>
-                        </div>
-                        <div id="auth-error-msg" class="text-xs text-rose-600 font-semibold hidden flex items-center justify-center gap-1">
-                            <i class="fa-solid fa-circle-exclamation"></i> Mật khẩu không chính xác!
-                        </div>
-                        <button type="submit" class="w-full py-3 bg-emerald-600 hover:bg-emerald-700 active:bg-emerald-800 text-white font-semibold rounded-xl text-sm transition shadow-md flex items-center justify-center gap-2">
-                            <span>Xác Nhận Đăng Nhập</span>
-                            <i class="fa-solid fa-arrow-right text-xs"></i>
-                        </button>
-                    </form>
                 </div>
 
-                <!-- STATE 2: ADMIN PANEL DASHBOARD -->
-                <div id="admin-panel-view" class="hidden space-y-6">
+                <button onclick="closeAdminView()" class="px-4 py-2 bg-white/10 hover:bg-white/20 text-white rounded-xl text-xs font-bold transition border border-white/20 flex items-center gap-2 shadow-sm">
+                    <i class="fa-solid fa-arrow-left text-amber-300"></i>
+                    <span>Quay Về Trang Công Cộng</span>
+                </button>
+            </div>
+        </header>
+
+        <!-- Admin Content Area -->
+        <div class="flex-1 max-w-7xl w-full mx-auto px-4 sm:px-6 lg:px-8 py-6 space-y-6">
+
+            <!-- STATE 1: AUTHENTICATION FORM -->
+            <div id="admin-auth-view" class="max-w-md mx-auto my-12 bg-white p-8 rounded-3xl border border-slate-200/80 shadow-xl text-center space-y-5">
+                <div class="w-16 h-16 bg-emerald-50 text-emerald-600 rounded-2xl flex items-center justify-center mx-auto text-2xl border border-emerald-100 shadow-inner">
+                    <i class="fa-solid fa-lock"></i>
+                </div>
+                <div>
+                    <h4 class="font-bold text-slate-800 text-lg">Yêu Cầu Mật Khẩu Admin</h4>
+                    <p class="text-xs text-slate-500 mt-1">Vui lòng nhập mật khẩu quản trị viên để mở khóa bảng điều khiển trang.</p>
+                </div>
+
+                <form onsubmit="handleAdminLogin(event)" class="space-y-4 pt-2">
+                    <div class="relative flex items-center">
+                        <input type="password" id="admin-pass-input" placeholder="Nhập mật khẩu (xxxx)..." required enterkeyhint="go" autocomplete="current-password"
+                            class="w-full pl-4 pr-12 py-3 text-center text-sm font-semibold tracking-wider bg-slate-50 border border-slate-300 rounded-xl focus:ring-2 focus:ring-emerald-500 focus:bg-white outline-none transition shadow-sm">
+                        <button type="button" onclick="togglePasswordVisibility()" class="absolute right-3 text-slate-400 hover:text-slate-600 active:text-emerald-600 focus:outline-none p-2 text-sm transition" title="Ẩn/Hiện mật khẩu">
+                            <i id="toggle-pass-icon" class="fa-solid fa-eye-slash"></i>
+                        </button>
+                    </div>
+                    <div id="auth-error-msg" class="text-xs text-rose-600 font-semibold hidden flex items-center justify-center gap-1">
+                        <i class="fa-solid fa-circle-exclamation"></i> Mật khẩu không chính xác!
+                    </div>
+                    <button type="submit" class="w-full py-3 bg-emerald-600 hover:bg-emerald-700 active:bg-emerald-800 text-white font-semibold rounded-xl text-sm transition shadow-md flex items-center justify-center gap-2">
+                        <span>Xác Nhận Đăng Nhập</span>
+                        <i class="fa-solid fa-arrow-right text-xs"></i>
+                    </button>
+                </form>
+            </div>
+
+            <!-- STATE 2: ADMIN PANEL DASHBOARD -->
+            <div id="admin-panel-view" class="hidden space-y-6">
+                
+                <!-- Admin Tabs Navigation -->
+                <div class="flex border border-slate-200 bg-white p-2 rounded-2xl shadow-sm text-xs font-bold text-slate-500 gap-2 overflow-x-auto">
+                    <button onclick="switchAdminTab('import')" id="tab-btn-import" class="py-2.5 px-4 border-b-2 border-emerald-600 text-emerald-600 flex items-center gap-2 bg-emerald-50/50 rounded-xl">
+                        <i class="fa-solid fa-file-import"></i> Nạp Dữ Liệu (Excel/Paste)
+                    </button>
+                    <button onclick="switchAdminTab('quick-check')" id="tab-btn-quick-check" class="py-2.5 px-4 border-b-2 border-transparent hover:text-slate-700 flex items-center gap-2 rounded-xl transition">
+                        <i class="fa-solid fa-bolt text-amber-500"></i> Điểm Danh Hàng Loạt
+                    </button>
+                    <button onclick="switchAdminTab('manual-add')" id="tab-btn-manual-add" class="py-2.5 px-4 border-b-2 border-transparent hover:text-slate-700 flex items-center gap-2 rounded-xl transition">
+                        <i class="fa-solid fa-calculator text-blue-500"></i> Cộng Dồn Thủ Công
+                    </button>
+                    <button onclick="switchAdminTab('stats')" id="tab-btn-stats" class="py-2.5 px-4 border-b-2 border-transparent hover:text-slate-700 flex items-center gap-2 rounded-xl transition">
+                        <i class="fa-solid fa-chart-pie text-indigo-500"></i> Thống Kê Theo Tòa
+                    </button>
+                    <button onclick="switchAdminTab('manage')" id="tab-btn-manage" class="py-2.5 px-4 border-b-2 border-transparent hover:text-slate-700 flex items-center gap-2 rounded-xl transition">
+                        <i class="fa-solid fa-list-check"></i> Quản Lý Căn Hộ
+                    </button>
+                </div>
+
+                <!-- TAB 1: UPLOAD & IMPORT DATA -->
+                <div id="tab-content-import" class="bg-white p-6 rounded-2xl border border-slate-200/80 shadow-sm space-y-5">
                     
-                    <!-- Admin Tabs Navigation -->
-                    <div class="flex border-b border-slate-200 text-xs font-bold text-slate-500 gap-2 overflow-x-auto">
-                        <button onclick="switchAdminTab('import')" id="tab-btn-import" class="py-2.5 px-4 border-b-2 border-emerald-600 text-emerald-600 flex items-center gap-2">
-                            <i class="fa-solid fa-file-import"></i> Nạp Dữ Liệu (Excel/Paste)
-                        </button>
-                        <button onclick="switchAdminTab('quick-check')" id="tab-btn-quick-check" class="py-2.5 px-4 border-b-2 border-transparent hover:text-slate-700 flex items-center gap-2">
-                            <i class="fa-solid fa-bolt text-amber-500"></i> Điểm Danh Hàng Loạt
-                        </button>
-                        <button onclick="switchAdminTab('manual-add')" id="tab-btn-manual-add" class="py-2.5 px-4 border-b-2 border-transparent hover:text-slate-700 flex items-center gap-2">
-                            <i class="fa-solid fa-calculator text-blue-500"></i> Cộng Dồn Thủ Công
-                        </button>
-                        <button onclick="switchAdminTab('manage')" id="tab-btn-manage" class="py-2.5 px-4 border-b-2 border-transparent hover:text-slate-700 flex items-center gap-2">
-                            <i class="fa-solid fa-list-check"></i> Quản Lý Căn Hộ
-                        </button>
-                        <button onclick="switchAdminTab('settings')" id="tab-btn-settings" class="py-2.5 px-4 border-b-2 border-transparent hover:text-slate-700 flex items-center gap-2">
-                            <i class="fa-solid fa-gear"></i> Cấu Hình Gốc
-                        </button>
-                    </div>
-
-                    <!-- TAB 1: UPLOAD & IMPORT DATA -->
-                    <div id="tab-content-import" class="space-y-5">
-                        
-                        <!-- Quick Full Dataset Loader -->
-                        <div class="bg-emerald-50/90 border border-emerald-200 rounded-2xl p-4 flex flex-col sm:flex-row items-center justify-between gap-3 shadow-sm">
-                            <div class="flex items-center gap-3">
-                                <div class="w-10 h-10 rounded-xl bg-emerald-600 text-white flex items-center justify-center shrink-0 font-bold text-lg">
-                                    <i class="fa-solid fa-database"></i>
-                                </div>
-                                <div>
-                                    <h5 class="font-bold text-slate-800 text-xs sm:text-sm">Nạp Danh Sách Căn Hộ Chuẩn Ecohome (27.734,30 m²)</h5>
-                                    <p class="text-[11px] text-slate-500">Tự động tạo bộ danh sách đầy đủ căn hộ các khối NO1 - NO5 với tổng diện tích chính xác 100% (27.734,30 m²).</p>
-                                </div>
+                    <!-- Quick Full Dataset Loader -->
+                    <div class="bg-emerald-50/90 border border-emerald-200 rounded-2xl p-4 flex flex-col sm:flex-row items-center justify-between gap-3 shadow-sm">
+                        <div class="flex items-center gap-3">
+                            <div class="w-10 h-10 rounded-xl bg-emerald-600 text-white flex items-center justify-center shrink-0 font-bold text-lg">
+                                <i class="fa-solid fa-database"></i>
                             </div>
-                            <button onclick="loadFullEcohomeDataset(true)" class="px-4 py-2 bg-emerald-600 hover:bg-emerald-700 text-white text-xs font-bold rounded-xl shadow transition whitespace-nowrap">
-                                <i class="fa-solid fa-cloud-arrow-down mr-1.5"></i> Nạp Toàn Bộ
-                            </button>
-                        </div>
-
-                        <!-- Option A: Upload Excel/CSV File -->
-                        <div class="border-2 border-dashed border-slate-300 hover:border-emerald-500 rounded-2xl p-6 text-center bg-slate-50 hover:bg-emerald-50/30 transition cursor-pointer relative group"
-                             onclick="document.getElementById('excel-file-input').click()">
-                            <input type="file" id="excel-file-input" accept=".xlsx, .xls, .csv" class="hidden" onchange="handleFileUpload(event)">
-                            <div class="w-12 h-12 bg-emerald-100 text-emerald-600 rounded-full flex items-center justify-center mx-auto mb-3 text-xl group-hover:scale-110 transition">
-                                <i class="fa-solid fa-file-excel"></i>
-                            </div>
-                            <h5 class="font-bold text-slate-800 text-sm">Tải Lên File Excel (.xlsx, .csv)</h5>
-                            <p class="text-xs text-slate-500 mt-1 max-w-sm mx-auto">
-                                Tự động quét các cột: <strong class="text-slate-700">Mã Căn Hộ</strong> và <strong class="text-slate-700">Diện Tích</strong> trong bảng tính của bạn.
-                            </p>
-                            <span class="inline-block mt-3 px-3 py-1 bg-white border border-slate-200 text-slate-600 rounded-lg text-xs font-semibold shadow-sm">
-                                Chọn tệp từ máy tính
-                            </span>
-                        </div>
-
-                        <div class="relative flex py-1 items-center">
-                            <div class="flex-grow border-t border-slate-200"></div>
-                            <span class="flex-shrink mx-4 text-slate-400 text-xs font-bold uppercase">Hoặc Dán Trực Tiếp Văn Bản</span>
-                            <div class="flex-grow border-t border-slate-200"></div>
-                        </div>
-
-                        <!-- Option B: Paste Textarea -->
-                        <div class="space-y-2">
-                            <label class="block text-xs font-bold text-slate-700">
-                                Dán danh sách Mã căn & Diện tích (Định dạng: MãCăn, DiệnTích):
-                            </label>
-                            <textarea id="paste-import-input" rows="5" placeholder="Ví dụ copy từ Excel:&#10;A1-01, 68.5&#10;A1-02, 72.3&#10;A1-03, 55.0"
-                                class="w-full p-3 text-xs font-mono bg-slate-50 border border-slate-300 rounded-xl focus:ring-2 focus:ring-emerald-500 focus:bg-white outline-none"></textarea>
-                            <div class="flex items-center justify-between">
-                                <span class="text-[11px] text-slate-400">Chấp nhận ngăn cách bởi Dấu phẩy (,), Tab, hoặc Dấu gạch đứng (|)</span>
-                                <button onclick="handlePasteImport()" class="px-4 py-2 bg-emerald-600 hover:bg-emerald-700 text-white font-semibold rounded-lg text-xs shadow transition">
-                                    <i class="fa-solid fa-circle-plus mr-1"></i> Nạp Danh Sách
-                                </button>
-                            </div>
-                        </div>
-                    </div>
-
-                    <!-- TAB 2: QUICK BATCH ATTENDANCE -->
-                    <div id="tab-content-quick-check" class="hidden space-y-4">
-                        <div class="bg-amber-50 border border-amber-200 rounded-xl p-4 text-xs text-amber-800 space-y-1">
-                            <div class="font-bold flex items-center gap-1.5 text-amber-900">
-                                <i class="fa-solid fa-lightbulb text-amber-600"></i> Điểm danh hàng loạt siêu tốc theo danh sách nạp
-                            </div>
-                            <p>Nhập hoặc Dán danh sách các <strong>Mã Căn Hộ</strong> đã đăng ký tham dự. Hệ thống sẽ tự động đối soát trong cơ sở dữ liệu và chuyển trạng thái hàng loạt sang Cloud.</p>
-                        </div>
-
-                        <!-- Textarea & Action buttons for Quick Batch Attendance -->
-                        <div class="space-y-3 bg-slate-50 p-4 rounded-2xl border border-slate-200">
-                            <label class="block text-xs font-bold text-slate-700">
-                                Dán danh sách Mã căn hộ (Phân cách bởi Dấu phẩy, Dấu chấm phẩy, Khoảng trắng hoặc Xuống dòng):
-                            </label>
-                            <textarea id="quick-check-input" rows="6" placeholder="Ví dụ copy từ danh sách Excel:&#10;NO1-0101, NO1-0102&#10;NO2-0305 NO2-0306&#10;NO3-0508; NO4-0809" 
-                                class="w-full p-3 text-xs font-mono bg-white border border-slate-300 rounded-xl focus:ring-2 focus:ring-amber-500 focus:border-amber-500 outline-none transition"></textarea>
-                            
-                            <div class="flex flex-col sm:flex-row items-center justify-between gap-3 pt-1">
-                                <div class="text-[11px] text-slate-500 flex items-center gap-1">
-                                    <i class="fa-solid fa-circle-info text-amber-600"></i>
-                                    <span>Hệ thống tự động lọc mã trùng và áp dụng ngay trên Cloud.</span>
-                                </div>
-                                <div class="flex items-center gap-2 w-full sm:w-auto">
-                                    <button onclick="executeQuickAttendance(false)" class="flex-1 sm:flex-none px-3 py-2 bg-slate-200 hover:bg-slate-300 text-slate-700 font-semibold rounded-xl text-xs transition">
-                                        <i class="fa-solid fa-user-xmark mr-1"></i>Hủy Điểm Danh
-                                    </button>
-                                    <button onclick="executeQuickAttendance(true)" class="flex-1 sm:flex-none px-4 py-2 bg-amber-500 hover:bg-amber-600 text-white font-bold rounded-xl text-xs shadow transition flex items-center justify-center gap-1">
-                                        <i class="fa-solid fa-user-check"></i>Đánh Dấu Đã Tham Dự
-                                    </button>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-
-                    <!-- TAB 3: MANUAL INCREMENTAL CUMULATIVE ADDITION -->
-                    <div id="tab-content-manual-add" class="hidden space-y-5">
-                        <div class="bg-blue-50 border border-blue-200 rounded-2xl p-4 text-xs text-blue-900 space-y-1">
-                            <div class="font-bold flex items-center gap-1.5 text-blue-950 text-sm">
-                                <i class="fa-solid fa-circle-plus text-blue-600"></i> Cộng dồn diện tích / tỷ lệ % thủ công
-                            </div>
-                            <p class="text-slate-600">Nhập diện tích ($m^2$) hoặc tỷ lệ $\%$ đóng góp để cộng trực tiếp vào tổng tích lũy tham dự hội nghị. Hệ thống tự động quy đổi tương đương và cập nhật bảng tính.</p>
-                        </div>
-
-                        <!-- Manual Add Form -->
-                        <div class="bg-slate-50 border border-slate-200 rounded-2xl p-4 space-y-4">
-                            <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
-                                <div>
-                                    <label class="block text-xs font-bold text-slate-700 mb-1">Diện tích cộng thêm (m²):</label>
-                                    <div class="relative">
-                                        <input type="number" step="0.01" id="manual-area-input" oninput="onManualInputAreaChange()" placeholder="Ví dụ: 150.5"
-                                            class="w-full px-3 py-2 text-xs font-bold bg-white border border-slate-300 rounded-xl focus:ring-2 focus:ring-blue-500 outline-none">
-                                        <span class="absolute right-3 top-1/2 -translate-y-1/2 text-xs font-bold text-slate-400">m²</span>
-                                    </div>
-                                </div>
-                                <div>
-                                    <label class="block text-xs font-bold text-slate-700 mb-1">Hoặc Tỷ lệ cộng thêm (%):</label>
-                                    <div class="relative">
-                                        <input type="number" step="0.001" id="manual-percent-input" oninput="onManualInputPercentChange()" placeholder="Ví dụ: 0.543"
-                                            class="w-full px-3 py-2 text-xs font-bold bg-white border border-slate-300 rounded-xl focus:ring-2 focus:ring-blue-500 outline-none">
-                                        <span class="absolute right-3 top-1/2 -translate-y-1/2 text-xs font-bold text-slate-400">%</span>
-                                    </div>
-                                </div>
-                            </div>
-
                             <div>
-                                <label class="block text-xs font-bold text-slate-700 mb-1">Ghi chú / Nội dung lượt cộng dồn:</label>
-                                <input type="text" id="manual-note-input" placeholder="Ví dụ: Bổ sung đoàn đại diện tầng 5-10, Căn hộ bổ sung trực tiếp..."
-                                    class="w-full px-3 py-2 text-xs bg-white border border-slate-300 rounded-xl focus:ring-2 focus:ring-blue-500 outline-none">
+                                <h5 class="font-bold text-slate-800 text-xs sm:text-sm">Nạp Danh Sách Căn Hộ Chuẩn Ecohome (27.734,30 m²)</h5>
+                                <p class="text-[11px] text-slate-500">Tự động tạo bộ danh sách đầy đủ căn hộ các khối NO1 - NO5 với tổng diện tích chính xác 100% (27.734,30 m²).</p>
                             </div>
+                        </div>
+                        <button onclick="loadFullEcohomeDataset(true)" class="px-4 py-2 bg-emerald-600 hover:bg-emerald-700 text-white text-xs font-bold rounded-xl shadow transition whitespace-nowrap">
+                            <i class="fa-solid fa-cloud-arrow-down mr-1.5"></i> Nạp Toàn Bộ
+                        </button>
+                    </div>
 
-                            <button onclick="executeAddManualIncrement()" class="w-full py-2.5 bg-blue-600 hover:bg-blue-700 text-white font-bold rounded-xl text-xs transition shadow flex items-center justify-center gap-2">
-                                <i class="fa-solid fa-plus"></i> Xác Nhận Cộng Vào Tổng Tích Lũy
+                    <!-- Option A: Upload Excel/CSV File -->
+                    <div class="border-2 border-dashed border-slate-300 hover:border-emerald-500 rounded-2xl p-6 text-center bg-slate-50 hover:bg-emerald-50/30 transition cursor-pointer relative group"
+                         onclick="document.getElementById('excel-file-input').click()">
+                        <input type="file" id="excel-file-input" accept=".xlsx, .xls, .csv" class="hidden" onchange="handleFileUpload(event)">
+                        <div class="w-12 h-12 bg-emerald-100 text-emerald-600 rounded-full flex items-center justify-center mx-auto mb-3 text-xl group-hover:scale-110 transition">
+                            <i class="fa-solid fa-file-excel"></i>
+                        </div>
+                        <h5 class="font-bold text-slate-800 text-sm">Tải Lên File Excel (.xlsx, .csv)</h5>
+                        <p class="text-xs text-slate-500 mt-1 max-w-sm mx-auto">
+                            Tự động quét các cột: <strong class="text-slate-700">Mã Căn Hộ</strong> và <strong class="text-slate-700">Diện Tích</strong> trong bảng tính của bạn.
+                        </p>
+                        <span class="inline-block mt-3 px-3 py-1 bg-white border border-slate-200 text-slate-600 rounded-lg text-xs font-semibold shadow-sm">
+                            Chọn tệp từ máy tính
+                        </span>
+                    </div>
+
+                    <div class="relative flex py-1 items-center">
+                        <div class="flex-grow border-t border-slate-200"></div>
+                        <span class="flex-shrink mx-4 text-slate-400 text-xs font-bold uppercase">Hoặc Dán Trực Tiếp Văn Bản</span>
+                        <div class="flex-grow border-t border-slate-200"></div>
+                    </div>
+
+                    <!-- Option B: Paste Textarea -->
+                    <div class="space-y-2">
+                        <label class="block text-xs font-bold text-slate-700">
+                            Dán danh sách Mã căn & Diện tích (Định dạng: MãCăn, DiệnTích):
+                        </label>
+                        <textarea id="paste-import-input" rows="5" placeholder="Ví dụ copy từ Excel:&#10;A1-01, 68.5&#10;A1-02, 72.3&#10;A1-03, 55.0"
+                            class="w-full p-3 text-xs font-mono bg-slate-50 border border-slate-300 rounded-xl focus:ring-2 focus:ring-emerald-500 focus:bg-white outline-none"></textarea>
+                        <div class="flex items-center justify-between">
+                            <span class="text-[11px] text-slate-400">Chấp nhận ngăn cách bởi Dấu phẩy (,), Tab, hoặc Dấu gạch đứng (|)</span>
+                            <button onclick="handlePasteImport()" class="px-4 py-2 bg-emerald-600 hover:bg-emerald-700 text-white font-semibold rounded-lg text-xs shadow transition">
+                                <i class="fa-solid fa-circle-plus mr-1"></i> Nạp Danh Sách
                             </button>
                         </div>
+                    </div>
+                </div>
 
-                        <!-- Manual Add History Table -->
-                        <div class="space-y-2">
-                            <div class="flex items-center justify-between text-xs">
-                                <span class="font-bold text-slate-800">Lịch Sử Các Lượt Cộng Dồn Thủ Công:</span>
-                                <button onclick="clearAllManualIncrements()" class="text-rose-600 hover:text-rose-800 font-semibold text-[11px] flex items-center gap-1">
-                                    <i class="fa-solid fa-trash-can"></i> Xóa tất cả lượt cộng
-                                </button>
+                <!-- TAB 2: QUICK BATCH ATTENDANCE -->
+                <div id="tab-content-quick-check" class="hidden bg-white p-6 rounded-2xl border border-slate-200/80 shadow-sm space-y-4">
+                    <div class="bg-amber-50 border border-amber-200 rounded-xl p-4 text-xs text-amber-800 space-y-1">
+                        <div class="font-bold flex items-center gap-1.5 text-amber-900">
+                            <i class="fa-solid fa-lightbulb text-amber-600"></i> Điểm danh hàng loạt siêu tốc theo danh sách nạp
+                        </div>
+                        <p>Nhập hoặc Dán danh sách các <strong>Mã Căn Hộ</strong> đã đăng ký tham dự. Hệ thống sẽ tự động đối soát trong cơ sở dữ liệu và chuyển trạng thái hàng loạt sang Cloud.</p>
+                    </div>
+
+                    <!-- Textarea & Action buttons for Quick Batch Attendance -->
+                    <div class="space-y-3 bg-slate-50 p-4 rounded-2xl border border-slate-200">
+                        <label class="block text-xs font-bold text-slate-700">
+                            Dán danh sách Mã căn hộ (Phân cách bởi Dấu phẩy, Dấu chấm phẩy, Khoảng trắng hoặc Xuống dòng):
+                        </label>
+                        <textarea id="quick-check-input" rows="6" placeholder="Ví dụ copy từ danh sách Excel:&#10;NO1-0101, NO1-0102&#10;NO2-0305 NO2-0306&#10;NO3-0508; NO4-0809" 
+                            class="w-full p-3 text-xs font-mono bg-white border border-slate-300 rounded-xl focus:ring-2 focus:ring-amber-500 focus:border-amber-500 outline-none transition"></textarea>
+                        
+                        <div class="flex flex-col sm:flex-row items-center justify-between gap-3 pt-1">
+                            <div class="text-[11px] text-slate-500 flex items-center gap-1">
+                                <i class="fa-solid fa-circle-info text-amber-600"></i>
+                                <span>Hệ thống tự động lọc mã trùng và áp dụng ngay trên Cloud.</span>
                             </div>
-
-                            <div class="max-h-52 overflow-y-auto border border-slate-200 rounded-xl custom-scrollbar">
-                                <table class="w-full text-left text-xs">
-                                    <thead class="bg-slate-100 font-bold text-slate-600 sticky top-0">
-                                        <tr>
-                                            <th class="p-2.5">Thời gian</th>
-                                            <th class="p-2.5">Nội dung / Ghi chú</th>
-                                            <th class="p-2.5 text-right">Diện tích (m²)</th>
-                                            <th class="p-2.5 text-right">Tỷ lệ (%)</th>
-                                            <th class="p-2.5 text-center">Xóa</th>
-                                        </tr>
-                                    </thead>
-                                    <tbody id="manual-history-table-body" class="divide-y divide-slate-100">
-                                        <!-- Dynamic manual increment logs -->
-                                    </tbody>
-                                </table>
+                            <div class="flex items-center gap-2 w-full sm:w-auto">
+                                <button onclick="executeQuickAttendance(false)" class="flex-1 sm:flex-none px-3 py-2 bg-slate-200 hover:bg-slate-300 text-slate-700 font-semibold rounded-xl text-xs transition">
+                                    <i class="fa-solid fa-user-xmark mr-1"></i>Hủy Điểm Danh
+                                </button>
+                                <button onclick="executeQuickAttendance(true)" class="flex-1 sm:flex-none px-4 py-2 bg-amber-500 hover:bg-amber-600 text-white font-bold rounded-xl text-xs shadow transition flex items-center justify-center gap-1">
+                                    <i class="fa-solid fa-user-check"></i>Đánh Dấu Đã Tham Dự
+                                </button>
                             </div>
                         </div>
                     </div>
+                </div>
 
-                    <!-- TAB 3: MANAGE INDIVIDUAL APARTMENTS -->
-                    <div id="tab-content-manage" class="hidden space-y-4">
-                        <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-2 text-xs">
-                            <div class="flex items-center gap-2">
-                                <span class="font-bold text-slate-700">Danh sách căn hộ:</span>
-                                <span id="admin-table-count" class="text-emerald-700 font-bold bg-emerald-50 px-2 py-0.5 rounded border border-emerald-200">(0 căn)</span>
+                <!-- TAB 3: MANUAL INCREMENTAL CUMULATIVE ADDITION -->
+                <div id="tab-content-manual-add" class="hidden bg-white p-6 rounded-2xl border border-slate-200/80 shadow-sm space-y-5">
+                    <div class="bg-blue-50 border border-blue-200 rounded-2xl p-4 text-xs text-blue-900 space-y-1">
+                        <div class="font-bold flex items-center gap-1.5 text-blue-950 text-sm">
+                            <i class="fa-solid fa-circle-plus text-blue-600"></i> Cộng dồn diện tích / tỷ lệ % thủ công
+                        </div>
+                        <p class="text-slate-600">Nhập diện tích ($m^2$) hoặc tỷ lệ $\%$ đóng góp để cộng trực tiếp vào tổng tích lũy tham dự hội nghị. Hệ thống tự động quy đổi tương đương và cập nhật bảng tính.</p>
+                    </div>
+
+                    <!-- Manual Add Form -->
+                    <div class="bg-slate-50 border border-slate-200 rounded-2xl p-4 space-y-4">
+                        <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                            <div>
+                                <label class="block text-xs font-bold text-slate-700 mb-1">Diện tích cộng thêm (m²):</label>
+                                <div class="relative">
+                                    <input type="number" step="0.01" id="manual-area-input" oninput="onManualInputAreaChange()" placeholder="Ví dụ: 150.5"
+                                        class="w-full px-3 py-2 text-xs font-bold bg-white border border-slate-300 rounded-xl focus:ring-2 focus:ring-blue-500 outline-none">
+                                    <span class="absolute right-3 top-1/2 -translate-y-1/2 text-xs font-bold text-slate-400">m²</span>
+                                </div>
                             </div>
-                            <div class="flex items-center gap-3">
-                                <button onclick="exportApartmentsToExcel()" class="px-3 py-1.5 bg-emerald-600 hover:bg-emerald-700 text-white font-bold rounded-lg text-xs transition shadow-sm flex items-center gap-1.5">
-                                    <i class="fa-solid fa-file-excel text-sm"></i> Xuất File Excel
-                                </button>
-                                <button onclick="requestClearAllData()" class="text-rose-600 hover:text-rose-800 font-semibold flex items-center gap-1">
-                                    <i class="fa-solid fa-trash-can"></i> Xóa toàn bộ dữ liệu Cloud
-                                </button>
+                            <div>
+                                <label class="block text-xs font-bold text-slate-700 mb-1">Hoặc Tỷ lệ cộng thêm (%):</label>
+                                <div class="relative">
+                                    <input type="number" step="0.001" id="manual-percent-input" oninput="onManualInputPercentChange()" placeholder="Ví dụ: 0.543"
+                                        class="w-full px-3 py-2 text-xs font-bold bg-white border border-slate-300 rounded-xl focus:ring-2 focus:ring-blue-500 outline-none">
+                                    <span class="absolute right-3 top-1/2 -translate-y-1/2 text-xs font-bold text-slate-400">%</span>
+                                </div>
                             </div>
                         </div>
 
-                        <!-- Admin Search & Quick Selection Toolbar -->
-                        <div class="grid grid-cols-1 sm:grid-cols-12 gap-2 bg-slate-50 p-2.5 rounded-xl border border-slate-200">
-                            <!-- Search Input -->
-                            <div class="sm:col-span-6 relative">
-                                <i class="fa-solid fa-magnifying-glass absolute left-3 top-1/2 -translate-y-1/2 text-slate-400 text-xs"></i>
-                                <input type="text" id="admin-search-input" oninput="renderAdminTable()" placeholder="Tìm nhanh mã căn (VD: NO1-0101, NO2...)..." 
-                                    class="w-full pl-8 pr-8 py-1.5 text-xs bg-white border border-slate-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-emerald-500/20 focus:border-emerald-500 transition font-medium">
-                                <button onclick="clearAdminSearch()" class="absolute right-2.5 top-1/2 -translate-y-1/2 text-slate-400 hover:text-slate-600 text-xs" title="Xóa từ khóa tìm kiếm">
-                                    <i class="fa-solid fa-xmark"></i>
-                                </button>
-                            </div>
-
-                            <!-- Filter Status Dropdown -->
-                            <div class="sm:col-span-3">
-                                <select id="admin-filter-status" onchange="renderAdminTable()" class="w-full text-xs py-1.5 px-2 bg-white border border-slate-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-emerald-500/20 focus:border-emerald-500 transition font-semibold text-slate-700">
-                                    <option value="all">Tất cả trạng thái</option>
-                                    <option value="attended">Đã tham dự</option>
-                                    <option value="absent">Chưa tham dự</option>
-                                </select>
-                            </div>
-
-                            <!-- Quick Action Toggle Buttons -->
-                            <div class="sm:col-span-3 flex items-center gap-1">
-                                <button onclick="toggleAllVisibleAdmin(true)" class="flex-1 py-1.5 px-2 bg-emerald-600 hover:bg-emerald-700 text-white rounded-lg text-[11px] font-bold transition shadow-sm flex items-center justify-center gap-1 whitespace-nowrap" title="Tích chọn tất cả danh sách đang hiển thị">
-                                    <i class="fa-solid fa-check-double text-xs"></i>Tích hết
-                                </button>
-                                <button onclick="toggleAllVisibleAdmin(false)" class="flex-1 py-1.5 px-2 bg-slate-200 hover:bg-slate-300 text-slate-700 rounded-lg text-[11px] font-bold transition flex items-center justify-center gap-1 whitespace-nowrap" title="Bỏ tích chọn tất cả danh sách đang hiển thị">
-                                    <i class="fa-solid fa-rotate-left text-xs"></i>Bỏ hết
-                                </button>
-                            </div>
+                        <div>
+                            <label class="block text-xs font-bold text-slate-700 mb-1">Ghi chú / Nội dung lượt cộng dồn:</label>
+                            <input type="text" id="manual-note-input" placeholder="Ví dụ: Bổ sung đoàn đại diện tầng 5-10, Căn hộ bổ sung trực tiếp..."
+                                class="w-full px-3 py-2 text-xs bg-white border border-slate-300 rounded-xl focus:ring-2 focus:ring-blue-500 outline-none">
                         </div>
 
-                        <div class="max-h-72 overflow-y-auto border border-slate-200 rounded-xl custom-scrollbar">
+                        <button onclick="executeAddManualIncrement()" class="w-full py-2.5 bg-blue-600 hover:bg-blue-700 text-white font-bold rounded-xl text-xs transition shadow flex items-center justify-center gap-2">
+                            <i class="fa-solid fa-plus"></i> Xác Nhận Cộng Vào Tổng Tích Lũy
+                        </button>
+                    </div>
+
+                    <!-- Manual Add History Table -->
+                    <div class="space-y-2">
+                        <div class="flex items-center justify-between text-xs">
+                            <span class="font-bold text-slate-800">Lịch Sử Các Lượt Cộng Dồn Thủ Công:</span>
+                            <button onclick="clearAllManualIncrements()" class="text-rose-600 hover:text-rose-800 font-semibold text-[11px] flex items-center gap-1">
+                                <i class="fa-solid fa-trash-can"></i> Xóa tất cả lượt cộng
+                            </button>
+                        </div>
+
+                        <div class="max-h-52 overflow-y-auto border border-slate-200 rounded-xl custom-scrollbar">
                             <table class="w-full text-left text-xs">
                                 <thead class="bg-slate-100 font-bold text-slate-600 sticky top-0">
                                     <tr>
-                                        <th class="p-2.5">Mã Căn</th>
-                                        <th class="p-2.5">Diện Tích (m²)</th>
-                                        <th class="p-2.5 text-center">Trạng Thái</th>
-                                        <th class="p-2.5 text-right">Thao Tác</th>
+                                        <th class="p-2.5">Thời gian</th>
+                                        <th class="p-2.5">Nội dung / Ghi chú</th>
+                                        <th class="p-2.5 text-right">Diện tích (m²)</th>
+                                        <th class="p-2.5 text-right">Tỷ lệ (%)</th>
+                                        <th class="p-2.5 text-center">Xóa</th>
                                     </tr>
                                 </thead>
-                                <tbody id="admin-table-body" class="divide-y divide-slate-100">
-                                    <!-- Dynamic Rows -->
+                                <tbody id="manual-history-table-body" class="divide-y divide-slate-100">
+                                    <!-- Dynamic manual increment logs -->
                                 </tbody>
                             </table>
                         </div>
                     </div>
+                </div>
 
-                    <!-- TAB 4: CONFIGURATION -->
-                    <div id="tab-content-settings" class="hidden space-y-4">
-                        <div class="bg-slate-50 p-4 rounded-xl border border-slate-200 space-y-3">
-                            <h5 class="font-bold text-xs text-slate-800">Cấu Hình Tổng Diện Tích Gốc</h5>
-                            <p class="text-xs text-slate-500">Mặc định dự án Ecohome Nhơn Bình: <strong>27.734,30 m²</strong>. Bạn có thể thay đổi số tổng tùy chỉnh nếu cần.</p>
-                            
-                            <div class="flex items-center gap-3">
-                                <input type="number" step="0.01" id="config-total-area-override" placeholder="27734.30" 
-                                    class="px-3 py-2 text-xs border border-slate-300 rounded-lg w-48 font-bold text-slate-800">
-                                <button onclick="saveTotalAreaOverride()" class="px-4 py-2 bg-slate-800 hover:bg-slate-900 text-white font-semibold rounded-lg text-xs transition">
-                                    Cập Nhật Tổng Diện Tích
-                                </button>
-                            </div>
+                <!-- TAB 4: BLOCK STATS (NO1 - NO5) -->
+                <div id="tab-content-stats" class="hidden bg-white p-6 rounded-2xl border border-slate-200/80 shadow-sm space-y-4">
+                    <div class="flex items-center justify-between border-b border-slate-100 pb-3">
+                        <div>
+                            <h4 class="font-bold text-slate-800 text-sm">Thống Kê Chi Tiết Tỷ Lệ Theo Khối Tòa Nhà (NO1 - NO5)</h4>
+                            <p class="text-xs text-slate-500">Phân tích tỷ lệ tham dự thực tế của từng khối nhà trong dự án Ecohome Nhơn Bình</p>
                         </div>
+                        <span class="text-xs font-bold text-indigo-600 bg-indigo-50 px-2.5 py-1 rounded-lg border border-indigo-200">
+                            Realtime Data
+                        </span>
+                    </div>
 
-                        <div class="bg-slate-50 p-4 rounded-xl border border-slate-200 space-y-2">
-                            <h5 class="font-bold text-xs text-slate-800">Khôi Phục Dữ Liệu Mẫu Ecohome</h5>
-                            <p class="text-xs text-slate-500">Nạp lại toàn bộ danh sách căn hộ theo chuẩn 27.734,30 m².</p>
-                            <button onclick="loadFullEcohomeDataset(true)" class="px-4 py-2 bg-indigo-600 hover:bg-indigo-700 text-white font-semibold rounded-lg text-xs transition">
-                                <i class="fa-solid fa-database mr-1"></i> Nạp Lại Toàn Bộ Căn Hộ
+                    <div id="building-stats-grid" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
+                        <!-- Dynamic Building Cards loaded via JS -->
+                    </div>
+                </div>
+
+                <!-- TAB 5: MANAGE INDIVIDUAL APARTMENTS -->
+                <div id="tab-content-manage" class="hidden bg-white p-6 rounded-2xl border border-slate-200/80 shadow-sm space-y-4">
+                    <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-2 text-xs">
+                        <div class="flex items-center gap-2">
+                            <span class="font-bold text-slate-700">Danh sách căn hộ:</span>
+                            <span id="admin-table-count" class="text-emerald-700 font-bold bg-emerald-50 px-2 py-0.5 rounded border border-emerald-200">(0 căn)</span>
+                        </div>
+                        <div class="flex items-center gap-3">
+                            <button onclick="exportApartmentsToExcel()" class="px-3 py-1.5 bg-emerald-600 hover:bg-emerald-700 text-white font-bold rounded-lg text-xs transition shadow-sm flex items-center gap-1.5">
+                                <i class="fa-solid fa-file-excel text-sm"></i> Xuất File Excel
+                            </button>
+                            <button onclick="requestClearAllData()" class="text-rose-600 hover:text-rose-800 font-semibold flex items-center gap-1">
+                                <i class="fa-solid fa-trash-can"></i> Xóa toàn bộ dữ liệu Cloud
                             </button>
                         </div>
                     </div>
 
+                    <!-- Admin Search & Multi-Filter Toolbar -->
+                    <div class="grid grid-cols-1 sm:grid-cols-12 gap-2 bg-slate-50 p-3 rounded-xl border border-slate-200">
+                        <!-- Search Input -->
+                        <div class="sm:col-span-5 relative">
+                            <i class="fa-solid fa-magnifying-glass absolute left-3 top-1/2 -translate-y-1/2 text-slate-400 text-xs"></i>
+                            <input type="text" id="admin-search-input" oninput="renderAdminTable()" placeholder="Tìm mã căn (VD: NO1-0101, 0203)..." 
+                                class="w-full pl-8 pr-8 py-1.5 text-xs bg-white border border-slate-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-emerald-500/20 focus:border-emerald-500 transition font-medium">
+                            <button onclick="clearAdminSearch()" class="absolute right-2.5 top-1/2 -translate-y-1/2 text-slate-400 hover:text-slate-600 text-xs" title="Xóa từ khóa tìm kiếm">
+                                <i class="fa-solid fa-xmark"></i>
+                            </button>
+                        </div>
+
+                        <!-- Filter Building Dropdown -->
+                        <div class="sm:col-span-2">
+                            <select id="admin-filter-building" onchange="renderAdminTable()" class="w-full text-xs py-1.5 px-2 bg-white border border-slate-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-emerald-500/20 focus:border-emerald-500 transition font-semibold text-slate-700">
+                                <option value="all">Tất cả Tòa</option>
+                                <option value="NO1">Tòa NO1</option>
+                                <option value="NO2">Tòa NO2</option>
+                                <option value="NO3">Tòa NO3</option>
+                                <option value="NO4">Tòa NO4</option>
+                                <option value="NO5">Tòa NO5</option>
+                            </select>
+                        </div>
+
+                        <!-- Filter Status Dropdown -->
+                        <div class="sm:col-span-2">
+                            <select id="admin-filter-status" onchange="renderAdminTable()" class="w-full text-xs py-1.5 px-2 bg-white border border-slate-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-emerald-500/20 focus:border-emerald-500 transition font-semibold text-slate-700">
+                                <option value="all">Tất cả trạng thái</option>
+                                <option value="attended">Đã tham dự</option>
+                                <option value="absent">Chưa tham dự</option>
+                            </select>
+                        </div>
+
+                        <!-- Quick Action Toggle Buttons -->
+                        <div class="sm:col-span-3 flex items-center gap-1">
+                            <button onclick="toggleAllVisibleAdmin(true)" class="flex-1 py-1.5 px-2 bg-emerald-600 hover:bg-emerald-700 text-white rounded-lg text-[11px] font-bold transition shadow-sm flex items-center justify-center gap-1 whitespace-nowrap" title="Tích chọn tất cả danh sách đang hiển thị">
+                                <i class="fa-solid fa-check-double text-xs"></i>Tích hết
+                            </button>
+                            <button onclick="toggleAllVisibleAdmin(false)" class="flex-1 py-1.5 px-2 bg-slate-200 hover:bg-slate-300 text-slate-700 rounded-lg text-[11px] font-bold transition flex items-center justify-center gap-1 whitespace-nowrap" title="Bỏ tích chọn tất cả danh sách đang hiển thị">
+                                <i class="fa-solid fa-rotate-left text-xs"></i>Bỏ hết
+                            </button>
+                            <button onclick="invertVisibleAdmin()" class="py-1.5 px-2.5 bg-indigo-100 hover:bg-indigo-200 text-indigo-700 rounded-lg text-[11px] font-bold transition flex items-center justify-center gap-1 whitespace-nowrap" title="Đảo trạng thái danh sách đang chọn">
+                                <i class="fa-solid fa-right-left text-xs"></i>Đảo chọn
+                            </button>
+                        </div>
+                    </div>
+
+                    <div class="max-h-[500px] overflow-y-auto border border-slate-200 rounded-xl custom-scrollbar">
+                        <table class="w-full text-left text-xs">
+                            <thead class="bg-slate-100 font-bold text-slate-600 sticky top-0 z-10 shadow-sm">
+                                <tr>
+                                    <th class="p-2.5">Mã Căn</th>
+                                    <th class="p-2.5">Diện Tích (m²)</th>
+                                    <th class="p-2.5 text-center">Trạng Thái Tham Dự</th>
+                                    <th class="p-2.5 text-right">Thao Tác</th>
+                                </tr>
+                            </thead>
+                            <tbody id="admin-table-body" class="divide-y divide-slate-100">
+                                <!-- Dynamic Rows -->
+                            </tbody>
+                        </table>
+                    </div>
                 </div>
 
-            </div>
-
-            <!-- Modal Footer -->
-            <div class="bg-slate-100 px-6 py-3 border-t border-slate-200 flex items-center justify-between text-xs">
-                <span class="text-slate-500" id="admin-status-text">Đang ở chế độ xem</span>
-                <button onclick="closeAdminModal()" class="px-4 py-1.5 bg-slate-200 hover:bg-slate-300 text-slate-700 font-semibold rounded-lg transition">
-                    Đóng
-                </button>
             </div>
 
         </div>
@@ -919,16 +930,19 @@
             showToast("🎉 Tỷ lệ tham dự đã vượt mốc 50%! Đủ điều kiện pháp lý tổ chức hội nghị.", "success");
         }
 
-        function openAdminModal() {
-            const modal = document.getElementById('admin-modal');
-            const modalContent = modal.firstElementChild;
-            modal.classList.remove('opacity-0', 'pointer-events-none');
-            modalContent.classList.remove('scale-95');
+        function openAdminView() {
+            const publicView = document.getElementById('public-view');
+            const adminPageView = document.getElementById('admin-page-view');
+
+            if (publicView) publicView.classList.add('hidden');
+            if (adminPageView) {
+                adminPageView.classList.remove('hidden');
+                adminPageView.classList.add('flex');
+            }
 
             if (!state.isAdminAuthenticated) {
                 document.getElementById('admin-auth-view').classList.remove('hidden');
                 document.getElementById('admin-panel-view').classList.add('hidden');
-                document.getElementById('admin-status-text').innerText = "Chờ đăng nhập";
                 setTimeout(() => {
                     const passInput = document.getElementById('admin-pass-input');
                     if (passInput) passInput.focus();
@@ -936,8 +950,25 @@
             } else {
                 document.getElementById('admin-auth-view').classList.add('hidden');
                 document.getElementById('admin-panel-view').classList.remove('hidden');
-                document.getElementById('admin-status-text').innerText = "Quyền Admin: Đã xác thực";
                 renderAdminTable();
+                renderBuildingStats();
+            }
+
+            window.location.hash = 'admin';
+        }
+
+        function closeAdminView() {
+            const publicView = document.getElementById('public-view');
+            const adminPageView = document.getElementById('admin-page-view');
+
+            if (adminPageView) {
+                adminPageView.classList.add('hidden');
+                adminPageView.classList.remove('flex');
+            }
+            if (publicView) publicView.classList.remove('hidden');
+
+            if (window.location.hash === '#admin') {
+                history.pushState("", document.title, window.location.pathname + window.location.search);
             }
         }
 
@@ -957,13 +988,6 @@
             }
         }
 
-        function closeAdminModal() {
-            const modal = document.getElementById('admin-modal');
-            const modalContent = modal.firstElementChild;
-            modal.classList.add('opacity-0', 'pointer-events-none');
-            modalContent.classList.add('scale-95');
-        }
-
         function handleAdminLogin(e) {
             e.preventDefault();
             const pass = document.getElementById('admin-pass-input').value;
@@ -974,8 +998,8 @@
                 errEl.classList.add('hidden');
                 document.getElementById('admin-auth-view').classList.add('hidden');
                 document.getElementById('admin-panel-view').classList.remove('hidden');
-                document.getElementById('admin-status-text').innerText = "Quyền Admin: Đã xác thực";
                 renderAdminTable();
+                renderBuildingStats();
                 showToast("Đăng nhập Admin thành công!", "success");
             } else {
                 errEl.classList.remove('hidden');
@@ -983,22 +1007,87 @@
         }
 
         function switchAdminTab(tabName) {
-            const tabs = ['import', 'quick-check', 'manual-add', 'manage', 'settings'];
+            const tabs = ['import', 'quick-check', 'manual-add', 'stats', 'manage'];
             tabs.forEach(t => {
                 const btn = document.getElementById(`tab-btn-${t}`);
                 const content = document.getElementById(`tab-content-${t}`);
                 if (!btn || !content) return;
                 if (t === tabName) {
-                    btn.className = "py-2.5 px-4 border-b-2 border-emerald-600 text-emerald-600 font-bold flex items-center gap-2";
+                    btn.className = "py-2.5 px-4 border-b-2 border-emerald-600 text-emerald-600 font-bold flex items-center gap-2 bg-emerald-50/50 rounded-xl";
                     content.classList.remove('hidden');
                 } else {
-                    btn.className = "py-2.5 px-4 border-b-2 border-transparent hover:text-slate-700 font-medium flex items-center gap-2";
+                    btn.className = "py-2.5 px-4 border-b-2 border-transparent hover:text-slate-700 font-semibold flex items-center gap-2 rounded-xl transition";
                     content.classList.add('hidden');
                 }
             });
             if (tabName === 'manual-add') {
                 renderManualHistoryTable();
             }
+            if (tabName === 'stats') {
+                renderBuildingStats();
+            }
+            if (tabName === 'manage') {
+                renderAdminTable();
+            }
+        }
+
+        function renderBuildingStats() {
+            const grid = document.getElementById('building-stats-grid');
+            if (!grid) return;
+
+            const blocks = ['NO1', 'NO2', 'NO3', 'NO4', 'NO5'];
+            const stats = {};
+
+            blocks.forEach(b => {
+                stats[b] = { totalUnits: 0, attendedUnits: 0, totalArea: 0, attendedArea: 0 };
+            });
+
+            state.apartments.forEach(apt => {
+                const blockKey = blocks.find(b => apt.id.toUpperCase().startsWith(b));
+                if (blockKey) {
+                    stats[blockKey].totalUnits++;
+                    stats[blockKey].totalArea += apt.area;
+                    if (apt.attended) {
+                        stats[blockKey].attendedUnits++;
+                        stats[blockKey].attendedArea += apt.area;
+                    }
+                }
+            });
+
+            grid.innerHTML = blocks.map(b => {
+                const s = stats[b];
+                const pct = s.totalArea > 0 ? (s.attendedArea / s.totalArea) * 100 : 0;
+                const isPassed = pct >= 50;
+
+                return `
+                    <div class="border border-slate-200/90 rounded-2xl p-4 bg-slate-50/50 hover:bg-white hover:shadow-md transition space-y-3">
+                        <div class="flex items-center justify-between">
+                            <div class="flex items-center gap-2">
+                                <span class="w-8 h-8 rounded-xl bg-teal-600 text-white font-black flex items-center justify-center text-xs shadow-sm">
+                                    ${b}
+                                </span>
+                                <div>
+                                    <h5 class="font-bold text-slate-800 text-xs">Khối ${b}</h5>
+                                    <span class="text-[10px] text-slate-400">${s.attendedUnits} / ${s.totalUnits} căn hộ</span>
+                                </div>
+                            </div>
+                            <span class="px-2 py-0.5 rounded-full text-[10px] font-bold ${isPassed ? 'bg-emerald-100 text-emerald-800 border border-emerald-300' : 'bg-amber-100 text-amber-800 border border-amber-300'}">
+                                ${pct.toFixed(1)}%
+                            </span>
+                        </div>
+
+                        <div class="space-y-1">
+                            <div class="flex justify-between text-[11px] font-semibold text-slate-600">
+                                <span>Diện tích: ${formatNumber(s.attendedArea)} m²</span>
+                                <span class="text-slate-400">/ ${formatNumber(s.totalArea)} m²</span>
+                            </div>
+                            <div class="w-full bg-slate-200 h-2 rounded-full overflow-hidden">
+                                <div class="bg-gradient-to-r from-teal-500 to-emerald-500 h-full rounded-full transition-all duration-500" style="width: ${Math.min(pct, 100)}%"></div>
+                            </div>
+                        </div>
+                    </div>
+                `;
+            }).join('');
         }
 
         // Auto convert inputs for Manual Accumulation
@@ -1330,14 +1419,17 @@
 
         async function toggleAllVisibleAdmin(statusBool) {
             const searchVal = (document.getElementById('admin-search-input')?.value || '').trim().toLowerCase();
+            const filterBuilding = document.getElementById('admin-filter-building')?.value || 'all';
             const filterStatus = document.getElementById('admin-filter-status')?.value || 'all';
 
             const filtered = state.apartments.filter(apt => {
                 const matchesSearch = apt.id.toLowerCase().includes(searchVal);
+                let matchesBuilding = true;
+                if (filterBuilding !== 'all') matchesBuilding = apt.id.toUpperCase().startsWith(filterBuilding);
                 let matchesStatus = true;
                 if (filterStatus === 'attended') matchesStatus = apt.attended;
                 if (filterStatus === 'absent') matchesStatus = !apt.attended;
-                return matchesSearch && matchesStatus;
+                return matchesSearch && matchesBuilding && matchesStatus;
             });
 
             if (filtered.length === 0) return;
@@ -1357,6 +1449,39 @@
                 await batch.commit();
                 const text = statusBool ? "Đã tích chọn" : "Đã bỏ tích chọn";
                 showToast(`${text} cho ${updateCount} căn hộ đang hiển thị!`, "success");
+            }
+        }
+
+        async function invertVisibleAdmin() {
+            const searchVal = (document.getElementById('admin-search-input')?.value || '').trim().toLowerCase();
+            const filterBuilding = document.getElementById('admin-filter-building')?.value || 'all';
+            const filterStatus = document.getElementById('admin-filter-status')?.value || 'all';
+
+            const filtered = state.apartments.filter(apt => {
+                const matchesSearch = apt.id.toLowerCase().includes(searchVal);
+                let matchesBuilding = true;
+                if (filterBuilding !== 'all') matchesBuilding = apt.id.toUpperCase().startsWith(filterBuilding);
+                let matchesStatus = true;
+                if (filterStatus === 'attended') matchesStatus = apt.attended;
+                if (filterStatus === 'absent') matchesStatus = !apt.attended;
+                return matchesSearch && matchesBuilding && matchesStatus;
+            });
+
+            if (filtered.length === 0) return;
+
+            const batch = writeBatch(db);
+            let updateCount = 0;
+
+            filtered.forEach(apt => {
+                const newStatus = !apt.attended;
+                const docRef = doc(db, 'artifacts', appId, 'public', 'data', 'apartments', apt.id);
+                batch.update(docRef, { attended: newStatus });
+                updateCount++;
+            });
+
+            if (updateCount > 0) {
+                await batch.commit();
+                showToast(`Đã đảo trạng thái cho ${updateCount} căn hộ!`, "success");
             }
         }
 
@@ -1395,7 +1520,7 @@
         }
 
         async function saveTotalAreaOverride() {
-            const inputVal = parseFloat(document.getElementById('config-total-area-override').value);
+            const inputVal = parseFloat(document.getElementById('config-total-area-override')?.value);
             if (!isNaN(inputVal) && inputVal > 0 && auth.currentUser) {
                 await setDoc(settingsDocRef, { totalAreaOverride: inputVal }, { merge: true });
                 showToast(`Đã cập nhật Tổng diện tích gốc thành ${formatNumber(inputVal)} m²!`, "success");
@@ -1521,8 +1646,10 @@
 
         // Attach function handlers to window object for HTML inline events
         window.triggerManualConfetti = triggerCelebrationConfetti;
-        window.openAdminModal = openAdminModal;
-        window.closeAdminModal = closeAdminModal;
+        window.openAdminView = openAdminView;
+        window.closeAdminView = closeAdminView;
+        window.openAdminModal = openAdminView;
+        window.closeAdminModal = closeAdminView;
         window.handleAdminLogin = handleAdminLogin;
         window.togglePasswordVisibility = togglePasswordVisibility;
         window.switchAdminTab = switchAdminTab;
@@ -1534,6 +1661,7 @@
         window.executeAddManualIncrement = executeAddManualIncrement;
         window.clearAdminSearch = clearAdminSearch;
         window.toggleAllVisibleAdmin = toggleAllVisibleAdmin;
+        window.invertVisibleAdmin = invertVisibleAdmin;
         window.toggleAttendance = toggleAttendance;
         window.deleteApartment = deleteApartment;
         window.requestClearAllData = requestClearAllData;
@@ -1544,6 +1672,7 @@
         window.loadFullEcohomeDataset = loadFullEcohomeDataset;
         window.renderTable = renderTable;
         window.renderAdminTable = renderAdminTable;
+        window.renderBuildingStats = renderBuildingStats;
         window.deleteManualIncrement = deleteManualIncrement;
         window.clearAllManualIncrements = clearAllManualIncrements;
         window.exportApartmentsToExcel = exportApartmentsToExcel;
@@ -1553,6 +1682,10 @@
             initFirebaseAndSync();
             updateLiveClock();
             setInterval(updateLiveClock, 1000);
+
+            if (window.location.hash === '#admin') {
+                openAdminView();
+            }
         });
     </script>
 </body>
