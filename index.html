@@ -488,11 +488,46 @@
 
                     <!-- TAB 3: MANAGE INDIVIDUAL APARTMENTS -->
                     <div id="tab-content-manage" class="hidden space-y-4">
-                        <div class="flex items-center justify-between text-xs">
-                            <span class="font-bold text-slate-700">Đang hiển thị danh sách để chỉnh sửa:</span>
+                        <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-2 text-xs">
+                            <div class="flex items-center gap-2">
+                                <span class="font-bold text-slate-700">Danh sách căn hộ:</span>
+                                <span id="admin-table-count" class="text-emerald-700 font-bold bg-emerald-50 px-2 py-0.5 rounded border border-emerald-200">(0 căn)</span>
+                            </div>
                             <button onclick="requestClearAllData()" class="text-rose-600 hover:text-rose-800 font-semibold flex items-center gap-1">
                                 <i class="fa-solid fa-trash-can"></i> Xóa toàn bộ dữ liệu Cloud
                             </button>
+                        </div>
+
+                        <!-- Admin Search & Quick Selection Toolbar -->
+                        <div class="grid grid-cols-1 sm:grid-cols-12 gap-2 bg-slate-50 p-2.5 rounded-xl border border-slate-200">
+                            <!-- Search Input -->
+                            <div class="sm:col-span-6 relative">
+                                <i class="fa-solid fa-magnifying-glass absolute left-3 top-1/2 -translate-y-1/2 text-slate-400 text-xs"></i>
+                                <input type="text" id="admin-search-input" oninput="renderAdminTable()" placeholder="Tìm nhanh mã căn (VD: NO1-0101, NO2...)..." 
+                                    class="w-full pl-8 pr-8 py-1.5 text-xs bg-white border border-slate-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-emerald-500/20 focus:border-emerald-500 transition font-medium">
+                                <button onclick="clearAdminSearch()" class="absolute right-2.5 top-1/2 -translate-y-1/2 text-slate-400 hover:text-slate-600 text-xs" title="Xóa từ khóa tìm kiếm">
+                                    <i class="fa-solid fa-xmark"></i>
+                                </button>
+                            </div>
+
+                            <!-- Filter Status Dropdown -->
+                            <div class="sm:col-span-3">
+                                <select id="admin-filter-status" onchange="renderAdminTable()" class="w-full text-xs py-1.5 px-2 bg-white border border-slate-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-emerald-500/20 focus:border-emerald-500 transition font-semibold text-slate-700">
+                                    <option value="all">Tất cả trạng thái</option>
+                                    <option value="attended">Đã tham dự</option>
+                                    <option value="absent">Chưa tham dự</option>
+                                </select>
+                            </div>
+
+                            <!-- Quick Action Toggle Buttons -->
+                            <div class="sm:col-span-3 flex items-center gap-1">
+                                <button onclick="toggleAllVisibleAdmin(true)" class="flex-1 py-1.5 px-2 bg-emerald-600 hover:bg-emerald-700 text-white rounded-lg text-[11px] font-bold transition shadow-sm flex items-center justify-center gap-1 whitespace-nowrap" title="Tích chọn tất cả danh sách đang hiển thị">
+                                    <i class="fa-solid fa-check-double text-xs"></i>Tích hết
+                                </button>
+                                <button onclick="toggleAllVisibleAdmin(false)" class="flex-1 py-1.5 px-2 bg-slate-200 hover:bg-slate-300 text-slate-700 rounded-lg text-[11px] font-bold transition flex items-center justify-center gap-1 whitespace-nowrap" title="Bỏ tích chọn tất cả danh sách đang hiển thị">
+                                    <i class="fa-solid fa-rotate-left text-xs"></i>Bỏ hết
+                                </button>
+                            </div>
                         </div>
 
                         <div class="max-h-72 overflow-y-auto border border-slate-200 rounded-xl custom-scrollbar">
@@ -626,7 +661,7 @@
                     await signInAnonymously(auth);
                 }
 
-                updateSyncBadge(true, "Firebase Cloud Realtime");
+                updateSyncBadge(true, "PVC Cloud Realtime");
                 setupRealtimeListeners();
             } catch (err) {
                 console.error("Firebase auth error:", err);
@@ -1211,13 +1246,37 @@
 
         function renderAdminTable() {
             const tbody = document.getElementById('admin-table-body');
+            if (!tbody) return;
+
+            const searchInput = document.getElementById('admin-search-input');
+            const searchVal = searchInput ? searchInput.value.trim().toLowerCase() : '';
+            const filterStatus = document.getElementById('admin-filter-status')?.value || 'all';
+
+            const filtered = state.apartments.filter(apt => {
+                const matchesSearch = apt.id.toLowerCase().includes(searchVal);
+                let matchesStatus = true;
+                if (filterStatus === 'attended') matchesStatus = apt.attended;
+                if (filterStatus === 'absent') matchesStatus = !apt.attended;
+                return matchesSearch && matchesStatus;
+            });
+
+            const countEl = document.getElementById('admin-table-count');
+            if (countEl) {
+                countEl.innerText = `(Hiển thị ${filtered.length} / ${state.apartments.length} căn)`;
+            }
+
             if (state.apartments.length === 0) {
                 tbody.innerHTML = `<tr><td colspan="4" class="p-4 text-center text-slate-400">Chưa có dữ liệu căn hộ nào</td></tr>`;
                 return;
             }
 
-            tbody.innerHTML = state.apartments.map((apt) => `
-                <tr class="hover:bg-slate-50">
+            if (filtered.length === 0) {
+                tbody.innerHTML = `<tr><td colspan="4" class="p-4 text-center text-slate-400 font-medium">Không tìm thấy căn hộ phù hợp với từ khóa "${searchVal}"</td></tr>`;
+                return;
+            }
+
+            tbody.innerHTML = filtered.map((apt) => `
+                <tr class="hover:bg-slate-50 transition border-b border-slate-100">
                     <td class="p-2.5 font-bold text-slate-800">${apt.id}</td>
                     <td class="p-2.5 font-mono">${formatNumber(apt.area)}</td>
                     <td class="p-2.5 text-center">
@@ -1227,12 +1286,52 @@
                         </label>
                     </td>
                     <td class="p-2.5 text-right">
-                        <button onclick="deleteApartment('${apt.id}')" class="text-rose-500 hover:text-rose-700 px-2 py-1">
+                        <button onclick="deleteApartment('${apt.id}')" class="text-rose-500 hover:text-rose-700 px-2 py-1" title="Xóa căn hộ">
                             <i class="fa-solid fa-trash-can"></i>
                         </button>
                     </td>
                 </tr>
             `).join('');
+        }
+
+        function clearAdminSearch() {
+            const input = document.getElementById('admin-search-input');
+            if (input) {
+                input.value = '';
+                renderAdminTable();
+            }
+        }
+
+        async function toggleAllVisibleAdmin(statusBool) {
+            const searchVal = (document.getElementById('admin-search-input')?.value || '').trim().toLowerCase();
+            const filterStatus = document.getElementById('admin-filter-status')?.value || 'all';
+
+            const filtered = state.apartments.filter(apt => {
+                const matchesSearch = apt.id.toLowerCase().includes(searchVal);
+                let matchesStatus = true;
+                if (filterStatus === 'attended') matchesStatus = apt.attended;
+                if (filterStatus === 'absent') matchesStatus = !apt.attended;
+                return matchesSearch && matchesStatus;
+            });
+
+            if (filtered.length === 0) return;
+
+            const batch = writeBatch(db);
+            let updateCount = 0;
+
+            filtered.forEach(apt => {
+                if (apt.attended !== statusBool) {
+                    const docRef = doc(db, 'artifacts', appId, 'public', 'data', 'apartments', apt.id);
+                    batch.update(docRef, { attended: statusBool });
+                    updateCount++;
+                }
+            });
+
+            if (updateCount > 0) {
+                await batch.commit();
+                const text = statusBool ? "Đã tích chọn" : "Đã bỏ tích chọn";
+                showToast(`${text} cho ${updateCount} căn hộ đang hiển thị!`, "success");
+            }
         }
 
         async function toggleAttendance(code) {
@@ -1340,8 +1439,8 @@
         window.onManualInputAreaChange = onManualInputAreaChange;
         window.onManualInputPercentChange = onManualInputPercentChange;
         window.executeAddManualIncrement = executeAddManualIncrement;
-        window.deleteManualIncrement = deleteManualIncrement;
-        window.clearAllManualIncrements = clearAllManualIncrements;
+        window.clearAdminSearch = clearAdminSearch;
+        window.toggleAllVisibleAdmin = toggleAllVisibleAdmin;
         window.toggleAttendance = toggleAttendance;
         window.deleteApartment = deleteApartment;
         window.requestClearAllData = requestClearAllData;
@@ -1351,6 +1450,9 @@
         window.loadSampleDataset = loadFullEcohomeDataset;
         window.loadFullEcohomeDataset = loadFullEcohomeDataset;
         window.renderTable = renderTable;
+        window.renderAdminTable = renderAdminTable;
+        window.deleteManualIncrement = deleteManualIncrement;
+        window.clearAllManualIncrements = clearAllManualIncrements;
 
         // Initialize Firebase on DOM load
         window.addEventListener('DOMContentLoaded', initFirebaseAndSync);
