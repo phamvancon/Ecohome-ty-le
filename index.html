@@ -547,36 +547,54 @@
 
                         <div class="max-h-52 overflow-y-auto border border-slate-200 rounded-xl custom-scrollbar">
                             <table class="w-full text-left text-xs">
-                                <thead class="bg-slate-100 font-bold text-slate-600 sticky top-0">
+                                <thead class="bg-slate-100 font-bold text-slate-600 sticky top-0 z-10">
                                     <tr>
-                                        <th class="p-2.5">Thời gian</th>
-                                        <th class="p-2.5">Nội dung / Ghi chú</th>
-                                        <th class="p-2.5 text-right">Diện tích (m²)</th>
-                                        <th class="p-2.5 text-right">Tỷ lệ (%)</th>
-                                        <th class="p-2.5 text-center">Xóa</th>
+                                        <th class="p-2.5">Thời Gian</th>
+                                        <th class="p-2.5">Ghi Chú</th>
+                                        <th class="p-2.5 text-right">Diện Tích (m²)</th>
+                                        <th class="p-2.5 text-right">Tỷ Lệ (%)</th>
+                                        <th class="p-2.5 text-center">Thao Tác</th>
                                     </tr>
                                 </thead>
                                 <tbody id="manual-history-table-body" class="divide-y divide-slate-100">
-                                    <!-- Dynamic manual increment logs -->
+                                    <!-- Dynamic rows -->
                                 </tbody>
                             </table>
                         </div>
                     </div>
                 </div>
 
-                <!-- TAB 4: BLOCK STATS (NO1 - NO5) -->
+                <!-- TAB 4: BLOCK STATS (NO1 - NO5 / B1 - B5) -->
                 <div id="tab-content-stats" class="hidden bg-white p-6 rounded-2xl border border-slate-200/80 shadow-sm space-y-4">
-                    <div class="flex items-center justify-between border-b border-slate-100 pb-3">
+                    <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-2 border-b border-slate-100 pb-3">
                         <div>
-                            <h4 class="font-bold text-slate-800 text-sm">Thống Kê Chi Tiết Tỷ Lệ Theo Khối Tòa Nhà (NO1 - NO5)</h4>
+                            <h4 class="font-bold text-slate-800 text-sm">Thống Kê Chi Tiết Tỷ Lệ Theo Khối Tòa Nhà (Khối B1 - Khối B5)</h4>
                             <p class="text-xs text-slate-500">Phân tích tỷ lệ tham dự thực tế của từng khối nhà trong dự án Ecohome Nhơn Bình</p>
                         </div>
-                        <span class="text-xs font-bold text-indigo-600 bg-indigo-50 px-2.5 py-1 rounded-lg border border-indigo-200">
-                            Realtime Data
+                        <span class="text-xs font-bold text-indigo-600 bg-indigo-50 px-2.5 py-1 rounded-lg border border-indigo-200 self-start sm:self-auto">
+                            Realtime Cloud Data
                         </span>
                     </div>
 
-                    <div id="building-stats-grid" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
+                    <!-- ADMIN BLOCK RENAMING / CUSTOMIZATION PANEL -->
+                    <div class="bg-indigo-50/80 border border-indigo-200 rounded-2xl p-4 space-y-3">
+                        <div class="flex items-center justify-between">
+                            <div>
+                                <h5 class="font-bold text-indigo-950 text-xs flex items-center gap-1.5">
+                                    <i class="fa-solid fa-pen-to-square text-indigo-600"></i> Tùy Chỉnh Tên Hiển Thị Các Khối
+                                </h5>
+                                <p class="text-[11px] text-indigo-700">Chỉnh sửa tên gọi hiển thị của từng khối (VD: Khối B1, Khối B2...) và lưu lên Cloud.</p>
+                            </div>
+                            <button onclick="saveCustomBlockNames()" class="px-3.5 py-1.5 bg-indigo-600 hover:bg-indigo-700 text-white rounded-xl text-xs font-bold transition shadow-sm flex items-center gap-1.5 shrink-0">
+                                <i class="fa-solid fa-floppy-disk"></i> Lưu Tên Khối
+                            </button>
+                        </div>
+                        <div id="block-rename-inputs" class="grid grid-cols-2 sm:grid-cols-5 gap-2 text-xs">
+                            <!-- Dynamic Inputs for renaming blocks populated via JS -->
+                        </div>
+                    </div>
+
+                    <div id="building-stats-grid" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 pt-2">
                         <!-- Dynamic Building Cards loaded via JS -->
                     </div>
                 </div>
@@ -725,6 +743,19 @@
         // System Master Password
         const ADMIN_PASS = "215151365";
         const DEFAULT_TOTAL_AREA = 27734.30; // 27.734,3 m²
+        
+        const DEFAULT_BLOCK_NAMES = {
+            'B1': 'Khối B1',
+            'B2': 'Khối B2',
+            'B3': 'Khối B3',
+            'B4': 'Khối B4',
+            'B5': 'Khối B5',
+            'NO1': 'Khối B1',
+            'NO2': 'Khối B2',
+            'NO3': 'Khối B3',
+            'NO4': 'Khối B4',
+            'NO5': 'Khối B5'
+        };
 
         // Explicit Firebase Configuration provided by user
         const firebaseConfig = typeof __firebase_config !== 'undefined' ? JSON.parse(__firebase_config) : {
@@ -751,6 +782,7 @@
             totalAreaOverride: DEFAULT_TOTAL_AREA,
             apartments: [], // Array of { id: 'A1-01', area: 68.5, attended: false }
             manualEntries: [], // Array of { id, area, percent, note, createdAt }
+            blockNames: { ...DEFAULT_BLOCK_NAMES },
             isAdminAuthenticated: false,
             hasFiredConfetti: false,
             isInitialLoadDone: false
@@ -829,6 +861,9 @@
                         state.manualEntries = data.manualEntries;
                     } else {
                         state.manualEntries = [];
+                    }
+                    if (data && data.blockNames && typeof data.blockNames === 'object') {
+                        state.blockNames = { ...DEFAULT_BLOCK_NAMES, ...data.blockNames };
                     }
                     render();
                 }
@@ -1177,17 +1212,40 @@
 
         function renderBuildingStats() {
             const grid = document.getElementById('building-stats-grid');
+            const renameContainer = document.getElementById('block-rename-inputs');
             if (!grid) return;
 
-            const blocks = ['NO1', 'NO2', 'NO3', 'NO4', 'NO5'];
-            const stats = {};
+            // Detect all unique block keys from apartment IDs or use default B1-B5 / NO1-NO5
+            const detectedBlocks = new Set(['B1', 'B2', 'B3', 'B4', 'B5']);
+            state.apartments.forEach(apt => {
+                const prefix = apt.id.split('-')[0]?.toUpperCase().trim();
+                if (prefix) detectedBlocks.add(prefix);
+            });
 
+            const blocks = Array.from(detectedBlocks).sort((a, b) => a.localeCompare(b, undefined, { numeric: true }));
+
+            // Render Rename Inputs Panel for Admin
+            if (renameContainer) {
+                renameContainer.innerHTML = blocks.map(b => {
+                    const currentName = state.blockNames[b] || `Khối ${b}`;
+                    return `
+                        <div>
+                            <label class="block text-[11px] font-bold text-slate-600 mb-0.5">Mã ${b}:</label>
+                            <input type="text" id="rename-block-${b}" value="${currentName}" placeholder="Tên khối..."
+                                class="w-full px-2.5 py-1 text-xs font-bold bg-white border border-slate-300 rounded-lg focus:ring-2 focus:ring-indigo-500 outline-none">
+                        </div>
+                    `;
+                }).join('');
+            }
+
+            const stats = {};
             blocks.forEach(b => {
                 stats[b] = { totalUnits: 0, attendedUnits: 0, totalArea: 0, attendedArea: 0 };
             });
 
             state.apartments.forEach(apt => {
-                const blockKey = blocks.find(b => apt.id.toUpperCase().startsWith(b));
+                const prefix = apt.id.split('-')[0]?.toUpperCase().trim();
+                const blockKey = blocks.find(b => b === prefix || apt.id.toUpperCase().startsWith(b));
                 if (blockKey) {
                     stats[blockKey].totalUnits++;
                     stats[blockKey].totalArea += apt.area;
@@ -1200,6 +1258,7 @@
 
             grid.innerHTML = blocks.map(b => {
                 const s = stats[b];
+                const displayName = state.blockNames[b] || `Khối ${b}`;
                 const pct = s.totalArea > 0 ? (s.attendedArea / s.totalArea) * 100 : 0;
                 const isPassed = pct >= 50;
 
@@ -1207,15 +1266,15 @@
                     <div class="border border-slate-200/90 rounded-2xl p-4 bg-slate-50/50 hover:bg-white hover:shadow-md transition space-y-3">
                         <div class="flex items-center justify-between">
                             <div class="flex items-center gap-2">
-                                <span class="w-8 h-8 rounded-xl bg-teal-600 text-white font-black flex items-center justify-center text-xs shadow-sm">
+                                <span class="w-9 h-9 rounded-xl bg-indigo-600 text-white font-black flex items-center justify-center text-xs shadow-sm shrink-0">
                                     ${b}
                                 </span>
                                 <div>
-                                    <h5 class="font-bold text-slate-800 text-xs">Khối ${b}</h5>
+                                    <h5 class="font-bold text-slate-800 text-xs">${displayName}</h5>
                                     <span class="text-[10px] text-slate-400">${s.attendedUnits} / ${s.totalUnits} căn hộ</span>
                                 </div>
                             </div>
-                            <span class="px-2 py-0.5 rounded-full text-[10px] font-bold ${isPassed ? 'bg-emerald-100 text-emerald-800 border border-emerald-300' : 'bg-amber-100 text-amber-800 border border-amber-300'}">
+                            <span class="px-2.5 py-0.5 rounded-full text-[10px] font-bold ${isPassed ? 'bg-emerald-100 text-emerald-800 border border-emerald-300' : 'bg-amber-100 text-amber-800 border border-amber-300'}">
                                 ${pct.toFixed(1)}%
                             </span>
                         </div>
@@ -1232,6 +1291,25 @@
                     </div>
                 `;
             }).join('');
+        }
+
+        async function saveCustomBlockNames() {
+            const detectedBlocks = new Set(['B1', 'B2', 'B3', 'B4', 'B5']);
+            state.apartments.forEach(apt => {
+                const prefix = apt.id.split('-')[0]?.toUpperCase().trim();
+                if (prefix) detectedBlocks.add(prefix);
+            });
+
+            const updatedNames = { ...state.blockNames };
+            detectedBlocks.forEach(b => {
+                const inputEl = document.getElementById(`rename-block-${b}`);
+                if (inputEl && inputEl.value.trim()) {
+                    updatedNames[b] = inputEl.value.trim();
+                }
+            });
+
+            await setDoc(settingsDocRef, { blockNames: updatedNames }, { merge: true });
+            showToast("Đã lưu tùy chỉnh tên các khối tòa nhà lên Cloud!", "success");
         }
 
         // Auto convert inputs for Manual Accumulation
@@ -1432,10 +1510,10 @@
         }
 
         function loadFullEcohomeDataset(notify = true) {
-            // Generates 450 full apartments across NO1 - NO5 with exact realistic areas summing to EXACTLY 27,734.30 m²
+            // Generates full apartments across B1 - B5 with exact realistic areas summing to EXACTLY 27,734.30 m²
             const targetTotalArea = 27734.30;
             const standardAreas = [35.10, 52.50, 60.00, 62.50, 68.50, 76.70];
-            const blocks = ['NO1', 'NO2', 'NO3', 'NO4', 'NO5'];
+            const blocks = ['B1', 'B2', 'B3', 'B4', 'B5'];
             const floorsPerBlock = 10;
             const unitsPerFloor = 9; // 5 * 10 * 9 = 450 units
             
@@ -1468,7 +1546,7 @@
             setDoc(settingsDocRef, { totalAreaOverride: targetTotalArea }, { merge: true });
 
             if (notify) {
-                showToast(`Đã nạp full ${samples.length} căn hộ Ecohome Nhơn Bình (Tổng: ${formatNumber(targetTotalArea)} m²)!`, "success");
+                showToast(`Đã nạp full ${samples.length} căn hộ Khối B1 - B5 (Tổng: ${formatNumber(targetTotalArea)} m²)!`, "success");
             }
         }
 
@@ -1818,7 +1896,7 @@
         window.loadSampleDataset = loadFullEcohomeDataset;
         window.loadFullEcohomeDataset = loadFullEcohomeDataset;
         window.renderTable = renderTable;
-        window.renderAdminTable = renderAdminTable;
+        window.saveCustomBlockNames = saveCustomBlockNames;
         window.renderBuildingStats = renderBuildingStats;
         window.deleteManualIncrement = deleteManualIncrement;
         window.clearAllManualIncrements = clearAllManualIncrements;
