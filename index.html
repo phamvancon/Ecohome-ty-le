@@ -5,6 +5,11 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Hội Nghị Nhà Chung Cư Ecohome Nhơn Bình 2026</title>
     
+    <!-- Google Fonts Preconnect & Plus Jakarta Sans -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:ital,wght@0,300..800;1,300..800&display=swap" rel="stylesheet">
+
     <!-- Tailwind CSS CDN -->
     <script src="https://cdn.tailwindcss.com"></script>
     <!-- FontAwesome Icons -->
@@ -19,6 +24,10 @@
             darkMode: 'class',
             theme: {
                 extend: {
+                    fontFamily: {
+                        sans: ['"Plus Jakarta Sans"', 'system-ui', '-apple-system', 'sans-serif'],
+                        mono: ['"Plus Jakarta Sans"', 'ui-monospace', 'SFMono-Regular', 'monospace'],
+                    },
                     colors: {
                         brand: {
                             50: '#f0fdf4',
@@ -49,8 +58,10 @@
         }
     </script>
     <style>
-        @import url('https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&display=swap');
-        body { font-family: 'Plus Jakarta Sans', sans-serif; transition: background-color 0.3s ease, color 0.3s ease; }
+        body { 
+            font-family: 'Plus Jakarta Sans', system-ui, -apple-system, sans-serif; 
+            transition: background-color 0.3s ease, color 0.3s ease; 
+        }
         .custom-scrollbar::-webkit-scrollbar { width: 6px; height: 6px; }
         .custom-scrollbar::-webkit-scrollbar-track { background: rgba(15, 23, 42, 0.2); }
         .custom-scrollbar::-webkit-scrollbar-thumb { background: #64748b; border-radius: 4px; }
@@ -339,7 +350,7 @@
                     <div>
                         <div class="flex items-center space-x-2">
                             <span class="px-2.5 py-0.5 rounded-full text-[11px] font-bold bg-emerald-500/20 text-emerald-700 dark:text-emerald-300 border border-emerald-500/30 uppercase">Trang Quản Trị Admin</span>
-                            <span id="admin-sync-badge" class="text-xs text-teal-700 dark:text-teal-300/80"><i class="fa-solid fa-cloud text-emerald-500 mr-1"></iFirebase Cloud Sync</span>
+                            <span id="admin-sync-badge" class="text-xs text-teal-700 dark:text-teal-300/80"><i class="fa-solid fa-cloud text-emerald-500 mr-1"></i>Firebase Cloud Sync</span>
                         </div>
                         <h1 class="text-base sm:text-lg font-black tracking-tight text-slate-900 dark:text-white mt-0.5">
                             NHÀ CHUNG CƯ ECOHOME NHƠN BÌNH 2026
