@@ -1,17 +1,17 @@
 <!DOCTYPE html>
-<html lang="vi" class="h-full bg-slate-50">
+<html lang="vi" class="h-full bg-slate-900 selection:bg-emerald-500 selection:text-white">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Hội Nghị Nhà Chung Cư Ecohome Nhơn Bình 2026</title>
     
-    <!-- Tailwind CSS -->
+    <!-- Tailwind CSS CDN -->
     <script src="https://cdn.tailwindcss.com"></script>
     <!-- FontAwesome Icons -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <!-- Canvas Confetti -->
     <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.6.0/dist/confetti.browser.min.js"></script>
-    <!-- SheetJS for Excel / CSV Parsing -->
+    <!-- SheetJS for Excel Parsing & Export -->
     <script src="https://cdn.jsdelivr.net/npm/xlsx@0.18.5/dist/xlsx.full.min.js"></script>
 
     <script>
@@ -28,50 +28,76 @@
                             800: '#065f46',
                             900: '#064e3b',
                         }
+                    },
+                    animation: {
+                        'pulse-glow': 'pulseGlow 2s infinite',
+                        'float': 'float 3s ease-in-out infinite',
+                    },
+                    keyframes: {
+                        pulseGlow: {
+                            '0%, 100%': { opacity: '1', boxShadow: '0 0 20px rgba(16, 185, 129, 0.4)' },
+                            '50%': { opacity: '0.85', boxShadow: '0 0 35px rgba(16, 185, 129, 0.7)' },
+                        },
+                        float: {
+                            '0%, 100%': { transform: 'translateY(0px)' },
+                            '50%': { transform: 'translateY(-6px)' },
+                        }
                     }
                 }
             }
         }
     </script>
     <style>
-        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap');
-        body { font-family: 'Inter', sans-serif; }
+        @import url('https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&display=swap');
+        body { font-family: 'Plus Jakarta Sans', sans-serif; }
         .custom-scrollbar::-webkit-scrollbar { width: 6px; height: 6px; }
-        .custom-scrollbar::-webkit-scrollbar-track { background: #f1f5f9; }
-        .custom-scrollbar::-webkit-scrollbar-thumb { background: #cbd5e1; border-radius: 4px; }
-        .custom-scrollbar::-webkit-scrollbar-thumb:hover { background: #94a3b8; }
+        .custom-scrollbar::-webkit-scrollbar-track { background: rgba(15, 23, 42, 0.6); }
+        .custom-scrollbar::-webkit-scrollbar-thumb { background: #334155; border-radius: 4px; }
+        .custom-scrollbar::-webkit-scrollbar-thumb:hover { background: #10b981; }
+        .glass-card {
+            background: rgba(15, 23, 42, 0.75);
+            backdrop-filter: blur(16px);
+            -webkit-backdrop-filter: blur(16px);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+        }
+        .glass-card-light {
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(12px);
+            border: 1px solid rgba(226, 232, 240, 0.8);
+        }
     </style>
 </head>
-<body class="h-full flex flex-col text-slate-800 antialiased selection:bg-brand-500 selection:text-white">
+<body class="h-full flex flex-col text-slate-100 bg-slate-950 antialiased min-h-screen">
 
-    <!-- PUBLIC VIEW CONTAINER (TRANG CÔNG CỘNG DÀNH CHO CƯ DÂN) -->
-    <div id="public-view" class="min-h-screen flex flex-col">
+    <div id="public-view" class="min-h-screen flex flex-col bg-[radial-gradient(ellipse_at_top,_var(--tw-gradient-stops))] from-teal-950 via-slate-950 to-slate-950">
 
         <!-- Top Navigation Header -->
-        <header class="bg-gradient-to-r from-teal-900 via-emerald-800 to-teal-950 text-white shadow-lg sticky top-0 z-30">
-            <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-4">
+        <header class="glass-card sticky top-0 z-30 border-b border-emerald-500/20 shadow-2xl">
+            <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-3.5">
                 <div class="flex flex-col md:flex-row md:items-center md:justify-between gap-4">
-                    <div class="flex items-center space-x-3">
-                        <div class="bg-white/10 p-2.5 rounded-xl backdrop-blur-md border border-white/20">
-                            <i class="fa-solid font-bold fa-building-user text-2xl text-emerald-300"></i>
+                    <div class="flex items-center space-x-3.5">
+                        <div class="bg-gradient-to-br from-emerald-500 to-teal-700 p-3 rounded-2xl shadow-lg shadow-emerald-500/20 border border-emerald-400/30">
+                            <i class="fa-solid fa-building-user text-2xl text-white"></i>
                         </div>
                         <div>
                             <div class="flex items-center space-x-2">
-                                <span class="px-2.5 py-0.5 rounded-full text-xs font-semibold bg-emerald-500/30 text-emerald-200 border border-emerald-400/30">Hội Nghị 2026</span>
-                                <span id="sync-status-badge" class="text-xs text-teal-200/80"><i class="fa-solid fa-cloud-arrow-up mr-1 animate-pulse"></i>Đang kết nối Cloud Firebase...</span>
+                                <span class="px-2.5 py-0.5 rounded-full text-[11px] font-extrabold bg-emerald-500/20 text-emerald-300 border border-emerald-500/40 uppercase tracking-wider">Hội Nghị Nhà Chung Cư 2026</span>
+                                <span id="sync-status-badge" class="text-xs text-teal-300/80 font-medium">
+                                    <i class="fa-solid fa-cloud-arrow-up mr-1 animate-pulse"></i>Firebase Realtime Cloud
+                                </span>
                             </div>
-                            <h1 class="text-lg md:text-xl font-extrabold tracking-tight text-white mt-0.5">
+                            <h1 class="text-lg md:text-xl font-black tracking-tight text-white mt-0.5 uppercase drop-shadow">
                                 NHÀ CHUNG CƯ ECOHOME NHƠN BÌNH
                             </h1>
                         </div>
                     </div>
 
                     <div class="flex items-center justify-between md:justify-end space-x-3">
-                        <button onclick="triggerManualConfetti()" class="px-3 py-2 text-xs font-medium bg-white/10 hover:bg-white/20 text-emerald-100 rounded-lg transition border border-white/15 flex items-center gap-1.5" title="Bắn pháo hoa thử nghiệm">
+                        <button onclick="triggerManualConfetti()" class="px-3.5 py-2 text-xs font-bold bg-slate-800/80 hover:bg-slate-700/80 text-emerald-300 rounded-xl transition border border-emerald-500/30 flex items-center gap-2 shadow-sm" title="Bắn pháo hoa thử nghiệm">
                             <i class="fa-solid fa-wand-magic-sparkles text-amber-300"></i>
                             <span>Pháo hoa</span>
                         </button>
-                        <button onclick="openAdminView()" class="px-4 py-2 bg-emerald-500 hover:bg-emerald-600 text-white rounded-lg font-medium text-sm transition shadow-md hover:shadow-lg flex items-center gap-2 border border-emerald-400/40">
+                        <button onclick="openAdminView()" class="px-4 py-2 bg-gradient-to-r from-emerald-500 to-teal-600 hover:from-emerald-600 hover:to-teal-700 text-white rounded-xl font-bold text-xs shadow-lg shadow-emerald-500/25 transition flex items-center gap-2 border border-emerald-400/40">
                             <i class="fa-solid fa-user-shield"></i>
                             <span>Quản Lý (Admin)</span>
                         </button>
@@ -80,458 +106,420 @@
             </div>
         </header>
 
-        <!-- Sub-navigation Live Clock Bar -->
-        <div class="bg-slate-900 text-slate-200 border-b border-emerald-500/20 py-2.5 px-4 shadow-md sticky top-[73px] z-20 backdrop-blur-md">
+        <div class="bg-slate-900/90 border-b border-slate-800 py-2.5 px-4 shadow-md sticky top-[71px] z-20 backdrop-blur-md">
             <div class="max-w-7xl mx-auto flex flex-wrap items-center justify-between gap-2 text-xs sm:text-sm">
-                <div class="flex items-center gap-2 text-emerald-300 font-semibold">
+                <div class="flex items-center gap-2 text-emerald-400 font-bold">
                     <span class="relative flex h-2.5 w-2.5">
                         <span class="animate-ping absolute inline-flex h-full w-full rounded-full bg-emerald-400 opacity-75"></span>
                         <span class="relative inline-flex rounded-full h-2.5 w-2.5 bg-emerald-500"></span>
                     </span>
-                    <span>Hệ thống ghi nhận điểm danh tự động realtime</span>
+                    <span class="tracking-wide">Tự động ghi nhận điểm danh thời gian thực</span>
                 </div>
 
                 <!-- Live Clock Display Box -->
-                <div class="flex items-center gap-2.5 bg-slate-800/90 px-3.5 py-1.5 rounded-xl border border-slate-700 shadow-sm ml-auto sm:ml-0">
+                <div class="flex items-center gap-3 bg-slate-950/80 px-4 py-1.5 rounded-xl border border-slate-800 shadow-inner ml-auto sm:ml-0">
                     <i class="fa-regular fa-clock text-amber-400 animate-pulse text-sm"></i>
-                    <span id="live-clock-date" class="font-semibold text-slate-200 text-xs sm:text-sm">--</span>
-                    <span class="text-slate-600 font-bold">|</span>
-                    <span id="live-clock-time" class="font-mono font-extrabold text-amber-300 text-sm sm:text-base tracking-widest">00:00:00</span>
+                    <span id="live-clock-date" class="font-semibold text-slate-300 text-xs sm:text-sm">--</span>
+                    <span class="text-slate-700 font-bold">|</span>
+                    <span id="live-clock-time" class="font-mono font-black text-amber-300 text-sm sm:text-base tracking-widest">00:00:00</span>
                 </div>
             </div>
         </div>
 
-        <!-- Main Content Area -->
         <main class="flex-1 max-w-7xl w-full mx-auto px-4 sm:px-6 lg:px-8 py-6 space-y-6">
-            <div class="flex flex-col lg:flex-row lg:items-center justify-between gap-4 mb-4">
-                <div>
-                    <div class="flex items-center gap-2">
-                        <h2 class="text-lg font-bold text-slate-900">Tỷ Lệ Diện Tích Đã Tham Dự Hội Nghị</h2>
-                        <span id="status-badge" class="px-3 py-1 text-xs font-bold rounded-full bg-amber-100 text-amber-800 border border-amber-300 flex items-center gap-1.5">
-                            <i class="fa-solid fa-hourglass-half"></i> Chưa đạt 50%
+            
+            <!-- Hero Progress Card Section -->
+            <div class="glass-card rounded-3xl p-6 md:p-8 shadow-2xl relative overflow-hidden border border-emerald-500/20">
+                <div class="absolute -right-20 -top-20 w-80 h-80 bg-emerald-500/10 rounded-full blur-3xl pointer-events-none"></div>
+
+                <div class="flex flex-col lg:flex-row lg:items-center justify-between gap-6 relative z-10 mb-6">
+                    <div>
+                        <div class="flex flex-wrap items-center gap-3">
+                            <h2 class="text-xl md:text-2xl font-black text-white tracking-tight">Tỷ Lệ Diện Tích Đã Tham Dự Hội Nghị</h2>
+                            <span id="status-badge" class="px-3.5 py-1 text-xs font-bold rounded-full bg-amber-500/20 text-amber-300 border border-amber-500/30 flex items-center gap-1.5">
+                                <i class="fa-solid fa-hourglass-half"></i> Chưa đạt mốc 50%
+                            </span>
+                        </div>
+                        <p class="text-xs sm:text-sm text-slate-400 mt-1.5">
+                            Căn cứ pháp lý: Hội nghị nhà chung cư hợp lệ khi đạt từ <strong class="text-emerald-400 font-bold">50% diện tích căn hộ</strong> đại diện tham dự.
+                        </p>
+                    </div>
+
+                    <div class="flex flex-col sm:flex-row sm:items-baseline justify-start lg:justify-end gap-2 bg-slate-900/80 p-4 rounded-2xl border border-slate-800 shadow-inner">
+                        <span id="metric-percent" class="text-5xl md:text-6xl lg:text-7xl font-black text-emerald-400 tracking-tight font-mono drop-shadow-[0_0_15px_rgba(16,185,129,0.3)]">0.00%</span>
+                        <span class="text-xs sm:text-sm font-semibold text-slate-400">/ 100% Tổng diện tích</span>
+                    </div>
+                </div>
+
+                <!-- Visual Progress Bar Container -->
+                <div class="relative pt-6 pb-2">
+                    <!-- 50% Marker Pin -->
+                    <div class="absolute top-0 left-[50%] -translate-x-1/2 flex flex-col items-center z-20">
+                        <span class="text-[10px] sm:text-xs font-black text-rose-300 bg-rose-950/90 border border-rose-500/50 px-2.5 py-1 rounded-full shadow-lg flex items-center gap-1">
+                            <i class="fa-solid fa-flag"></i> MỐC PHÁP LÝ 50%
                         </span>
                     </div>
-                    <p class="text-xs text-slate-500 mt-1">
-                        Căn cứ theo quy định: Hội nghị nhà chung cư đủ điều kiện tiến hành khi có từ <strong class="text-slate-700">50% diện tích căn hộ</strong> đại diện tham dự.
-                    </p>
-                </div>
-                <div class="text-right flex items-baseline justify-start lg:justify-end gap-2">
-                    <span id="metric-percent" class="text-4xl md:text-5xl font-black text-emerald-600 tracking-tight">0.00%</span>
-                    <span class="text-sm font-medium text-slate-500">/ 100% tổng diện tích</span>
-                </div>
-            </div>
 
-            <!-- Progress Bar Container -->
-            <div class="relative pt-6 pb-2">
-                <!-- 50% Marker Label -->
-                <div class="absolute top-0 left-[50%] -translate-x-1/2 flex flex-col items-center z-10">
-                    <span class="text-[11px] font-extrabold text-rose-600 bg-rose-50 border border-rose-200 px-2 py-0.5 rounded shadow-sm flex items-center gap-1">
-                        <i class="fa-solid fa-flag"></i> MỐC PHÁP LÝ 50%
-                    </span>
-                </div>
-
-                <div class="w-full bg-slate-100 h-7 rounded-full overflow-hidden p-1 border border-slate-200 shadow-inner relative">
-                    <!-- Progress Fill -->
-                    <div id="progress-bar-fill" class="h-full bg-gradient-to-r from-teal-500 via-emerald-500 to-green-400 rounded-full transition-all duration-700 ease-out relative" style="width: 0%;">
-                        <div class="absolute inset-0 bg-white/20 animate-pulse"></div>
-                    </div>
-                    <!-- 50% Vertical Line Marker -->
-                    <div class="absolute top-0 bottom-0 left-[50%] w-0.5 bg-rose-500 z-0"></div>
-                </div>
-
-                <div class="flex justify-between text-xs font-semibold text-slate-400 mt-2 px-1">
-                    <span>0%</span>
-                    <span class="text-rose-600 font-bold">50% Quorum</span>
-                    <span>100%</span>
-                </div>
-            </div>
-        </div>
-
-        <!-- Metric KPI Cards -->
-        <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
-            
-            <!-- Card 1: Total Area -->
-            <div class="bg-white rounded-2xl p-5 border border-slate-200/80 shadow-sm hover:shadow-md transition">
-                <div class="flex items-center justify-between text-slate-500 mb-3">
-                    <span class="text-xs font-bold uppercase tracking-wider text-slate-400">Tổng Diện Tích Dự Án</span>
-                    <div class="w-9 h-9 rounded-xl bg-blue-50 text-blue-600 flex items-center justify-center font-bold">
-                        <i class="fa-solid fa-ruler-combined"></i>
-                    </div>
-                </div>
-                <div class="flex items-baseline gap-1">
-                    <span id="metric-total-area" class="text-2xl font-black text-slate-800">27.734,30</span>
-                    <span class="text-sm font-semibold text-slate-500">m²</span>
-                </div>
-                <p class="text-xs text-slate-400 mt-2">Dựa trên diện tích sở hữu Ecohome</p>
-            </div>
-
-            <!-- Card 2: Attended Area -->
-            <div class="bg-white rounded-2xl p-5 border border-slate-200/80 shadow-sm hover:shadow-md transition">
-                <div class="flex items-center justify-between text-slate-500 mb-3">
-                    <span class="text-xs font-bold uppercase tracking-wider text-slate-400">Diện Tích Đã Tham Dự</span>
-                    <div class="w-9 h-9 rounded-xl bg-emerald-50 text-emerald-600 flex items-center justify-center font-bold">
-                        <i class="fa-solid fa-square-check"></i>
-                    </div>
-                </div>
-                <div class="flex items-baseline gap-1">
-                    <span id="metric-attended-area" class="text-2xl font-black text-emerald-600">0,00</span>
-                    <span class="text-sm font-semibold text-slate-500">m²</span>
-                </div>
-                <div class="flex items-center justify-between mt-2 text-xs">
-                    <span class="text-slate-400">Còn thiếu:</span>
-                    <span id="metric-missing-area" class="font-bold text-slate-600">27.734,30 m²</span>
-                </div>
-            </div>
-
-            <!-- Card 3: Total Apartments -->
-            <div class="bg-white rounded-2xl p-5 border border-slate-200/80 shadow-sm hover:shadow-md transition">
-                <div class="flex items-center justify-between text-slate-500 mb-3">
-                    <span class="text-xs font-bold uppercase tracking-wider text-slate-400">Tổng Số Căn Hộ</span>
-                    <div class="w-9 h-9 rounded-xl bg-indigo-50 text-indigo-600 flex items-center justify-center font-bold">
-                        <i class="fa-solid fa-door-closed"></i>
-                    </div>
-                </div>
-                <div class="flex items-baseline gap-1">
-                    <span id="metric-total-units" class="text-2xl font-black text-slate-800">0</span>
-                    <span class="text-sm font-semibold text-slate-500">căn</span>
-                </div>
-                <p class="text-xs text-slate-400 mt-2">Đã nạp vào hệ thống</p>
-            </div>
-
-            <!-- Card 4: Attended Apartments -->
-            <div class="bg-white rounded-2xl p-5 border border-slate-200/80 shadow-sm hover:shadow-md transition">
-                <div class="flex items-center justify-between text-slate-500 mb-3">
-                    <span class="text-xs font-bold uppercase tracking-wider text-slate-400">Căn Hộ Đã Đăng Ký</span>
-                    <div class="w-9 h-9 rounded-xl bg-teal-50 text-teal-600 flex items-center justify-center font-bold">
-                        <i class="fa-solid fa-users-between-lines"></i>
-                    </div>
-                </div>
-                <div class="flex items-baseline gap-1">
-                    <span id="metric-attended-units" class="text-2xl font-black text-teal-600">0</span>
-                    <span class="text-sm font-semibold text-slate-500">căn</span>
-                </div>
-                <div class="flex items-center justify-between mt-2 text-xs">
-                    <span class="text-slate-400">Tỷ lệ số căn:</span>
-                    <span id="metric-units-percent" class="font-bold text-slate-700">0.0%</span>
-                </div>
-            </div>
-
-        </div>
-
-        <!-- Apartment List & Search Section -->
-        <div class="bg-white rounded-2xl border border-slate-200/80 shadow-sm overflow-hidden">
-            <div class="p-5 border-b border-slate-100 bg-slate-50/50 flex flex-col md:flex-row md:items-center justify-between gap-4">
-                <div>
-                    <h3 class="font-bold text-slate-900 text-base">Danh Sách Căn Hộ & Chi Tiết Diện Tích</h3>
-                    <p class="text-xs text-slate-500">Tra cứu mã căn hộ để kiểm tra trạng thái tham dự hội nghị</p>
-                </div>
-
-                <!-- Filters & Search Bar -->
-                <div class="flex flex-col sm:flex-row items-center gap-2">
-                    <div class="relative w-full sm:w-64">
-                        <i class="fa-solid fa-magnifying-glass absolute left-3 top-1/2 -translate-y-1/2 text-slate-400 text-xs"></i>
-                        <input type="text" id="search-input" oninput="renderTable()" placeholder="Tìm theo Mã căn (Ví dụ: A1-02)..." 
-                            class="w-full pl-9 pr-3 py-1.5 text-xs bg-white border border-slate-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-emerald-500/20 focus:border-emerald-500 transition">
+                    <div class="w-full bg-slate-900 h-8 rounded-full overflow-hidden p-1 border border-slate-800 shadow-inner relative z-10">
+                        <!-- Progress Fill -->
+                        <div id="progress-bar-fill" class="h-full bg-gradient-to-r from-teal-500 via-emerald-500 to-green-400 rounded-full transition-all duration-700 ease-out relative shadow-lg shadow-emerald-500/30" style="width: 0%;">
+                            <div class="absolute inset-0 bg-white/20 animate-pulse"></div>
+                        </div>
+                        <!-- 50% Vertical Line Marker -->
+                        <div class="absolute top-0 bottom-0 left-[50%] w-0.5 bg-rose-500/80 z-20"></div>
                     </div>
 
-                    <select id="filter-status" onchange="renderTable()" class="w-full sm:w-auto text-xs py-1.5 px-3 bg-white border border-slate-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-emerald-500/20 focus:border-emerald-500 transition font-medium text-slate-600">
-                        <option value="all">Tất cả trạng thái</option>
-                        <option value="attended">Đã tham dự</option>
-                        <option value="absent">Chưa tham dự</option>
-                    </select>
+                    <div class="flex justify-between text-xs font-extrabold text-slate-400 mt-2 px-1">
+                        <span>0%</span>
+                        <span class="text-rose-400">Mốc Quorum 50%</span>
+                        <span>100%</span>
+                    </div>
                 </div>
             </div>
 
-            <!-- Table Container -->
-            <div class="overflow-x-auto max-h-[480px] custom-scrollbar">
-                <table class="w-full text-left text-xs text-slate-600">
-                    <thead class="bg-slate-100 text-slate-500 font-bold uppercase tracking-wider sticky top-0 z-10 border-b border-slate-200">
-                        <tr>
-                            <th class="py-3 px-4">STT</th>
-                            <th class="py-3 px-4">Mã Căn Hộ</th>
-                            <th class="py-3 px-4">Tầng / Tòa</th>
-                            <th class="py-3 px-4 text-right">Diện Tích (m²)</th>
-                            <th class="py-3 px-4 text-right">Tỷ Lệ Đóng Góp (%)</th>
-                            <th class="py-3 px-4 text-center">Trạng Thái Tham Dự</th>
-                        </tr>
-                    </thead>
-                    <tbody id="apartment-table-body" class="divide-y divide-slate-100">
-                        <!-- Dynamic Rows loaded via JS -->
-                    </tbody>
-                </table>
+            <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
+                
+                <!-- KPI 1: Total Area -->
+                <div class="glass-card rounded-2xl p-5 border border-slate-800 hover:border-slate-700 transition">
+                    <div class="flex items-center justify-between text-slate-400 mb-3">
+                        <span class="text-xs font-bold uppercase tracking-wider text-slate-400">Tổng Diện Tích Dự Án</span>
+                        <div class="w-10 h-10 rounded-xl bg-blue-500/10 text-blue-400 border border-blue-500/20 flex items-center justify-center font-bold">
+                            <i class="fa-solid fa-ruler-combined text-base"></i>
+                        </div>
+                    </div>
+                    <div class="flex items-baseline gap-1.5">
+                        <span id="metric-total-area" class="text-2xl font-black text-white font-mono">27.734,30</span>
+                        <span class="text-xs font-bold text-slate-400">m²</span>
+                    </div>
+                    <p class="text-[11px] text-slate-400 mt-2">Theo diện tích sở hữu Ecohome Nhơn Bình</p>
+                </div>
+
+                <!-- KPI 2: Attended Area -->
+                <div class="glass-card rounded-2xl p-5 border border-emerald-500/20 hover:border-emerald-500/40 transition">
+                    <div class="flex items-center justify-between text-slate-400 mb-3">
+                        <span class="text-xs font-bold uppercase tracking-wider text-emerald-400">Diện Tích Đã Tham Dự</span>
+                        <div class="w-10 h-10 rounded-xl bg-emerald-500/20 text-emerald-400 border border-emerald-500/30 flex items-center justify-center font-bold">
+                            <i class="fa-solid fa-square-check text-base"></i>
+                        </div>
+                    </div>
+                    <div class="flex items-baseline gap-1.5">
+                        <span id="metric-attended-area" class="text-2xl font-black text-emerald-400 font-mono">0,00</span>
+                        <span class="text-xs font-bold text-slate-400">m²</span>
+                    </div>
+                    <div class="flex items-center justify-between mt-2 text-xs">
+                        <span class="text-slate-400">Còn thiếu:</span>
+                        <span id="metric-missing-area" class="font-bold text-amber-300 font-mono">27.734,30 m²</span>
+                    </div>
+                </div>
+
+                <!-- KPI 3: Total Apartments -->
+                <div class="glass-card rounded-2xl p-5 border border-slate-800 hover:border-slate-700 transition">
+                    <div class="flex items-center justify-between text-slate-400 mb-3">
+                        <span class="text-xs font-bold uppercase tracking-wider text-slate-400">Tổng Số Căn Hộ</span>
+                        <div class="w-10 h-10 rounded-xl bg-indigo-500/10 text-indigo-400 border border-indigo-500/20 flex items-center justify-center font-bold">
+                            <i class="fa-solid fa-door-closed text-base"></i>
+                        </div>
+                    </div>
+                    <div class="flex items-baseline gap-1.5">
+                        <span id="metric-total-units" class="text-2xl font-black text-white font-mono">0</span>
+                        <span class="text-xs font-bold text-slate-400">căn</span>
+                    </div>
+                    <p class="text-[11px] text-slate-400 mt-2">Dữ liệu căn hộ được đồng bộ Cloud</p>
+                </div>
+
+                <!-- KPI 4: Attended Apartments -->
+                <div class="glass-card rounded-2xl p-5 border border-teal-500/20 hover:border-teal-500/40 transition">
+                    <div class="flex items-center justify-between text-slate-400 mb-3">
+                        <span class="text-xs font-bold uppercase tracking-wider text-teal-400">Căn Hộ Đã Đăng Ký</span>
+                        <div class="w-10 h-10 rounded-xl bg-teal-500/20 text-teal-300 border border-teal-500/30 flex items-center justify-center font-bold">
+                            <i class="fa-solid fa-users-between-lines text-base"></i>
+                        </div>
+                    </div>
+                    <div class="flex items-baseline gap-1.5">
+                        <span id="metric-attended-units" class="text-2xl font-black text-teal-300 font-mono">0</span>
+                        <span class="text-xs font-bold text-slate-400">căn</span>
+                    </div>
+                    <div class="flex items-center justify-between mt-2 text-xs">
+                        <span class="text-slate-400">Tỷ lệ số căn:</span>
+                        <span id="metric-units-percent" class="font-bold text-teal-300 font-mono">0.0%</span>
+                    </div>
+                </div>
+
             </div>
 
-            <!-- Table Footer Pagination Info -->
-            <div class="p-4 bg-slate-50/80 border-t border-slate-200/80 text-xs text-slate-500 flex flex-col sm:flex-row items-center justify-between gap-2">
-                <span id="table-count-info">Hiển thị 0 căn hộ</span>
-                <span class="text-slate-400">Ecohome Nhơn Bình 2026 • Hệ thống biểu quyết & điểm danh tự động</span>
-            </div>
-        </div>
+            <div class="glass-card-light rounded-3xl overflow-hidden shadow-2xl text-slate-800 border border-slate-200">
+                <div class="p-5 border-b border-slate-200/80 bg-slate-50/80 flex flex-col md:flex-row md:items-center justify-between gap-4">
+                    <div>
+                        <h3 class="font-black text-slate-900 text-base flex items-center gap-2">
+                            <i class="fa-solid fa-list-ul text-emerald-600"></i> Danh Sách Căn Hộ & Chi Tiết Diện Tích
+                        </h3>
+                        <p class="text-xs text-slate-500 mt-0.5">Tra cứu mã căn hộ để kiểm tra trạng thái đăng ký tham dự hội nghị</p>
+                    </div>
 
-    </main>
+                    <!-- Search & Filter Controls -->
+                    <div class="flex flex-col sm:flex-row items-center gap-2.5">
+                        <div class="relative w-full sm:w-64">
+                            <i class="fa-solid fa-magnifying-glass absolute left-3 top-1/2 -translate-y-1/2 text-slate-400 text-xs"></i>
+                            <input type="text" id="search-input" oninput="renderTable()" placeholder="Tìm mã căn (VD: B1-0101)..." 
+                                class="w-full pl-9 pr-3 py-2 text-xs bg-white border border-slate-300 rounded-xl focus:outline-none focus:ring-2 focus:ring-emerald-500/30 focus:border-emerald-500 transition font-medium shadow-sm">
+                        </div>
+
+                        <select id="filter-status" onchange="renderTable()" class="w-full sm:w-auto text-xs py-2 px-3 bg-white border border-slate-300 rounded-xl focus:outline-none focus:ring-2 focus:ring-emerald-500/30 focus:border-emerald-500 transition font-bold text-slate-700 shadow-sm">
+                            <option value="all">Tất cả trạng thái</option>
+                            <option value="attended">Đã tham dự</option>
+                            <option value="absent">Chưa tham dự</option>
+                        </select>
+                    </div>
+                </div>
+
+                <!-- Table Content Container -->
+                <div class="overflow-x-auto max-h-[500px] custom-scrollbar">
+                    <table class="w-full text-left text-xs text-slate-700">
+                        <thead class="bg-slate-100 text-slate-600 font-extrabold uppercase tracking-wider sticky top-0 z-10 border-b border-slate-200">
+                            <tr>
+                                <th class="py-3 px-4">STT</th>
+                                <th class="py-3 px-4">Mã Căn Hộ</th>
+                                <th class="py-3 px-4">Khối Tòa</th>
+                                <th class="py-3 px-4 text-right">Diện Tích (m²)</th>
+                                <th class="py-3 px-4 text-right">Tỷ Lệ Đóng Góp (%)</th>
+                                <th class="py-3 px-4 text-center">Trạng Thái Tham Dự</th>
+                            </tr>
+                        </thead>
+                        <tbody id="apartment-table-body" class="divide-y divide-slate-200/80">
+                            <!-- Dynamic Table Rows populated via JS -->
+                        </tbody>
+                    </table>
+                </div>
+
+                <!-- Table Footer -->
+                <div class="p-4 bg-slate-50 border-t border-slate-200 text-xs text-slate-500 flex flex-col sm:flex-row items-center justify-between gap-2">
+                    <span id="table-count-info" class="font-bold text-slate-700">Hiển thị 0 / 0 căn hộ</span>
+                    <span class="text-slate-400 font-medium">Ecohome Nhơn Bình 2026 • Hệ thống biểu quyết tự động Realtime</span>
+                </div>
+            </div>
+
+        </main>
 
         <!-- Footer -->
-        <footer class="bg-slate-900 text-slate-400 text-xs py-6 mt-12 border-t border-slate-800">
-            <div class="max-w-7xl mx-auto px-4 text-center space-y-2">
-                <p class="font-medium text-slate-300">Ban Quản Tị / Ban Tổ Chức Hội Nghị Nhà Chung Cư Ecohome Nhơn Bình 2026</p>
-                <p class="text-slate-500">Mã hóa mật khẩu hệ thống quản trị an toàn • Mốc tổng diện tích tính toán mặc định: 27.734,30 m²</p>
+        <footer class="bg-slate-950 text-slate-500 text-xs py-6 mt-12 border-t border-slate-800">
+            <div class="max-w-7xl mx-auto px-4 text-center space-y-1.5">
+                <p class="font-bold text-slate-400">Ban Quản Tị / Ban Tổ Chức Hội Nghị Nhà Chung Cư Ecohome Nhơn Bình 2026</p>
+                <p class="text-slate-600">Tổng diện tích căn hộ tính toán chính xác gốc: 27.734,30 m²</p>
             </div>
         </footer>
 
-    </div><!-- END PUBLIC VIEW CONTAINER -->
+    </div><!-- END PUBLIC VIEW -->
 
-    <!-- DEDICATED FULL-PAGE STANDALONE ADMIN VIEW (TRANG QUẢN TRỊ ADMIN ĐỘC LẬP) -->
-    <div id="admin-page-view" class="hidden min-h-screen w-full flex-col bg-slate-100 text-slate-800 z-50">
-        <!-- Dedicated Admin Header Bar -->
-        <header class="bg-gradient-to-r from-slate-900 via-teal-950 to-slate-900 text-white shadow-lg sticky top-0 z-30">
-            <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-4 flex flex-col sm:flex-row items-center justify-between gap-4">
-                <div class="flex items-center space-x-3">
-                    <div class="bg-emerald-500/20 p-2.5 rounded-xl border border-emerald-500/30">
-                        <i class="fa-solid fa-user-shield text-2xl text-emerald-400"></i>
+    <div id="admin-page-view" class="hidden min-h-screen w-full flex-col bg-slate-950 text-slate-100 z-50">
+        <!-- Admin Navigation Header -->
+        <header class="glass-card sticky top-0 z-30 border-b border-slate-800 shadow-xl">
+            <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-3.5 flex flex-col sm:flex-row items-center justify-between gap-4">
+                <div class="flex items-center space-x-3.5">
+                    <div class="bg-gradient-to-br from-emerald-500 to-teal-700 p-2.5 rounded-2xl shadow-lg border border-emerald-400/30">
+                        <i class="fa-solid fa-user-shield text-xl text-white"></i>
                     </div>
                     <div>
                         <div class="flex items-center space-x-2">
-                            <span class="px-2.5 py-0.5 rounded-full text-xs font-semibold bg-emerald-500/30 text-emerald-200 border border-emerald-400/30">Trang Quản Trị Admin Độc Lập</span>
-                            <span id="admin-sync-badge" class="text-xs text-teal-200/80"><i class="fa-solid fa-cloud text-emerald-300 mr-1"></i>Firebase Cloud Realtime</span>
+                            <span class="px-2.5 py-0.5 rounded-full text-[11px] font-bold bg-emerald-500/20 text-emerald-300 border border-emerald-500/30 uppercase">Trang Quản Trị Admin</span>
+                            <span id="admin-sync-badge" class="text-xs text-teal-300/80"><i class="fa-solid fa-cloud text-emerald-400 mr-1"></i>Firebase Cloud Sync</span>
                         </div>
-                        <h1 class="text-lg md:text-xl font-extrabold tracking-tight text-white mt-0.5">
+                        <h1 class="text-base sm:text-lg font-black tracking-tight text-white mt-0.5">
                             NHÀ CHUNG CƯ ECOHOME NHƠN BÌNH 2026
                         </h1>
                     </div>
                 </div>
 
-                <div class="flex items-center gap-2">
-                    <button id="admin-logout-btn" onclick="handleAdminLogout()" class="hidden px-3.5 py-2 bg-rose-500/20 hover:bg-rose-500/30 text-rose-200 rounded-xl text-xs font-bold transition border border-rose-500/30 flex items-center gap-1.5" title="Đăng xuất khỏi phiên Admin">
+                <div class="flex items-center gap-2.5">
+                    <button id="admin-logout-btn" onclick="handleAdminLogout()" class="hidden px-3.5 py-2 bg-rose-500/20 hover:bg-rose-500/30 text-rose-300 rounded-xl text-xs font-bold transition border border-rose-500/30 flex items-center gap-1.5 shadow-sm">
                         <i class="fa-solid fa-right-from-bracket"></i>
                         <span>Đăng Xuất</span>
                     </button>
-                    <button onclick="closeAdminView()" class="px-4 py-2 bg-white/10 hover:bg-white/20 text-white rounded-xl text-xs font-bold transition border border-white/20 flex items-center gap-2 shadow-sm">
-                        <i class="fa-solid fa-arrow-left text-amber-300"></i>
+                    <button onclick="closeAdminView()" class="px-4 py-2 bg-slate-800 hover:bg-slate-700 text-white rounded-xl text-xs font-bold transition border border-slate-700 flex items-center gap-2 shadow-sm">
+                        <i class="fa-solid fa-arrow-left text-amber-400"></i>
                         <span>Quay Về Trang Công Cộng</span>
                     </button>
                 </div>
             </div>
         </header>
 
-        <!-- Admin Content Area -->
         <div class="flex-1 max-w-7xl w-full mx-auto px-4 sm:px-6 lg:px-8 py-6 space-y-6">
 
-            <!-- STATE 1: AUTHENTICATION FORM -->
-            <div id="admin-auth-view" class="max-w-md mx-auto my-12 bg-white p-8 rounded-3xl border border-slate-200/80 shadow-xl text-center space-y-5">
-                <div class="w-16 h-16 bg-emerald-50 text-emerald-600 rounded-2xl flex items-center justify-center mx-auto text-2xl border border-emerald-100 shadow-inner">
+            <!-- ADMIN AUTHENTICATION FORM -->
+            <div id="admin-auth-view" class="max-w-md mx-auto my-12 glass-card p-8 rounded-3xl border border-slate-800 shadow-2xl text-center space-y-5">
+                <div class="w-16 h-16 bg-emerald-500/20 text-emerald-400 rounded-2xl flex items-center justify-center mx-auto text-2xl border border-emerald-500/30 shadow-inner">
                     <i class="fa-solid fa-lock"></i>
                 </div>
                 <div>
-                    <h4 class="font-bold text-slate-800 text-lg">Yêu Cầu Mật Khẩu Admin</h4>
-                    <p class="text-xs text-slate-500 mt-1">Vui lòng nhập mật khẩu quản trị viên để mở khóa bảng điều khiển trang.</p>
+                    <h4 class="font-black text-white text-lg">Đăng Nhập Quản Trị Viên</h4>
+                    <p class="text-xs text-slate-400 mt-1">Vui lòng nhập mật khẩu Admin để mở khóa hệ thống quản lý.</p>
                 </div>
 
                 <form onsubmit="handleAdminLogin(event)" class="space-y-4 pt-2">
                     <div class="relative flex items-center">
                         <input type="password" id="admin-pass-input" placeholder="Nhập mật khẩu (xxxx)..." required enterkeyhint="go" autocomplete="current-password"
-                            class="w-full pl-4 pr-12 py-3 text-center text-sm font-semibold tracking-wider bg-slate-50 border border-slate-300 rounded-xl focus:ring-2 focus:ring-emerald-500 focus:bg-white outline-none transition shadow-sm">
-                        <button type="button" onclick="togglePasswordVisibility()" class="absolute right-3 text-slate-400 hover:text-slate-600 active:text-emerald-600 focus:outline-none p-2 text-sm transition" title="Ẩn/Hiện mật khẩu">
+                            class="w-full pl-4 pr-12 py-3 text-center text-sm font-bold tracking-wider bg-slate-900 border border-slate-700 rounded-xl focus:ring-2 focus:ring-emerald-500 focus:bg-slate-950 text-white outline-none transition shadow-inner">
+                        <button type="button" onclick="togglePasswordVisibility()" class="absolute right-3 text-slate-400 hover:text-slate-200 active:text-emerald-400 focus:outline-none p-2 text-sm transition" title="Ẩn/Hiện mật khẩu">
                             <i id="toggle-pass-icon" class="fa-solid fa-eye-slash"></i>
                         </button>
                     </div>
 
                     <!-- Remember session checkbox -->
-                    <div class="flex items-center justify-center gap-2 text-xs text-slate-600">
-                        <input type="checkbox" id="remember-session-chk" checked class="w-4 h-4 text-emerald-600 rounded border-slate-300 focus:ring-emerald-500 cursor-pointer">
+                    <div class="flex items-center justify-center gap-2 text-xs text-slate-300">
+                        <input type="checkbox" id="remember-session-chk" checked class="w-4 h-4 text-emerald-500 rounded border-slate-700 bg-slate-900 focus:ring-emerald-500 cursor-pointer">
                         <label for="remember-session-chk" class="cursor-pointer select-none font-medium">Ghi nhớ phiên đăng nhập trên thiết bị này</label>
                     </div>
 
-                    <div id="auth-error-msg" class="text-xs text-rose-600 font-semibold hidden flex items-center justify-center gap-1">
+                    <div id="auth-error-msg" class="text-xs text-rose-400 font-semibold hidden flex items-center justify-center gap-1">
                         <i class="fa-solid fa-circle-exclamation"></i> Mật khẩu không chính xác!
                     </div>
-                    <button type="submit" class="w-full py-3 bg-emerald-600 hover:bg-emerald-700 active:bg-emerald-800 text-white font-semibold rounded-xl text-sm transition shadow-md flex items-center justify-center gap-2">
+                    <button type="submit" class="w-full py-3 bg-gradient-to-r from-emerald-500 to-teal-600 hover:from-emerald-600 hover:to-teal-700 text-white font-bold rounded-xl text-sm transition shadow-lg shadow-emerald-500/20 flex items-center justify-center gap-2">
                         <span>Xác Nhận Đăng Nhập</span>
                         <i class="fa-solid fa-arrow-right text-xs"></i>
                     </button>
                 </form>
             </div>
 
-            <!-- STATE 2: ADMIN PANEL DASHBOARD -->
             <div id="admin-panel-view" class="hidden space-y-6">
                 
-                <!-- Smart Admin Summary Overview Header -->
-                <div id="admin-summary-overview" class="bg-gradient-to-r from-slate-900 via-teal-900 to-slate-900 rounded-2xl p-5 text-white shadow-md border border-teal-800/50 flex flex-col md:flex-row items-center justify-between gap-4">
+                <!-- Smart Admin Summary Header Bar -->
+                <div id="admin-summary-overview" class="glass-card rounded-2xl p-5 text-white shadow-xl border border-slate-800 flex flex-col md:flex-row items-center justify-between gap-4">
                     <div class="flex items-center gap-4">
-                        <div class="w-12 h-12 rounded-2xl bg-emerald-500/20 border border-emerald-400/30 flex items-center justify-center text-emerald-300 text-xl shrink-0">
+                        <div class="w-12 h-12 rounded-2xl bg-emerald-500/20 border border-emerald-500/30 flex items-center justify-center text-emerald-400 text-xl shrink-0">
                             <i class="fa-solid fa-chart-line"></i>
                         </div>
                         <div>
                             <div class="flex items-center gap-2">
-                                <span class="text-xs text-teal-200 font-semibold uppercase tracking-wider">Tổng Quan Tiến Độ Realtime</span>
-                                <span id="admin-summary-badge" class="px-2.5 py-0.5 rounded-full text-[11px] font-bold bg-amber-500/20 text-amber-300 border border-amber-400/30">Chưa đạt 50%</span>
+                                <span class="text-xs text-teal-300 font-bold uppercase tracking-wider">Tổng Quan Tiến Độ Realtime</span>
+                                <span id="admin-summary-badge" class="px-2.5 py-0.5 rounded-full text-[11px] font-bold bg-amber-500/20 text-amber-300 border border-amber-500/30">Chưa đạt 50%</span>
                             </div>
                             <div class="flex items-baseline gap-2 mt-1">
-                                <span id="admin-summary-percent" class="text-3xl font-black text-emerald-400">0.00%</span>
-                                <span id="admin-summary-area" class="text-xs text-slate-300">(0.00 / 27.734,30 m²)</span>
+                                <span id="admin-summary-percent" class="text-3xl font-black text-emerald-400 font-mono">0.00%</span>
+                                <span id="admin-summary-area" class="text-xs text-slate-400">(0.00 / 27.734,30 m²)</span>
                             </div>
                         </div>
                     </div>
 
                     <div class="flex items-center gap-2 w-full md:w-auto overflow-x-auto pb-1 md:pb-0">
-                        <button onclick="switchAdminTab('quick-check')" class="px-3 py-2 bg-emerald-500/20 hover:bg-emerald-500/30 border border-emerald-500/30 text-emerald-200 rounded-xl text-xs font-bold transition whitespace-nowrap flex items-center gap-1.5">
-                            <i class="fa-solid fa-bolt text-amber-300"></i> Điểm danh nhanh
+                        <button onclick="exportApartmentsToExcel()" class="px-3.5 py-2 bg-emerald-600 hover:bg-emerald-700 border border-emerald-500/30 text-white rounded-xl text-xs font-bold transition whitespace-nowrap flex items-center gap-1.5 shadow-sm">
+                            <i class="fa-solid fa-file-excel text-emerald-300"></i> Xuất Excel
                         </button>
-                        <button onclick="exportApartmentsToExcel()" class="px-3 py-2 bg-white/10 hover:bg-white/20 border border-white/20 text-white rounded-xl text-xs font-bold transition whitespace-nowrap flex items-center gap-1.5">
-                            <i class="fa-solid fa-file-excel text-emerald-400"></i> Xuất Excel
+                        <button onclick="switchAdminTab('stats')" class="px-3.5 py-2 bg-slate-800 hover:bg-slate-700 border border-slate-700 text-white rounded-xl text-xs font-bold transition whitespace-nowrap flex items-center gap-1.5 shadow-sm">
+                            <i class="fa-solid fa-building text-indigo-400"></i> Xem theo Khối Tòa
                         </button>
-                        <button onclick="switchAdminTab('stats')" class="px-3 py-2 bg-white/10 hover:bg-white/20 border border-white/20 text-white rounded-xl text-xs font-bold transition whitespace-nowrap flex items-center gap-1.5">
-                            <i class="fa-solid fa-building text-indigo-300"></i> Xem theo Tòa
+                        <button onclick="switchAdminTab('manage')" class="px-3.5 py-2 bg-slate-800 hover:bg-slate-700 border border-slate-700 text-white rounded-xl text-xs font-bold transition whitespace-nowrap flex items-center gap-1.5 shadow-sm">
+                            <i class="fa-solid fa-list-check text-amber-400"></i> Quản Lý Căn Hộ
                         </button>
                     </div>
                 </div>
 
-                <!-- Admin Tabs Navigation -->
-                <div class="flex border border-slate-200 bg-white p-2 rounded-2xl shadow-sm text-xs font-bold text-slate-500 gap-2 overflow-x-auto">
-                    <button onclick="switchAdminTab('import')" id="tab-btn-import" class="py-2.5 px-4 border-b-2 border-emerald-600 text-emerald-600 flex items-center gap-2 bg-emerald-50/50 rounded-xl">
+                <div class="flex border border-slate-800 bg-slate-900/80 p-2 rounded-2xl shadow-sm text-xs font-bold text-slate-400 gap-2 overflow-x-auto">
+                    <button onclick="switchAdminTab('import')" id="tab-btn-import" class="py-2.5 px-4 border-b-2 border-emerald-500 text-emerald-400 flex items-center gap-2 bg-emerald-500/10 rounded-xl">
                         <i class="fa-solid fa-file-import"></i> Nạp Dữ Liệu (Excel/Paste)
                     </button>
-                    <button onclick="switchAdminTab('quick-check')" id="tab-btn-quick-check" class="py-2.5 px-4 border-b-2 border-transparent hover:text-slate-700 flex items-center gap-2 rounded-xl transition">
-                        <i class="fa-solid fa-bolt text-amber-500"></i> Điểm Danh Hàng Loạt
+                    <button onclick="switchAdminTab('manual-add')" id="tab-btn-manual-add" class="py-2.5 px-4 border-b-2 border-transparent hover:text-white flex items-center gap-2 rounded-xl transition">
+                        <i class="fa-solid fa-calculator text-blue-400"></i> Cộng Dồn Thủ Công
                     </button>
-                    <button onclick="switchAdminTab('manual-add')" id="tab-btn-manual-add" class="py-2.5 px-4 border-b-2 border-transparent hover:text-slate-700 flex items-center gap-2 rounded-xl transition">
-                        <i class="fa-solid fa-calculator text-blue-500"></i> Cộng Dồn Thủ Công
+                    <button onclick="switchAdminTab('stats')" id="tab-btn-stats" class="py-2.5 px-4 border-b-2 border-transparent hover:text-white flex items-center gap-2 rounded-xl transition">
+                        <i class="fa-solid fa-chart-pie text-indigo-400"></i> Thống Kê Theo Khối Tòa
                     </button>
-                    <button onclick="switchAdminTab('stats')" id="tab-btn-stats" class="py-2.5 px-4 border-b-2 border-transparent hover:text-slate-700 flex items-center gap-2 rounded-xl transition">
-                        <i class="fa-solid fa-chart-pie text-indigo-500"></i> Thống Kê Theo Tòa
-                    </button>
-                    <button onclick="switchAdminTab('manage')" id="tab-btn-manage" class="py-2.5 px-4 border-b-2 border-transparent hover:text-slate-700 flex items-center gap-2 rounded-xl transition">
-                        <i class="fa-solid fa-list-check"></i> Quản Lý Căn Hộ
+                    <button onclick="switchAdminTab('manage')" id="tab-btn-manage" class="py-2.5 px-4 border-b-2 border-transparent hover:text-white flex items-center gap-2 rounded-xl transition">
+                        <i class="fa-solid fa-list-check text-amber-400"></i> Quản Lý Căn Hộ
                     </button>
                 </div>
 
                 <!-- TAB 1: UPLOAD & IMPORT DATA -->
-                <div id="tab-content-import" class="bg-white p-6 rounded-2xl border border-slate-200/80 shadow-sm space-y-5">
+                <div id="tab-content-import" class="glass-card p-6 rounded-2xl border border-slate-800 shadow-xl space-y-5">
                     
-                    <!-- Quick Full Dataset Loader -->
-                    <div class="bg-emerald-50/90 border border-emerald-200 rounded-2xl p-4 flex flex-col sm:flex-row items-center justify-between gap-3 shadow-sm">
+                    <!-- Quick Full Ecohome Dataset Loader -->
+                    <div class="bg-emerald-950/60 border border-emerald-500/30 rounded-2xl p-4 flex flex-col sm:flex-row items-center justify-between gap-3 shadow-inner">
                         <div class="flex items-center gap-3">
-                            <div class="w-10 h-10 rounded-xl bg-emerald-600 text-white flex items-center justify-center shrink-0 font-bold text-lg">
+                            <div class="w-10 h-10 rounded-xl bg-emerald-600 text-white flex items-center justify-center shrink-0 font-bold text-lg shadow-md">
                                 <i class="fa-solid fa-database"></i>
                             </div>
                             <div>
-                                <h5 class="font-bold text-slate-800 text-xs sm:text-sm">Nạp Danh Sách Căn Hộ Chuẩn Ecohome (27.734,30 m²)</h5>
-                                <p class="text-[11px] text-slate-500">Tự động tạo bộ danh sách đầy đủ căn hộ các khối NO1 - NO5 với tổng diện tích chính xác 100% (27.734,30 m²).</p>
+                                <h5 class="font-bold text-white text-xs sm:text-sm">Nạp Danh Sách Full Căn Hộ Ecohome Nhơn Bình (27.734,30 m²)</h5>
+                                <p class="text-[11px] text-slate-400">Tự động khởi tạo toàn bộ danh sách các Khối B1 - B5 với tổng diện tích chính xác 100%.</p>
                             </div>
                         </div>
-                        <button onclick="loadFullEcohomeDataset(true)" class="px-4 py-2 bg-emerald-600 hover:bg-emerald-700 text-white text-xs font-bold rounded-xl shadow transition whitespace-nowrap">
+                        <button onclick="loadFullEcohomeDataset(true)" class="px-4 py-2 bg-emerald-600 hover:bg-emerald-500 text-white text-xs font-bold rounded-xl shadow-lg transition whitespace-nowrap">
                             <i class="fa-solid fa-cloud-arrow-down mr-1.5"></i> Nạp Toàn Bộ
                         </button>
                     </div>
 
                     <!-- Option A: Upload Excel/CSV File -->
-                    <div class="border-2 border-dashed border-slate-300 hover:border-emerald-500 rounded-2xl p-6 text-center bg-slate-50 hover:bg-emerald-50/30 transition cursor-pointer relative group"
+                    <div class="border-2 border-dashed border-slate-700 hover:border-emerald-500 rounded-2xl p-6 text-center bg-slate-900/50 hover:bg-slate-900/90 transition cursor-pointer relative group"
                          onclick="document.getElementById('excel-file-input').click()">
                         <input type="file" id="excel-file-input" accept=".xlsx, .xls, .csv" class="hidden" onchange="handleFileUpload(event)">
-                        <div class="w-12 h-12 bg-emerald-100 text-emerald-600 rounded-full flex items-center justify-center mx-auto mb-3 text-xl group-hover:scale-110 transition">
+                        <div class="w-12 h-12 bg-emerald-500/20 text-emerald-400 rounded-full flex items-center justify-center mx-auto mb-3 text-xl group-hover:scale-110 transition border border-emerald-500/30">
                             <i class="fa-solid fa-file-excel"></i>
                         </div>
-                        <h5 class="font-bold text-slate-800 text-sm">Tải Lên File Excel (.xlsx, .csv)</h5>
-                        <p class="text-xs text-slate-500 mt-1 max-w-sm mx-auto">
-                            Tự động quét các cột: <strong class="text-slate-700">Mã Căn Hộ</strong> và <strong class="text-slate-700">Diện Tích</strong> trong bảng tính của bạn.
+                        <h5 class="font-bold text-white text-sm">Tải Lên File Excel (.xlsx, .csv)</h5>
+                        <p class="text-xs text-slate-400 mt-1 max-w-sm mx-auto">
+                            Tự động quét các cột: <strong class="text-emerald-300">Mã Căn Hộ</strong> và <strong class="text-emerald-300">Diện Tích</strong> từ file bảng tính.
                         </p>
-                        <span class="inline-block mt-3 px-3 py-1 bg-white border border-slate-200 text-slate-600 rounded-lg text-xs font-semibold shadow-sm">
+                        <span class="inline-block mt-3 px-3.5 py-1 bg-slate-800 border border-slate-700 text-slate-200 rounded-xl text-xs font-bold shadow-sm">
                             Chọn tệp từ máy tính
                         </span>
                     </div>
 
                     <div class="relative flex py-1 items-center">
-                        <div class="flex-grow border-t border-slate-200"></div>
-                        <span class="flex-shrink mx-4 text-slate-400 text-xs font-bold uppercase">Hoặc Dán Trực Tiếp Văn Bản</span>
-                        <div class="flex-grow border-t border-slate-200"></div>
+                        <div class="flex-grow border-t border-slate-800"></div>
+                        <span class="flex-shrink mx-4 text-slate-500 text-xs font-bold uppercase">Hoặc Dán Trực Tiếp Văn Bản</span>
+                        <div class="flex-grow border-t border-slate-800"></div>
                     </div>
 
                     <!-- Option B: Paste Textarea -->
                     <div class="space-y-2">
-                        <label class="block text-xs font-bold text-slate-700">
-                            Dán danh sách Mã căn & Diện tích (Định dạng: MãCăn, DiệnTích):
+                        <label class="block text-xs font-bold text-slate-300">
+                            Dán danh sách Mã căn & Diện tích (Ví dụ định dạng: MãCăn, DiệnTích):
                         </label>
-                        <textarea id="paste-import-input" rows="5" placeholder="Ví dụ copy từ Excel:&#10;A1-01, 68.5&#10;A1-02, 72.3&#10;A1-03, 55.0"
-                            class="w-full p-3 text-xs font-mono bg-slate-50 border border-slate-300 rounded-xl focus:ring-2 focus:ring-emerald-500 focus:bg-white outline-none"></textarea>
+                        <textarea id="paste-import-input" rows="5" placeholder="Ví dụ copy từ Excel:&#10;B1-0101, 68.5&#10;B1-0102, 72.3&#10;B2-0205, 55.0"
+                            class="w-full p-3 text-xs font-mono bg-slate-900 border border-slate-700 rounded-xl focus:ring-2 focus:ring-emerald-500 text-white outline-none transition"></textarea>
                         <div class="flex items-center justify-between">
-                            <span class="text-[11px] text-slate-400">Chấp nhận ngăn cách bởi Dấu phẩy (,), Tab, hoặc Dấu gạch đứng (|)</span>
-                            <button onclick="handlePasteImport()" class="px-4 py-2 bg-emerald-600 hover:bg-emerald-700 text-white font-semibold rounded-lg text-xs shadow transition">
+                            <span class="text-[11px] text-slate-500">Chấp nhận phân cách bởi Dấu phẩy (,), Tab, hoặc Dấu gạch đứng (|)</span>
+                            <button onclick="handlePasteImport()" class="px-4 py-2 bg-emerald-600 hover:bg-emerald-500 text-white font-bold rounded-xl text-xs shadow transition">
                                 <i class="fa-solid fa-circle-plus mr-1"></i> Nạp Danh Sách
                             </button>
                         </div>
                     </div>
                 </div>
 
-                <!-- TAB 2: QUICK BATCH ATTENDANCE -->
-                <div id="tab-content-quick-check" class="hidden bg-white p-6 rounded-2xl border border-slate-200/80 shadow-sm space-y-4">
-                    <div class="bg-amber-50 border border-amber-200 rounded-xl p-4 text-xs text-amber-800 space-y-1">
-                        <div class="font-bold flex items-center gap-1.5 text-amber-900">
-                            <i class="fa-solid fa-lightbulb text-amber-600"></i> Điểm danh hàng loạt siêu tốc theo danh sách nạp
+                <div id="tab-content-manual-add" class="hidden glass-card p-6 rounded-2xl border border-slate-800 shadow-xl space-y-5">
+                    <div class="bg-blue-950/60 border border-blue-500/30 rounded-2xl p-4 text-xs text-blue-200 space-y-1">
+                        <div class="font-bold flex items-center gap-1.5 text-blue-300 text-sm">
+                            <i class="fa-solid fa-circle-plus text-blue-400"></i> Cộng dồn diện tích / tỷ lệ % thủ công
                         </div>
-                        <p>Nhập hoặc Dán danh sách các <strong>Mã Căn Hộ</strong> đã đăng ký tham dự. Hệ thống sẽ tự động đối soát trong cơ sở dữ liệu và chuyển trạng thái hàng loạt sang Cloud.</p>
-                    </div>
-
-                    <!-- Textarea & Action buttons for Quick Batch Attendance -->
-                    <div class="space-y-3 bg-slate-50 p-4 rounded-2xl border border-slate-200">
-                        <label class="block text-xs font-bold text-slate-700">
-                            Dán danh sách Mã căn hộ (Phân cách bởi Dấu phẩy, Dấu chấm phẩy, Khoảng trắng hoặc Xuống dòng):
-                        </label>
-                        <textarea id="quick-check-input" rows="6" placeholder="Ví dụ copy từ danh sách Excel:&#10;NO1-0101, NO1-0102&#10;NO2-0305 NO2-0306&#10;NO3-0508; NO4-0809" 
-                            class="w-full p-3 text-xs font-mono bg-white border border-slate-300 rounded-xl focus:ring-2 focus:ring-amber-500 focus:border-amber-500 outline-none transition"></textarea>
-                        
-                        <div class="flex flex-col sm:flex-row items-center justify-between gap-3 pt-1">
-                            <div class="text-[11px] text-slate-500 flex items-center gap-1">
-                                <i class="fa-solid fa-circle-info text-amber-600"></i>
-                                <span>Hệ thống tự động lọc mã trùng và áp dụng ngay trên Cloud.</span>
-                            </div>
-                            <div class="flex items-center gap-2 w-full sm:w-auto">
-                                <button onclick="executeQuickAttendance(false)" class="flex-1 sm:flex-none px-3 py-2 bg-slate-200 hover:bg-slate-300 text-slate-700 font-semibold rounded-xl text-xs transition">
-                                    <i class="fa-solid fa-user-xmark mr-1"></i>Hủy Điểm Danh
-                                </button>
-                                <button onclick="executeQuickAttendance(true)" class="flex-1 sm:flex-none px-4 py-2 bg-amber-500 hover:bg-amber-600 text-white font-bold rounded-xl text-xs shadow transition flex items-center justify-center gap-1">
-                                    <i class="fa-solid fa-user-check"></i>Đánh Dấu Đã Tham Dự
-                                </button>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-
-                <!-- TAB 3: MANUAL INCREMENTAL CUMULATIVE ADDITION -->
-                <div id="tab-content-manual-add" class="hidden bg-white p-6 rounded-2xl border border-slate-200/80 shadow-sm space-y-5">
-                    <div class="bg-blue-50 border border-blue-200 rounded-2xl p-4 text-xs text-blue-900 space-y-1">
-                        <div class="font-bold flex items-center gap-1.5 text-blue-950 text-sm">
-                            <i class="fa-solid fa-circle-plus text-blue-600"></i> Cộng dồn diện tích / tỷ lệ % thủ công
-                        </div>
-                        <p class="text-slate-600">Nhập diện tích ($m^2$) hoặc tỷ lệ $\%$ đóng góp để cộng trực tiếp vào tổng tích lũy tham dự hội nghị. Hệ thống tự động quy đổi tương đương và cập nhật bảng tính.</p>
+                        <p class="text-slate-400">Nhập diện tích ($\text{m}^2$) hoặc tỷ lệ $\%$ đóng góp bổ sung để cộng trực tiếp vào tổng diện tích tích lũy. Hệ thống tự động quy đổi tương đương và lưu lên Cloud.</p>
                     </div>
 
                     <!-- Manual Add Form -->
-                    <div class="bg-slate-50 border border-slate-200 rounded-2xl p-4 space-y-4">
+                    <div class="bg-slate-900/90 border border-slate-800 rounded-2xl p-4 space-y-4">
                         <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
                             <div>
-                                <label class="block text-xs font-bold text-slate-700 mb-1">Diện tích cộng thêm (m²):</label>
+                                <label class="block text-xs font-bold text-slate-300 mb-1">Diện tích cộng thêm (m²):</label>
                                 <div class="relative">
                                     <input type="number" step="0.01" id="manual-area-input" oninput="onManualInputAreaChange()" placeholder="Ví dụ: 150.5"
-                                        class="w-full px-3 py-2 text-xs font-bold bg-white border border-slate-300 rounded-xl focus:ring-2 focus:ring-blue-500 outline-none">
-                                    <span class="absolute right-3 top-1/2 -translate-y-1/2 text-xs font-bold text-slate-400">m²</span>
+                                        class="w-full px-3 py-2 text-xs font-bold bg-slate-950 border border-slate-700 rounded-xl focus:ring-2 focus:ring-blue-500 text-white outline-none">
+                                    <span class="absolute right-3 top-1/2 -translate-y-1/2 text-xs font-bold text-slate-500">m²</span>
                                 </div>
                             </div>
                             <div>
-                                <label class="block text-xs font-bold text-slate-700 mb-1">Hoặc Tỷ lệ cộng thêm (%):</label>
+                                <label class="block text-xs font-bold text-slate-300 mb-1">Hoặc Tỷ lệ cộng thêm (%):</label>
                                 <div class="relative">
                                     <input type="number" step="0.001" id="manual-percent-input" oninput="onManualInputPercentChange()" placeholder="Ví dụ: 0.543"
-                                        class="w-full px-3 py-2 text-xs font-bold bg-white border border-slate-300 rounded-xl focus:ring-2 focus:ring-blue-500 outline-none">
-                                    <span class="absolute right-3 top-1/2 -translate-y-1/2 text-xs font-bold text-slate-400">%</span>
+                                        class="w-full px-3 py-2 text-xs font-bold bg-slate-950 border border-slate-700 rounded-xl focus:ring-2 focus:ring-blue-500 text-white outline-none">
+                                    <span class="absolute right-3 top-1/2 -translate-y-1/2 text-xs font-bold text-slate-500">%</span>
                                 </div>
                             </div>
                         </div>
 
                         <div>
-                            <label class="block text-xs font-bold text-slate-700 mb-1">Ghi chú / Nội dung lượt cộng dồn:</label>
-                            <input type="text" id="manual-note-input" placeholder="Ví dụ: Bổ sung đoàn đại diện tầng 5-10, Căn hộ bổ sung trực tiếp..."
-                                class="w-full px-3 py-2 text-xs bg-white border border-slate-300 rounded-xl focus:ring-2 focus:ring-blue-500 outline-none">
+                            <label class="block text-xs font-bold text-slate-300 mb-1">Ghi chú / Nội dung lượt cộng dồn:</label>
+                            <input type="text" id="manual-note-input" placeholder="Ví dụ: Bổ sung diện tích đại diện ủy quyền trực tiếp..."
+                                class="w-full px-3 py-2 text-xs bg-slate-950 border border-slate-700 rounded-xl focus:ring-2 focus:ring-blue-500 text-white outline-none">
                         </div>
 
-                        <button onclick="executeAddManualIncrement()" class="w-full py-2.5 bg-blue-600 hover:bg-blue-700 text-white font-bold rounded-xl text-xs transition shadow flex items-center justify-center gap-2">
+                        <button onclick="executeAddManualIncrement()" class="w-full py-2.5 bg-blue-600 hover:bg-blue-500 text-white font-bold rounded-xl text-xs transition shadow-md flex items-center justify-center gap-2">
                             <i class="fa-solid fa-plus"></i> Xác Nhận Cộng Vào Tổng Tích Lũy
                         </button>
                     </div>
@@ -539,15 +527,15 @@
                     <!-- Manual Add History Table -->
                     <div class="space-y-2">
                         <div class="flex items-center justify-between text-xs">
-                            <span class="font-bold text-slate-800">Lịch Sử Các Lượt Cộng Dồn Thủ Công:</span>
-                            <button onclick="clearAllManualIncrements()" class="text-rose-600 hover:text-rose-800 font-semibold text-[11px] flex items-center gap-1">
+                            <span class="font-bold text-slate-300">Lịch Sử Các Lượt Cộng Dồn Thủ Công:</span>
+                            <button onclick="clearAllManualIncrements()" class="text-rose-400 hover:text-rose-300 font-semibold text-[11px] flex items-center gap-1">
                                 <i class="fa-solid fa-trash-can"></i> Xóa tất cả lượt cộng
                             </button>
                         </div>
 
-                        <div class="max-h-52 overflow-y-auto border border-slate-200 rounded-xl custom-scrollbar">
-                            <table class="w-full text-left text-xs">
-                                <thead class="bg-slate-100 font-bold text-slate-600 sticky top-0 z-10">
+                        <div class="max-h-52 overflow-y-auto border border-slate-800 rounded-xl custom-scrollbar">
+                            <table class="w-full text-left text-xs text-slate-300">
+                                <thead class="bg-slate-900 font-bold text-slate-400 sticky top-0 z-10 border-b border-slate-800">
                                     <tr>
                                         <th class="p-2.5">Thời Gian</th>
                                         <th class="p-2.5">Ghi Chú</th>
@@ -556,36 +544,35 @@
                                         <th class="p-2.5 text-center">Thao Tác</th>
                                     </tr>
                                 </thead>
-                                <tbody id="manual-history-table-body" class="divide-y divide-slate-100">
-                                    <!-- Dynamic rows -->
+                                <tbody id="manual-history-table-body" class="divide-y divide-slate-800/80">
+                                    <!-- Dynamic rows populated via JS -->
                                 </tbody>
                             </table>
                         </div>
                     </div>
                 </div>
 
-                <!-- TAB 4: BLOCK STATS (NO1 - NO5 / B1 - B5) -->
-                <div id="tab-content-stats" class="hidden bg-white p-6 rounded-2xl border border-slate-200/80 shadow-sm space-y-4">
-                    <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-2 border-b border-slate-100 pb-3">
+                <div id="tab-content-stats" class="hidden glass-card p-6 rounded-2xl border border-slate-800 shadow-xl space-y-4">
+                    <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-2 border-b border-slate-800 pb-3">
                         <div>
-                            <h4 class="font-bold text-slate-800 text-sm">Thống Kê Chi Tiết Tỷ Lệ Theo Khối Tòa Nhà (Khối B1 - Khối B5)</h4>
-                            <p class="text-xs text-slate-500">Phân tích tỷ lệ tham dự thực tế của từng khối nhà trong dự án Ecohome Nhơn Bình</p>
+                            <h4 class="font-bold text-white text-sm">Thống Kê Chi Tiết Tỷ Lệ Theo Khối Tòa Nhà (Khối B1 - Khối B5)</h4>
+                            <p class="text-xs text-slate-400">Phân tích tỷ lệ tham dự thực tế của từng khối nhà trong dự án Ecohome Nhơn Bình</p>
                         </div>
-                        <span class="text-xs font-bold text-indigo-600 bg-indigo-50 px-2.5 py-1 rounded-lg border border-indigo-200 self-start sm:self-auto">
+                        <span class="text-xs font-bold text-indigo-300 bg-indigo-500/20 px-2.5 py-1 rounded-lg border border-indigo-500/30 self-start sm:self-auto">
                             Realtime Cloud Data
                         </span>
                     </div>
 
                     <!-- ADMIN BLOCK RENAMING / CUSTOMIZATION PANEL -->
-                    <div class="bg-indigo-50/80 border border-indigo-200 rounded-2xl p-4 space-y-3">
+                    <div class="bg-indigo-950/50 border border-indigo-500/30 rounded-2xl p-4 space-y-3">
                         <div class="flex items-center justify-between">
                             <div>
-                                <h5 class="font-bold text-indigo-950 text-xs flex items-center gap-1.5">
-                                    <i class="fa-solid fa-pen-to-square text-indigo-600"></i> Tùy Chỉnh Tên Hiển Thị Các Khối
+                                <h5 class="font-bold text-indigo-300 text-xs flex items-center gap-1.5">
+                                    <i class="fa-solid fa-pen-to-square text-indigo-400"></i> Tùy Chỉnh Tên Hiển Thị Các Khối
                                 </h5>
-                                <p class="text-[11px] text-indigo-700">Chỉnh sửa tên gọi hiển thị của từng khối (VD: Khối B1, Khối B2...) và lưu lên Cloud.</p>
+                                <p class="text-[11px] text-slate-400">Chỉnh sửa tên gọi hiển thị của từng khối (VD: Khối B1, Khối B2...) và lưu lên Cloud.</p>
                             </div>
-                            <button onclick="saveCustomBlockNames()" class="px-3.5 py-1.5 bg-indigo-600 hover:bg-indigo-700 text-white rounded-xl text-xs font-bold transition shadow-sm flex items-center gap-1.5 shrink-0">
+                            <button onclick="saveCustomBlockNames()" class="px-3.5 py-1.5 bg-indigo-600 hover:bg-indigo-500 text-white rounded-xl text-xs font-bold transition shadow-sm flex items-center gap-1.5 shrink-0">
                                 <i class="fa-solid fa-floppy-disk"></i> Lưu Tên Khối
                             </button>
                         </div>
@@ -599,50 +586,49 @@
                     </div>
                 </div>
 
-                <!-- TAB 5: MANAGE INDIVIDUAL APARTMENTS -->
-                <div id="tab-content-manage" class="hidden bg-white p-6 rounded-2xl border border-slate-200/80 shadow-sm space-y-4">
+                <div id="tab-content-manage" class="hidden glass-card p-6 rounded-2xl border border-slate-800 shadow-xl space-y-4">
                     <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-2 text-xs">
                         <div class="flex items-center gap-2">
-                            <span class="font-bold text-slate-700">Danh sách căn hộ:</span>
-                            <span id="admin-table-count" class="text-emerald-700 font-bold bg-emerald-50 px-2 py-0.5 rounded border border-emerald-200">(0 căn)</span>
+                            <span class="font-bold text-slate-300">Danh sách căn hộ:</span>
+                            <span id="admin-table-count" class="text-emerald-400 font-bold bg-emerald-500/10 px-2 py-0.5 rounded border border-emerald-500/20">(0 căn)</span>
                         </div>
                         <div class="flex items-center gap-3">
-                            <button onclick="exportApartmentsToExcel()" class="px-3 py-1.5 bg-emerald-600 hover:bg-emerald-700 text-white font-bold rounded-lg text-xs transition shadow-sm flex items-center gap-1.5">
+                            <button onclick="exportApartmentsToExcel()" class="px-3 py-1.5 bg-emerald-600 hover:bg-emerald-500 text-white font-bold rounded-xl text-xs transition shadow flex items-center gap-1.5">
                                 <i class="fa-solid fa-file-excel text-sm"></i> Xuất File Excel
                             </button>
-                            <button onclick="requestClearAllData()" class="text-rose-600 hover:text-rose-800 font-semibold flex items-center gap-1">
+                            <button onclick="requestClearAllData()" class="text-rose-400 hover:text-rose-300 font-semibold flex items-center gap-1">
                                 <i class="fa-solid fa-trash-can"></i> Xóa toàn bộ dữ liệu Cloud
                             </button>
                         </div>
                     </div>
 
-                    <!-- Admin Search & Multi-Filter Toolbar -->
-                    <div class="grid grid-cols-1 sm:grid-cols-12 gap-2 bg-slate-50 p-3 rounded-xl border border-slate-200">
+                    <!-- Admin Search & Filter Toolbar -->
+                    <div class="grid grid-cols-1 sm:grid-cols-12 gap-2 bg-slate-900/90 p-3 rounded-2xl border border-slate-800">
                         <!-- Search Input -->
                         <div class="sm:col-span-5 relative">
-                            <i class="fa-solid fa-magnifying-glass absolute left-3 top-1/2 -translate-y-1/2 text-slate-400 text-xs"></i>
-                            <input type="text" id="admin-search-input" oninput="renderAdminTable()" placeholder="Tìm mã căn (VD: NO1-0101, 0203)..." 
-                                class="w-full pl-8 pr-8 py-1.5 text-xs bg-white border border-slate-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-emerald-500/20 focus:border-emerald-500 transition font-medium">
-                            <button onclick="clearAdminSearch()" class="absolute right-2.5 top-1/2 -translate-y-1/2 text-slate-400 hover:text-slate-600 text-xs" title="Xóa từ khóa tìm kiếm">
+                            <i class="fa-solid fa-magnifying-glass absolute left-3 top-1/2 -translate-y-1/2 text-slate-500 text-xs"></i>
+                            <input type="text" id="admin-search-input" oninput="renderAdminTable()" placeholder="Tìm mã căn (VD: B1-0101, 0203)..." 
+                                class="w-full pl-8 pr-8 py-2 text-xs bg-slate-950 border border-slate-700 rounded-xl focus:outline-none focus:ring-2 focus:ring-emerald-500 text-white transition font-medium">
+                            <button onclick="clearAdminSearch()" class="absolute right-2.5 top-1/2 -translate-y-1/2 text-slate-500 hover:text-slate-300 text-xs" title="Xóa từ khóa tìm kiếm">
                                 <i class="fa-solid fa-xmark"></i>
                             </button>
                         </div>
 
                         <!-- Filter Building Dropdown -->
                         <div class="sm:col-span-2">
-                            <select id="admin-filter-building" onchange="renderAdminTable()" class="w-full text-xs py-1.5 px-2 bg-white border border-slate-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-emerald-500/20 focus:border-emerald-500 transition font-semibold text-slate-700">
-                                <option value="all">Tất cả Tòa</option>
-                                <option value="NO1">Tòa NO1</option>
-                                <option value="NO2">Tòa NO2</option>
-                                <option value="NO3">Tòa NO3</option>
-                                <option value="NO4">Tòa NO4</option>
-                                <option value="NO5">Tòa NO5</option>
+                            <select id="admin-filter-building" onchange="renderAdminTable()" class="w-full text-xs py-2 px-2 bg-slate-950 border border-slate-700 rounded-xl focus:outline-none focus:ring-2 focus:ring-emerald-500 transition font-bold text-slate-200">
+                                <option value="all">Tất cả Khối</option>
+                                <option value="B1">Khối B1</option>
+                                <option value="B2">Khối B2</option>
+                                <option value="B3">Khối B3</option>
+                                <option value="B4">Khối B4</option>
+                                <option value="B5">Khối B5</option>
                             </select>
                         </div>
 
                         <!-- Filter Status Dropdown -->
                         <div class="sm:col-span-2">
-                            <select id="admin-filter-status" onchange="renderAdminTable()" class="w-full text-xs py-1.5 px-2 bg-white border border-slate-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-emerald-500/20 focus:border-emerald-500 transition font-semibold text-slate-700">
+                            <select id="admin-filter-status" onchange="renderAdminTable()" class="w-full text-xs py-2 px-2 bg-slate-950 border border-slate-700 rounded-xl focus:outline-none focus:ring-2 focus:ring-emerald-500 transition font-bold text-slate-200">
                                 <option value="all">Tất cả trạng thái</option>
                                 <option value="attended">Đã tham dự</option>
                                 <option value="absent">Chưa tham dự</option>
@@ -650,56 +636,57 @@
                         </div>
 
                         <!-- Quick Action Toggle Buttons -->
-                        <div class="sm:col-span-3 flex items-center gap-1">
-                            <button onclick="toggleAllVisibleAdmin(true)" class="flex-1 py-1.5 px-2 bg-emerald-600 hover:bg-emerald-700 text-white rounded-lg text-[11px] font-bold transition shadow-sm flex items-center justify-center gap-1 whitespace-nowrap" title="Tích chọn tất cả danh sách đang hiển thị">
+                        <div class="sm:col-span-3 flex items-center gap-1.5">
+                            <button onclick="toggleAllVisibleAdmin(true)" class="flex-1 py-2 px-2 bg-emerald-600 hover:bg-emerald-500 text-white rounded-xl text-[11px] font-bold transition shadow flex items-center justify-center gap-1 whitespace-nowrap" title="Tích chọn tất cả danh sách đang hiển thị">
                                 <i class="fa-solid fa-check-double text-xs"></i>Tích hết
                             </button>
-                            <button onclick="toggleAllVisibleAdmin(false)" class="flex-1 py-1.5 px-2 bg-slate-200 hover:bg-slate-300 text-slate-700 rounded-lg text-[11px] font-bold transition flex items-center justify-center gap-1 whitespace-nowrap" title="Bỏ tích chọn tất cả danh sách đang hiển thị">
+                            <button onclick="toggleAllVisibleAdmin(false)" class="flex-1 py-2 px-2 bg-slate-800 hover:bg-slate-700 text-slate-300 rounded-xl text-[11px] font-bold transition border border-slate-700 flex items-center justify-center gap-1 whitespace-nowrap" title="Bỏ tích chọn tất cả danh sách đang hiển thị">
                                 <i class="fa-solid fa-rotate-left text-xs"></i>Bỏ hết
                             </button>
-                            <button onclick="invertVisibleAdmin()" class="py-1.5 px-2.5 bg-indigo-100 hover:bg-indigo-200 text-indigo-700 rounded-lg text-[11px] font-bold transition flex items-center justify-center gap-1 whitespace-nowrap" title="Đảo trạng thái danh sách đang chọn">
+                            <button onclick="invertVisibleAdmin()" class="py-2 px-2.5 bg-indigo-950 hover:bg-indigo-900 text-indigo-300 border border-indigo-500/30 rounded-xl text-[11px] font-bold transition flex items-center justify-center gap-1 whitespace-nowrap" title="Đảo trạng thái danh sách đang chọn">
                                 <i class="fa-solid fa-right-left text-xs"></i>Đảo chọn
                             </button>
                         </div>
                     </div>
 
                     <!-- Quick Filter Chips Bar -->
-                    <div class="flex items-center gap-1.5 overflow-x-auto pb-1 text-xs">
-                        <span class="text-slate-400 font-semibold text-[11px] shrink-0 mr-1">Lọc nhanh:</span>
-                        <button onclick="setAdminQuickFilter('all', 'all')" class="px-2.5 py-1 bg-slate-200 hover:bg-slate-300 text-slate-700 rounded-lg font-bold text-[11px] transition shrink-0">
+                    <div class="flex items-center gap-2 overflow-x-auto pb-1 text-xs">
+                        <span class="text-slate-500 font-bold text-[11px] shrink-0 mr-1">Lọc nhanh:</span>
+                        <button onclick="setAdminQuickFilter('all', 'all')" class="px-3 py-1 bg-slate-800 hover:bg-slate-700 text-slate-300 rounded-xl font-bold text-[11px] border border-slate-700 transition shrink-0">
                             Tất cả
                         </button>
-                        <button onclick="setAdminQuickFilter('NO1', 'all')" class="px-2.5 py-1 bg-teal-50 hover:bg-teal-100 text-teal-700 border border-teal-200 rounded-lg font-bold text-[11px] transition shrink-0">
-                            Khối NO1
+                        <button onclick="setAdminQuickFilter('B1', 'all')" class="px-3 py-1 bg-teal-950/80 hover:bg-teal-900 text-teal-300 border border-teal-500/30 rounded-xl font-bold text-[11px] transition shrink-0">
+                            Khối B1
                         </button>
-                        <button onclick="setAdminQuickFilter('NO2', 'all')" class="px-2.5 py-1 bg-teal-50 hover:bg-teal-100 text-teal-700 border border-teal-200 rounded-lg font-bold text-[11px] transition shrink-0">
-                            Khối NO2
+                        <button onclick="setAdminQuickFilter('B2', 'all')" class="px-3 py-1 bg-teal-950/80 hover:bg-teal-900 text-teal-300 border border-teal-500/30 rounded-xl font-bold text-[11px] transition shrink-0">
+                            Khối B2
                         </button>
-                        <button onclick="setAdminQuickFilter('NO3', 'all')" class="px-2.5 py-1 bg-teal-50 hover:bg-teal-100 text-teal-700 border border-teal-200 rounded-lg font-bold text-[11px] transition shrink-0">
-                            Khối NO3
+                        <button onclick="setAdminQuickFilter('B3', 'all')" class="px-3 py-1 bg-teal-950/80 hover:bg-teal-900 text-teal-300 border border-teal-500/30 rounded-xl font-bold text-[11px] transition shrink-0">
+                            Khối B3
                         </button>
-                        <button onclick="setAdminQuickFilter('NO4', 'all')" class="px-2.5 py-1 bg-teal-50 hover:bg-teal-100 text-teal-700 border border-teal-200 rounded-lg font-bold text-[11px] transition shrink-0">
-                            Khối NO4
+                        <button onclick="setAdminQuickFilter('B4', 'all')" class="px-3 py-1 bg-teal-950/80 hover:bg-teal-900 text-teal-300 border border-teal-500/30 rounded-xl font-bold text-[11px] transition shrink-0">
+                            Khối B4
                         </button>
-                        <button onclick="setAdminQuickFilter('NO5', 'all')" class="px-2.5 py-1 bg-teal-50 hover:bg-teal-100 text-teal-700 border border-teal-200 rounded-lg font-bold text-[11px] transition shrink-0">
-                            Khối NO5
+                        <button onclick="setAdminQuickFilter('B5', 'all')" class="px-3 py-1 bg-teal-950/80 hover:bg-teal-900 text-teal-300 border border-teal-500/30 rounded-xl font-bold text-[11px] transition shrink-0">
+                            Khối B5
                         </button>
-                        <button onclick="setAdminQuickFilter('all', 'absent')" class="px-2.5 py-1 bg-amber-50 hover:bg-amber-100 text-amber-800 border border-amber-200 rounded-lg font-bold text-[11px] transition shrink-0">
+                        <button onclick="setAdminQuickFilter('all', 'absent')" class="px-3 py-1 bg-amber-950/80 hover:bg-amber-900 text-amber-300 border border-amber-500/30 rounded-xl font-bold text-[11px] transition shrink-0">
                             Chưa tham dự
                         </button>
                     </div>
 
-                    <div class="max-h-[500px] overflow-y-auto border border-slate-200 rounded-xl custom-scrollbar">
+                    <!-- Table Container -->
+                    <div class="max-h-[500px] overflow-y-auto border border-slate-800 rounded-2xl custom-scrollbar">
                         <table class="w-full text-left text-xs">
-                            <thead class="bg-slate-100 font-bold text-slate-600 sticky top-0 z-10 shadow-sm">
+                            <thead class="bg-slate-900 font-extrabold text-slate-400 sticky top-0 z-10 border-b border-slate-800">
                                 <tr>
-                                    <th class="p-2.5">Mã Căn</th>
-                                    <th class="p-2.5">Diện Tích (m²)</th>
-                                    <th class="p-2.5 text-center">Trạng Thái Tham Dự</th>
-                                    <th class="p-2.5 text-right">Thao Tác</th>
+                                    <th class="p-3">Mã Căn</th>
+                                    <th class="p-3">Diện Tích (m²)</th>
+                                    <th class="p-3 text-center">Trạng Thái Tham Dự</th>
+                                    <th class="p-3 text-right">Thao Tác</th>
                                 </tr>
                             </thead>
-                            <tbody id="admin-table-body" class="divide-y divide-slate-100">
+                            <tbody id="admin-table-body" class="divide-y divide-slate-800/80 text-slate-300">
                                 <!-- Dynamic Rows -->
                             </tbody>
                         </table>
@@ -709,38 +696,36 @@
             </div>
 
         </div>
-    </div>
+    </div><!-- END STANDALONE ADMIN PAGE VIEW -->
 
-    <!-- MODAL: CONFIRM DELETE DATA -->
-    <div id="confirm-modal" class="fixed inset-0 bg-slate-900/60 backdrop-blur-sm z-50 flex items-center justify-center p-4 opacity-0 pointer-events-none transition-opacity duration-300">
-        <div class="bg-white rounded-2xl shadow-2xl border border-slate-200 w-full max-w-sm p-6 text-center space-y-4 transform scale-95 transition-transform duration-300">
-            <div class="w-12 h-12 bg-rose-100 text-rose-600 rounded-full flex items-center justify-center mx-auto text-xl">
+    <div id="confirm-modal" class="fixed inset-0 bg-slate-950/80 backdrop-blur-md z-50 flex items-center justify-center p-4 opacity-0 pointer-events-none transition-opacity duration-300">
+        <div class="glass-card rounded-3xl shadow-2xl border border-slate-800 w-full max-w-sm p-6 text-center space-y-4 transform scale-95 transition-transform duration-300">
+            <div class="w-12 h-12 bg-rose-500/20 text-rose-400 rounded-2xl flex items-center justify-center mx-auto text-xl border border-rose-500/30">
                 <i class="fa-solid fa-triangle-exclamation"></i>
             </div>
             <div>
-                <h4 class="font-bold text-slate-800 text-base">Xác nhận xóa dữ liệu?</h4>
-                <p class="text-xs text-slate-500 mt-1">Toàn bộ dữ liệu căn hộ trên Cloud Firebase sẽ bị xóa vĩnh viễn. Bạn có chắc chắn muốn tiếp tục?</p>
+                <h4 class="font-bold text-white text-base">Xác nhận xóa dữ liệu?</h4>
+                <p class="text-xs text-slate-400 mt-1">Toàn bộ dữ liệu căn hộ trên Cloud Firebase sẽ bị xóa vĩnh viễn. Bạn chắc chắn muốn tiếp tục?</p>
             </div>
-            <div class="flex justify-center gap-2 pt-2">
-                <button onclick="closeConfirmModal()" class="px-4 py-2 bg-slate-100 hover:bg-slate-200 text-slate-700 font-semibold rounded-xl text-xs transition">Hủy bỏ</button>
-                <button onclick="executeClearAllData()" class="px-4 py-2 bg-rose-600 hover:bg-rose-700 text-white font-semibold rounded-xl text-xs transition shadow">Xác nhận Xóa</button>
+            <div class="flex justify-center gap-2.5 pt-2">
+                <button onclick="closeConfirmModal()" class="px-4 py-2 bg-slate-800 hover:bg-slate-700 text-slate-300 font-bold rounded-xl text-xs transition">Hủy bỏ</button>
+                <button onclick="executeClearAllData()" class="px-4 py-2 bg-rose-600 hover:bg-rose-500 text-white font-bold rounded-xl text-xs transition shadow">Xác nhận Xóa</button>
             </div>
         </div>
     </div>
 
     <!-- Notification Toast Box -->
-    <div id="toast" class="fixed bottom-5 right-5 z-50 transform translate-y-20 opacity-0 transition-all duration-300 bg-slate-900 text-white px-4 py-3 rounded-xl shadow-2xl flex items-center space-x-3 border border-slate-700 text-xs font-semibold">
+    <div id="toast" class="fixed bottom-5 right-5 z-50 transform translate-y-20 opacity-0 transition-all duration-300 bg-slate-900 text-white px-4 py-3 rounded-2xl shadow-2xl flex items-center space-x-3 border border-slate-700 text-xs font-semibold">
         <i id="toast-icon" class="fa-solid fa-circle-check text-emerald-400 text-base"></i>
         <span id="toast-msg">Thông báo...</span>
     </div>
 
-    <!-- FIREBASE REALTIME MODULE SCRIPT -->
     <script type="module">
         import { initializeApp } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-app.js";
         import { getAuth, signInAnonymously, signInWithCustomToken } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-auth.js";
         import { getFirestore, doc, setDoc, updateDoc, deleteDoc, onSnapshot, collection, writeBatch, getDocs } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-firestore.js";
 
-        // System Master Password
+        // Master Password
         const ADMIN_PASS = "215151365";
         const DEFAULT_TOTAL_AREA = 27734.30; // 27.734,3 m²
         
@@ -757,7 +742,7 @@
             'NO5': 'Khối B5'
         };
 
-        // Explicit Firebase Configuration provided by user
+        // Explicit Firebase Configuration provided
         const firebaseConfig = typeof __firebase_config !== 'undefined' ? JSON.parse(__firebase_config) : {
             apiKey: "AIzaSyAGnYd1oR19Ih9Np_Wi3v6pnvVNquvRA3A",
             authDomain: "ty-le-ecohome.firebaseapp.com",
@@ -780,7 +765,7 @@
         // Application Global State
         let state = {
             totalAreaOverride: DEFAULT_TOTAL_AREA,
-            apartments: [], // Array of { id: 'A1-01', area: 68.5, attended: false }
+            apartments: [], // Array of { id: 'B1-0101', area: 68.5, attended: false }
             manualEntries: [], // Array of { id, area, percent, note, createdAt }
             blockNames: { ...DEFAULT_BLOCK_NAMES },
             isAdminAuthenticated: false,
@@ -800,7 +785,7 @@
                     await signInAnonymously(auth);
                 }
 
-                updateSyncBadge(true, "PVC Cloud Realtime");
+                updateSyncBadge(true, "Firebase Cloud Realtime");
                 setupRealtimeListeners();
             } catch (err) {
                 console.error("Firebase auth error:", err);
@@ -812,11 +797,11 @@
             const badge = document.getElementById('sync-status-badge');
             if (!badge) return;
             if (isOnline) {
-                badge.innerHTML = `<i class="fa-solid fa-cloud text-emerald-300 mr-1"></i>${text}`;
-                badge.className = "text-xs text-emerald-200/90 font-medium";
+                badge.innerHTML = `<i class="fa-solid fa-cloud text-emerald-400 mr-1"></i>${text}`;
+                badge.className = "text-xs text-emerald-300 font-medium";
             } else {
-                badge.innerHTML = `<i class="fa-solid fa-cloud-slash text-rose-300 mr-1"></i>${text}`;
-                badge.className = "text-xs text-rose-200/90 font-medium";
+                badge.innerHTML = `<i class="fa-solid fa-cloud-slash text-rose-400 mr-1"></i>${text}`;
+                badge.className = "text-xs text-rose-300 font-medium";
             }
         }
 
@@ -833,10 +818,10 @@
                     });
                 });
 
-                // Auto initialize sample data on empty cloud DB
+                // Auto initialize dataset if cloud collection is empty
                 if (loadedList.length === 0 && !state.isInitialLoadDone) {
                     state.isInitialLoadDone = true;
-                    loadSampleDataset(false);
+                    loadFullEcohomeDataset(false);
                     return;
                 }
 
@@ -846,11 +831,11 @@
                 state.apartments = loadedList;
                 render();
             }, (error) => {
-                console.error("Apartments Realtime listener error:", error);
-                showToast("Lỗi đồng bộ dữ liệu căn hộ từ Cloud!", "error");
+                console.error("Apartments listener error:", error);
+                showToast("Lỗi đồng bộ dữ liệu căn hộ!", "error");
             });
 
-            // Realtime Listener for Global Settings & Manual Increments
+            // Realtime Listener for Settings
             onSnapshot(settingsDocRef, (docSnap) => {
                 if (docSnap.exists()) {
                     const data = docSnap.data();
@@ -868,7 +853,7 @@
                     render();
                 }
             }, (error) => {
-                console.error("Settings Realtime listener error:", error);
+                console.error("Settings listener error:", error);
             });
         }
 
@@ -885,7 +870,7 @@
                 }
             });
 
-            // Sum up manual cumulative additions
+            // Cumulative manual additions
             const manualAreaSum = (state.manualEntries || []).reduce((sum, item) => sum + (parseFloat(item.area) || 0), 0);
             const totalAttendedArea = attendedApartmentArea + manualAreaSum;
 
@@ -907,23 +892,25 @@
 
             const statusBadge = document.getElementById('status-badge');
             if (percentArea >= 50) {
-                statusBadge.className = "px-3 py-1 text-xs font-bold rounded-full bg-emerald-100 text-emerald-800 border border-emerald-300 flex items-center gap-1.5 animate-bounce";
-                statusBadge.innerHTML = `<i class="fa-solid fa-circle-check text-emerald-600"></i> ĐÃ ĐỦ ĐIỀU KIỆN 50% PHÁP LÝ`;
+                statusBadge.className = "px-3.5 py-1 text-xs font-bold rounded-full bg-emerald-500/20 text-emerald-300 border border-emerald-500/40 flex items-center gap-1.5 animate-bounce shadow-lg shadow-emerald-500/20";
+                statusBadge.innerHTML = `<i class="fa-solid fa-circle-check text-emerald-400"></i> ĐÃ ĐỦ ĐIỀU KIỆN 50% PHÁP LÝ`;
 
                 if (!state.hasFiredConfetti) {
                     triggerCelebrationConfetti();
                     state.hasFiredConfetti = true;
                 }
             } else {
-                statusBadge.className = "px-3 py-1 text-xs font-bold rounded-full bg-amber-100 text-amber-800 border border-amber-300 flex items-center gap-1.5";
-                statusBadge.innerHTML = `<i class="fa-solid fa-hourglass-half"></i> Chưa đạt 50%`;
+                statusBadge.className = "px-3.5 py-1 text-xs font-bold rounded-full bg-amber-500/20 text-amber-300 border border-amber-500/30 flex items-center gap-1.5";
+                statusBadge.innerHTML = `<i class="fa-solid fa-hourglass-half"></i> Chưa đạt mốc 50%`;
                 state.hasFiredConfetti = false;
             }
 
             renderTable();
             if (state.isAdminAuthenticated) {
+                renderAdminOverviewHeader();
                 renderAdminTable();
                 renderManualHistoryTable();
+                renderBuildingStats();
             }
         }
 
@@ -948,7 +935,7 @@
                 tbody.innerHTML = `
                     <tr>
                         <td colspan="6" class="text-center py-8 text-slate-400 font-medium">
-                            Không tìm thấy căn hộ phù hợp với bộ lọc
+                            Không tìm thấy căn hộ phù hợp với từ khóa tìm kiếm
                         </td>
                     </tr>
                 `;
@@ -957,19 +944,20 @@
 
             tbody.innerHTML = filtered.map((apt, index) => {
                 const contribPercent = effectiveTotalArea > 0 ? (apt.area / effectiveTotalArea) * 100 : 0;
-                const blockInfo = apt.id.includes('-') ? `Tòa ${apt.id.split('-')[0]}` : 'Ecohome';
+                const blockKey = apt.id.split('-')[0]?.toUpperCase() || 'Khối B1';
+                const blockDisplayName = state.blockNames[blockKey] || `Khối ${blockKey}`;
 
                 return `
-                    <tr class="hover:bg-slate-50 transition border-b border-slate-100">
-                        <td class="py-2.5 px-4 font-mono text-slate-400">${index + 1}</td>
-                        <td class="py-2.5 px-4 font-bold text-slate-800">${apt.id}</td>
-                        <td class="py-2.5 px-4 text-slate-500">${blockInfo}</td>
-                        <td class="py-2.5 px-4 text-right font-semibold text-slate-700">${formatNumber(apt.area)}</td>
+                    <tr class="hover:bg-slate-100/60 transition border-b border-slate-200/80">
+                        <td class="py-2.5 px-4 font-mono text-slate-400 font-medium">${index + 1}</td>
+                        <td class="py-2.5 px-4 font-extrabold text-slate-900">${apt.id}</td>
+                        <td class="py-2.5 px-4 text-slate-600 font-medium">${blockDisplayName}</td>
+                        <td class="py-2.5 px-4 text-right font-bold text-slate-800 font-mono">${formatNumber(apt.area)}</td>
                         <td class="py-2.5 px-4 text-right font-mono text-slate-500">${contribPercent.toFixed(3)}%</td>
                         <td class="py-2.5 px-4 text-center">
                             ${apt.attended 
-                                ? `<span class="inline-flex items-center gap-1 px-2.5 py-0.5 rounded-full text-[11px] font-bold bg-emerald-100 text-emerald-800"><i class="fa-solid fa-check"></i> Đã tham dự</span>`
-                                : `<span class="inline-flex items-center gap-1 px-2.5 py-0.5 rounded-full text-[11px] font-medium bg-slate-100 text-slate-500">Chưa tham dự</span>`
+                                ? `<span class="inline-flex items-center gap-1 px-2.5 py-0.5 rounded-full text-[11px] font-bold bg-emerald-100 text-emerald-800 border border-emerald-300 shadow-sm"><i class="fa-solid fa-check"></i> Đã tham dự</span>`
+                                : `<span class="inline-flex items-center gap-1 px-2.5 py-0.5 rounded-full text-[11px] font-medium bg-slate-100 text-slate-500 border border-slate-200">Chưa tham dự</span>`
                             }
                         </td>
                     </tr>
@@ -984,7 +972,6 @@
                     await clearAllFirestoreApartments();
                 }
 
-                // Batch writes in chunks of 400 docs (Firestore limit is 500)
                 const chunkSize = 400;
                 for (let i = 0; i < apartmentList.length; i += chunkSize) {
                     const chunk = apartmentList.slice(i, i + chunkSize);
@@ -1021,7 +1008,7 @@
                     await batch.commit();
                 }
             } catch (err) {
-                console.error("Clear all firestore error:", err);
+                console.error("Clear all error:", err);
             }
         }
 
@@ -1036,7 +1023,6 @@
         }
 
         function openAdminView() {
-            // Mở cửa sổ / tab mới độc lập dành riêng cho trang Admin Quản Trị
             if (window.location.hash !== '#admin') {
                 const adminUrl = window.location.origin + window.location.pathname + window.location.search + '#admin';
                 window.open(adminUrl, '_blank');
@@ -1052,7 +1038,6 @@
                 adminPageView.classList.add('flex');
             }
 
-            // Check saved session in localStorage or sessionStorage
             const isSavedSession = localStorage.getItem('admin_session') === 'true' || sessionStorage.getItem('admin_session') === 'true';
             if (!state.isAdminAuthenticated && isSavedSession) {
                 state.isAdminAuthenticated = true;
@@ -1152,10 +1137,10 @@
 
             if (badgeEl) {
                 if (percent >= 50) {
-                    badgeEl.className = "px-2.5 py-0.5 rounded-full text-[11px] font-bold bg-emerald-500/30 text-emerald-200 border border-emerald-400/30";
-                    badgeEl.innerHTML = `<i class="fa-solid fa-circle-check text-emerald-300 mr-1"></i>ĐÃ ĐỦ ĐIỀU KIỆN 50%`;
+                    badgeEl.className = "px-2.5 py-0.5 rounded-full text-[11px] font-bold bg-emerald-500/30 text-emerald-300 border border-emerald-500/40";
+                    badgeEl.innerHTML = `<i class="fa-solid fa-circle-check text-emerald-400 mr-1"></i>ĐÃ ĐỦ ĐIỀU KIỆN 50%`;
                 } else {
-                    badgeEl.className = "px-2.5 py-0.5 rounded-full text-[11px] font-bold bg-amber-500/20 text-amber-300 border border-amber-400/30";
+                    badgeEl.className = "px-2.5 py-0.5 rounded-full text-[11px] font-bold bg-amber-500/20 text-amber-300 border border-amber-500/30";
                     badgeEl.innerHTML = `<i class="fa-solid fa-hourglass-half mr-1"></i>Chưa đạt 50%`;
                 }
             }
@@ -1186,16 +1171,16 @@
         }
 
         function switchAdminTab(tabName) {
-            const tabs = ['import', 'quick-check', 'manual-add', 'stats', 'manage'];
+            const tabs = ['import', 'manual-add', 'stats', 'manage'];
             tabs.forEach(t => {
                 const btn = document.getElementById(`tab-btn-${t}`);
                 const content = document.getElementById(`tab-content-${t}`);
                 if (!btn || !content) return;
                 if (t === tabName) {
-                    btn.className = "py-2.5 px-4 border-b-2 border-emerald-600 text-emerald-600 font-bold flex items-center gap-2 bg-emerald-50/50 rounded-xl";
+                    btn.className = "py-2.5 px-4 border-b-2 border-emerald-500 text-emerald-400 font-bold flex items-center gap-2 bg-emerald-500/10 rounded-xl";
                     content.classList.remove('hidden');
                 } else {
-                    btn.className = "py-2.5 px-4 border-b-2 border-transparent hover:text-slate-700 font-semibold flex items-center gap-2 rounded-xl transition";
+                    btn.className = "py-2.5 px-4 border-b-2 border-transparent hover:text-white font-semibold flex items-center gap-2 rounded-xl transition";
                     content.classList.add('hidden');
                 }
             });
@@ -1215,7 +1200,6 @@
             const renameContainer = document.getElementById('block-rename-inputs');
             if (!grid) return;
 
-            // Detect all unique block keys from apartment IDs or use default B1-B5 / NO1-NO5
             const detectedBlocks = new Set(['B1', 'B2', 'B3', 'B4', 'B5']);
             state.apartments.forEach(apt => {
                 const prefix = apt.id.split('-')[0]?.toUpperCase().trim();
@@ -1224,15 +1208,15 @@
 
             const blocks = Array.from(detectedBlocks).sort((a, b) => a.localeCompare(b, undefined, { numeric: true }));
 
-            // Render Rename Inputs Panel for Admin
+            // Render Rename Inputs Panel
             if (renameContainer) {
                 renameContainer.innerHTML = blocks.map(b => {
                     const currentName = state.blockNames[b] || `Khối ${b}`;
                     return `
                         <div>
-                            <label class="block text-[11px] font-bold text-slate-600 mb-0.5">Mã ${b}:</label>
+                            <label class="block text-[11px] font-bold text-slate-400 mb-0.5">Mã ${b}:</label>
                             <input type="text" id="rename-block-${b}" value="${currentName}" placeholder="Tên khối..."
-                                class="w-full px-2.5 py-1 text-xs font-bold bg-white border border-slate-300 rounded-lg focus:ring-2 focus:ring-indigo-500 outline-none">
+                                class="w-full px-2.5 py-1 text-xs font-bold bg-slate-900 border border-slate-700 text-white rounded-lg focus:ring-2 focus:ring-indigo-500 outline-none">
                         </div>
                     `;
                 }).join('');
@@ -1263,28 +1247,28 @@
                 const isPassed = pct >= 50;
 
                 return `
-                    <div class="border border-slate-200/90 rounded-2xl p-4 bg-slate-50/50 hover:bg-white hover:shadow-md transition space-y-3">
+                    <div class="border border-slate-800 rounded-2xl p-4 bg-slate-900/60 hover:border-slate-700 transition space-y-3">
                         <div class="flex items-center justify-between">
                             <div class="flex items-center gap-2">
-                                <span class="w-9 h-9 rounded-xl bg-indigo-600 text-white font-black flex items-center justify-center text-xs shadow-sm shrink-0">
+                                <span class="w-9 h-9 rounded-xl bg-indigo-600/30 text-indigo-300 border border-indigo-500/30 font-black flex items-center justify-center text-xs shadow-sm shrink-0">
                                     ${b}
                                 </span>
                                 <div>
-                                    <h5 class="font-bold text-slate-800 text-xs">${displayName}</h5>
+                                    <h5 class="font-bold text-white text-xs">${displayName}</h5>
                                     <span class="text-[10px] text-slate-400">${s.attendedUnits} / ${s.totalUnits} căn hộ</span>
                                 </div>
                             </div>
-                            <span class="px-2.5 py-0.5 rounded-full text-[10px] font-bold ${isPassed ? 'bg-emerald-100 text-emerald-800 border border-emerald-300' : 'bg-amber-100 text-amber-800 border border-amber-300'}">
+                            <span class="px-2.5 py-0.5 rounded-full text-[10px] font-bold ${isPassed ? 'bg-emerald-500/20 text-emerald-300 border border-emerald-500/30' : 'bg-amber-500/20 text-amber-300 border border-amber-500/30'}">
                                 ${pct.toFixed(1)}%
                             </span>
                         </div>
 
                         <div class="space-y-1">
-                            <div class="flex justify-between text-[11px] font-semibold text-slate-600">
+                            <div class="flex justify-between text-[11px] font-semibold text-slate-300">
                                 <span>Diện tích: ${formatNumber(s.attendedArea)} m²</span>
-                                <span class="text-slate-400">/ ${formatNumber(s.totalArea)} m²</span>
+                                <span class="text-slate-500">/ ${formatNumber(s.totalArea)} m²</span>
                             </div>
-                            <div class="w-full bg-slate-200 h-2 rounded-full overflow-hidden">
+                            <div class="w-full bg-slate-950 h-2 rounded-full overflow-hidden border border-slate-800">
                                 <div class="bg-gradient-to-r from-teal-500 to-emerald-500 h-full rounded-full transition-all duration-500" style="width: ${Math.min(pct, 100)}%"></div>
                             </div>
                         </div>
@@ -1312,7 +1296,6 @@
             showToast("Đã lưu tùy chỉnh tên các khối tòa nhà lên Cloud!", "success");
         }
 
-        // Auto convert inputs for Manual Accumulation
         function onManualInputAreaChange() {
             const total = state.totalAreaOverride > 0 ? state.totalAreaOverride : DEFAULT_TOTAL_AREA;
             const areaVal = parseFloat(document.getElementById('manual-area-input').value) || 0;
@@ -1362,18 +1345,18 @@
 
             const entries = state.manualEntries || [];
             if (entries.length === 0) {
-                tbody.innerHTML = `<tr><td colspan="5" class="p-4 text-center text-slate-400">Chưa có lượt cộng dồn thủ công nào</td></tr>`;
+                tbody.innerHTML = `<tr><td colspan="5" class="p-4 text-center text-slate-500">Chưa có lượt cộng dồn thủ công nào</td></tr>`;
                 return;
             }
 
             tbody.innerHTML = entries.map((item) => `
-                <tr class="hover:bg-slate-50 border-b border-slate-100">
-                    <td class="p-2.5 font-mono text-slate-500">${item.createdAt || '--:--'}</td>
-                    <td class="p-2.5 font-semibold text-slate-800">${item.note || 'Cộng dồn'}</td>
-                    <td class="p-2.5 text-right font-bold text-blue-600">+${formatNumber(item.area)}</td>
-                    <td class="p-2.5 text-right font-mono text-emerald-600">+${(item.percent || 0).toFixed(3)}%</td>
+                <tr class="hover:bg-slate-900 border-b border-slate-800/80">
+                    <td class="p-2.5 font-mono text-slate-400">${item.createdAt || '--:--'}</td>
+                    <td class="p-2.5 font-semibold text-slate-200">${item.note || 'Cộng dồn'}</td>
+                    <td class="p-2.5 text-right font-bold text-blue-400">+${formatNumber(item.area)}</td>
+                    <td class="p-2.5 text-right font-mono text-emerald-400">+${(item.percent || 0).toFixed(3)}%</td>
                     <td class="p-2.5 text-center">
-                        <button onclick="deleteManualIncrement('${item.id}')" class="text-rose-500 hover:text-rose-700 px-2 py-0.5">
+                        <button onclick="deleteManualIncrement('${item.id}')" class="text-rose-400 hover:text-rose-300 px-2 py-0.5">
                             <i class="fa-solid fa-xmark"></i>
                         </button>
                     </td>
@@ -1435,7 +1418,6 @@
                 if (!row || row[codeColIdx] === undefined || row[codeColIdx] === null) continue;
 
                 const code = String(row[codeColIdx]).trim().toUpperCase();
-                // Standardize number parsing (handle Vietnamese format like 68,5 -> 68.5)
                 let rawAreaStr = String(row[areaColIdx] || '0').trim().replace(/\s/g, '');
                 if (rawAreaStr.includes(',') && !rawAreaStr.includes('.')) {
                     rawAreaStr = rawAreaStr.replace(',', '.');
@@ -1457,11 +1439,8 @@
             if (importedList.length > 0) {
                 totalParsedArea = Math.round(totalParsedArea * 100) / 100;
                 saveBatchApartmentsToCloud(importedList, true);
-                
-                // Automatically set total area override to match the exact parsed sum
                 setDoc(settingsDocRef, { totalAreaOverride: totalParsedArea }, { merge: true });
-                
-                showToast(`Đã nạp ${importedList.length} căn hộ. Tổng diện tích: ${formatNumber(totalParsedArea)} m² (Chính xác 100%)`, "success");
+                showToast(`Đã nạp ${importedList.length} căn hộ. Tổng diện tích: ${formatNumber(totalParsedArea)} m²`, "success");
                 switchAdminTab('manage');
             } else {
                 showToast("Không tìm thấy dữ liệu căn hộ hợp lệ trong file!", "error");
@@ -1497,8 +1476,6 @@
             if (newApartments.length > 0) {
                 totalParsedArea = Math.round(totalParsedArea * 100) / 100;
                 saveBatchApartmentsToCloud(newApartments, true);
-                
-                // Automatically adjust total area to exact sum
                 setDoc(settingsDocRef, { totalAreaOverride: totalParsedArea }, { merge: true });
 
                 document.getElementById('paste-import-input').value = '';
@@ -1510,12 +1487,11 @@
         }
 
         function loadFullEcohomeDataset(notify = true) {
-            // Generates full apartments across B1 - B5 with exact realistic areas summing to EXACTLY 27,734.30 m²
             const targetTotalArea = 27734.30;
             const standardAreas = [35.10, 52.50, 60.00, 62.50, 68.50, 76.70];
             const blocks = ['B1', 'B2', 'B3', 'B4', 'B5'];
             const floorsPerBlock = 10;
-            const unitsPerFloor = 9; // 5 * 10 * 9 = 450 units
+            const unitsPerFloor = 9;
             
             let samples = [];
             let currentSum = 0;
@@ -1528,14 +1504,12 @@
                         const code = `${b}-${floorStr}${unitStr}`;
                         
                         let area = standardAreas[(bIdx + f + u) % standardAreas.length];
-                        
                         samples.push({ id: code, area: area, attended: false });
                         currentSum += area;
                     }
                 }
             });
 
-            // Adjust last apartment to guarantee exact sum = 27,734.30 m² with 100% mathematical precision
             currentSum = Math.round(currentSum * 100) / 100;
             const diff = Math.round((targetTotalArea - currentSum) * 100) / 100;
             if (samples.length > 0) {
@@ -1550,51 +1524,23 @@
             }
         }
 
-        async function executeQuickAttendance(statusBool) {
-            const raw = document.getElementById('quick-check-input').value.trim();
-            if (!raw) {
-                showToast("Vui lòng nhập hoặc dán danh sách mã căn hộ!", "error");
-                return;
-            }
-
-            const codes = raw.split(/[\s,\n;]+/).map(c => c.trim().toUpperCase()).filter(Boolean);
-            if (codes.length === 0) return;
-
-            const batch = writeBatch(db);
-            let updateCount = 0;
-
-            state.apartments.forEach(apt => {
-                if (codes.includes(apt.id.toUpperCase())) {
-                    const docRef = doc(db, 'artifacts', appId, 'public', 'data', 'apartments', apt.id);
-                    batch.update(docRef, { attended: statusBool });
-                    updateCount++;
-                }
-            });
-
-            if (updateCount > 0) {
-                await batch.commit();
-                const statusText = statusBool ? "Đã Tham Dự" : "Chưa Tham Dự";
-                showToast(`Đã cập nhật trạng thái "${statusText}" trên Cloud cho ${updateCount} căn hộ!`, "success");
-                document.getElementById('quick-check-input').value = '';
-            } else {
-                showToast("Không tìm thấy mã căn hộ tương ứng trong danh sách dữ liệu!", "error");
-            }
-        }
-
         function renderAdminTable() {
             const tbody = document.getElementById('admin-table-body');
             if (!tbody) return;
 
             const searchInput = document.getElementById('admin-search-input');
             const searchVal = searchInput ? searchInput.value.trim().toLowerCase() : '';
+            const filterBuilding = document.getElementById('admin-filter-building')?.value || 'all';
             const filterStatus = document.getElementById('admin-filter-status')?.value || 'all';
 
             const filtered = state.apartments.filter(apt => {
                 const matchesSearch = apt.id.toLowerCase().includes(searchVal);
+                let matchesBuilding = true;
+                if (filterBuilding !== 'all') matchesBuilding = apt.id.toUpperCase().startsWith(filterBuilding);
                 let matchesStatus = true;
                 if (filterStatus === 'attended') matchesStatus = apt.attended;
                 if (filterStatus === 'absent') matchesStatus = !apt.attended;
-                return matchesSearch && matchesStatus;
+                return matchesSearch && matchesBuilding && matchesStatus;
             });
 
             const countEl = document.getElementById('admin-table-count');
@@ -1603,27 +1549,31 @@
             }
 
             if (state.apartments.length === 0) {
-                tbody.innerHTML = `<tr><td colspan="4" class="p-4 text-center text-slate-400">Chưa có dữ liệu căn hộ nào</td></tr>`;
+                tbody.innerHTML = `<tr><td colspan="4" class="p-4 text-center text-slate-500">Chưa có dữ liệu căn hộ nào</td></tr>`;
                 return;
             }
 
             if (filtered.length === 0) {
-                tbody.innerHTML = `<tr><td colspan="4" class="p-4 text-center text-slate-400 font-medium">Không tìm thấy căn hộ phù hợp với từ khóa "${searchVal}"</td></tr>`;
+                tbody.innerHTML = `<tr><td colspan="4" class="p-4 text-center text-slate-500 font-medium">Không tìm thấy căn hộ phù hợp</td></tr>`;
                 return;
             }
 
             tbody.innerHTML = filtered.map((apt) => `
-                <tr class="hover:bg-slate-50 transition border-b border-slate-100">
-                    <td class="p-2.5 font-bold text-slate-800">${apt.id}</td>
-                    <td class="p-2.5 font-mono">${formatNumber(apt.area)}</td>
-                    <td class="p-2.5 text-center">
-                        <label class="inline-flex items-center cursor-pointer">
-                            <input type="checkbox" ${apt.attended ? 'checked' : ''} onchange="toggleAttendance('${apt.id}')" class="sr-only peer">
-                            <div class="w-9 h-5 bg-slate-200 peer-focus:outline-none rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-slate-300 after:border after:rounded-full after:h-4 after:w-4 after:transition-all peer-checked:bg-emerald-600 relative"></div>
-                        </label>
+                <tr class="hover:bg-slate-900/90 transition border-b border-slate-800/80 ${apt.attended ? 'bg-emerald-950/20' : ''}">
+                    <td class="p-3 font-extrabold text-white font-mono">${apt.id}</td>
+                    <td class="p-3 font-mono font-bold text-slate-300">${formatNumber(apt.area)}</td>
+                    <td class="p-3 text-center">
+                        <button type="button" onclick="toggleAttendance('${apt.id}')" class="inline-flex items-center gap-2 px-3 py-1 rounded-xl text-xs font-bold transition shadow-sm ${
+                            apt.attended 
+                            ? 'bg-emerald-500/20 text-emerald-300 border border-emerald-500/40 hover:bg-emerald-500/30' 
+                            : 'bg-slate-800 text-slate-400 border border-slate-700 hover:bg-slate-700'
+                        }">
+                            <div class="w-2.5 h-2.5 rounded-full ${apt.attended ? 'bg-emerald-400 animate-pulse' : 'bg-slate-500'}"></div>
+                            <span>${apt.attended ? 'ĐÃ THAM DỰ' : 'CHƯA THAM DỰ'}</span>
+                        </button>
                     </td>
-                    <td class="p-2.5 text-right">
-                        <button onclick="deleteApartment('${apt.id}')" class="text-rose-500 hover:text-rose-700 px-2 py-1" title="Xóa căn hộ">
+                    <td class="p-3 text-right">
+                        <button onclick="deleteApartment('${apt.id}')" class="text-rose-400 hover:text-rose-300 px-2 py-1" title="Xóa căn hộ">
                             <i class="fa-solid fa-trash-can"></i>
                         </button>
                     </td>
@@ -1656,15 +1606,17 @@
 
             if (filtered.length === 0) return;
 
+            // Optimistic local state update
+            filtered.forEach(a => a.attended = statusBool);
+            render();
+
             const batch = writeBatch(db);
             let updateCount = 0;
 
             filtered.forEach(apt => {
-                if (apt.attended !== statusBool) {
-                    const docRef = doc(db, 'artifacts', appId, 'public', 'data', 'apartments', apt.id);
-                    batch.update(docRef, { attended: statusBool });
-                    updateCount++;
-                }
+                const docRef = doc(db, 'artifacts', appId, 'public', 'data', 'apartments', apt.id);
+                batch.set(docRef, { attended: statusBool }, { merge: true });
+                updateCount++;
             });
 
             if (updateCount > 0) {
@@ -1691,13 +1643,16 @@
 
             if (filtered.length === 0) return;
 
+            // Optimistic local state update
+            filtered.forEach(a => a.attended = !a.attended);
+            render();
+
             const batch = writeBatch(db);
             let updateCount = 0;
 
             filtered.forEach(apt => {
-                const newStatus = !apt.attended;
                 const docRef = doc(db, 'artifacts', appId, 'public', 'data', 'apartments', apt.id);
-                batch.update(docRef, { attended: newStatus });
+                batch.set(docRef, { attended: apt.attended }, { merge: true });
                 updateCount++;
             });
 
@@ -1710,9 +1665,12 @@
         async function toggleAttendance(code) {
             const target = state.apartments.find(a => a.id === code);
             if (target && auth.currentUser) {
-                const newStatus = !target.attended;
+                // Optimistic UI Update
+                target.attended = !target.attended;
+                render();
+
                 const docRef = doc(db, 'artifacts', appId, 'public', 'data', 'apartments', code);
-                await updateDoc(docRef, { attended: newStatus });
+                await setDoc(docRef, { attended: target.attended }, { merge: true });
             }
         }
 
@@ -1741,40 +1699,6 @@
             showToast("Đã xóa toàn bộ dữ liệu trên Cloud!", "info");
         }
 
-        async function saveTotalAreaOverride() {
-            const inputVal = parseFloat(document.getElementById('config-total-area-override')?.value);
-            if (!isNaN(inputVal) && inputVal > 0 && auth.currentUser) {
-                await setDoc(settingsDocRef, { totalAreaOverride: inputVal }, { merge: true });
-                showToast(`Đã cập nhật Tổng diện tích gốc thành ${formatNumber(inputVal)} m²!`, "success");
-            } else {
-                showToast("Vui lòng nhập giá trị hợp lệ!", "error");
-            }
-        }
-
-        function loadSampleDataset(notify = true) {
-            let samples = [];
-            const blocks = ['A1', 'A2', 'B1', 'B2'];
-            const floors = 10;
-            const unitsPerFloor = 6;
-            const avgArea = 69.33;
-
-            blocks.forEach(b => {
-                for (let f = 1; f <= floors; f++) {
-                    for (let u = 1; u <= unitsPerFloor; u++) {
-                        const floorStr = f < 10 ? `0${f}` : `${f}`;
-                        const unitStr = u < 10 ? `0${u}` : `${u}`;
-                        const code = `${b}-${floorStr}${unitStr}`;
-                        const area = parseFloat((avgArea + ((u % 3) * 4.5) - 2.5).toFixed(2));
-                        
-                        samples.push({ id: code, area: area, attended: false });
-                    }
-                }
-            });
-
-            saveBatchApartmentsToCloud(samples, true);
-            if (notify) showToast("Đã nạp dữ liệu mẫu lên Cloud!", "success");
-        }
-
         function formatNumber(val) {
             return new Intl.NumberFormat('vi-VN', { minimumFractionDigits: 2, maximumFractionDigits: 2 }).format(val || 0);
         }
@@ -1787,7 +1711,6 @@
 
             const effectiveTotalArea = state.totalAreaOverride > 0 ? state.totalAreaOverride : DEFAULT_TOTAL_AREA;
 
-            // Chuyển đổi dữ liệu danh sách căn hộ sang dạng bảng Excel
             const excelRows = state.apartments.map((apt, index) => {
                 const contribPercent = effectiveTotalArea > 0 ? (apt.area / effectiveTotalArea) * 100 : 0;
                 return {
@@ -1799,7 +1722,6 @@
                 };
             });
 
-            // Khởi tạo Worksheet và thiết lập độ rộng cột
             const worksheet = XLSX.utils.json_to_sheet(excelRows);
             worksheet['!cols'] = [
                 { wch: 6 },  // STT
@@ -1809,7 +1731,6 @@
                 { wch: 22 }  // Trạng Thái
             ];
 
-            // Tạo Workbook và tải xuống file .xlsx
             const workbook = XLSX.utils.book_new();
             XLSX.utils.book_append_sheet(workbook, worksheet, "DanhSachCanHo");
 
@@ -1820,7 +1741,7 @@
             showToast(`Đã xuất file Excel thành công (${state.apartments.length} căn hộ)!`, "success");
         }
 
-        // Realtime Clock Update Function
+        // Live Realtime Clock Function
         function updateLiveClock() {
             const now = new Date();
             const days = ['Chủ Nhật', 'Thứ Hai', 'Thứ Ba', 'Thứ Tư', 'Thứ Năm', 'Thứ Sáu', 'Thứ Bảy'];
@@ -1866,12 +1787,9 @@
             }, 3500);
         }
 
-        // Attach function handlers to window object for HTML inline events
         window.triggerManualConfetti = triggerCelebrationConfetti;
         window.openAdminView = openAdminView;
         window.closeAdminView = closeAdminView;
-        window.openAdminModal = openAdminView;
-        window.closeAdminModal = closeAdminView;
         window.handleAdminLogin = handleAdminLogin;
         window.handleAdminLogout = handleAdminLogout;
         window.renderAdminOverviewHeader = renderAdminOverviewHeader;
@@ -1880,7 +1798,6 @@
         window.switchAdminTab = switchAdminTab;
         window.handleFileUpload = handleFileUpload;
         window.handlePasteImport = handlePasteImport;
-        window.executeQuickAttendance = executeQuickAttendance;
         window.onManualInputAreaChange = onManualInputAreaChange;
         window.onManualInputPercentChange = onManualInputPercentChange;
         window.executeAddManualIncrement = executeAddManualIncrement;
@@ -1892,8 +1809,6 @@
         window.requestClearAllData = requestClearAllData;
         window.closeConfirmModal = closeConfirmModal;
         window.executeClearAllData = executeClearAllData;
-        window.saveTotalAreaOverride = saveTotalAreaOverride;
-        window.loadSampleDataset = loadFullEcohomeDataset;
         window.loadFullEcohomeDataset = loadFullEcohomeDataset;
         window.renderTable = renderTable;
         window.saveCustomBlockNames = saveCustomBlockNames;
@@ -1901,6 +1816,7 @@
         window.deleteManualIncrement = deleteManualIncrement;
         window.clearAllManualIncrements = clearAllManualIncrements;
         window.exportApartmentsToExcel = exportApartmentsToExcel;
+        window.renderAdminTable = renderAdminTable;
 
         // Initialize Firebase & Live Clock on DOM load
         window.addEventListener('DOMContentLoaded', () => {
