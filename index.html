@@ -580,7 +580,7 @@
                         <div class="font-bold flex items-center gap-1.5 text-purple-700 dark:text-purple-300 text-sm">
                             <i class="fa-solid fa-file-signature text-purple-500"></i> Tính % Ủy Quyền Cho Nhiều Căn Hộ Cộng Dồn
                         </div>
-                        <p class="text-slate-600 dark:text-slate-400">Nhập danh sách các mã căn hộ do 1 đại diện/giấy ủy quyền nắm giữ. Hệ thống sẽ tự động quét, tính tổng diện tích (m²), quy đổi ra tỷ lệ %, và hỗ trợ điểm danh hàng loạt trên Cloud.</p>
+                        <p class="text-slate-600 dark:text-slate-400">Nhập danh sách các mã căn hộ do 1 đại diện nắm giữ. Hệ thống tự động quét, lấy diện tích từ danh sách căn hộ đã nạp, quy đổi tỷ lệ %, và hỗ trợ điểm danh hàng loạt trên Cloud.</p>
                     </div>
 
                     <!-- Proxy Input Box -->
@@ -588,7 +588,7 @@
                         <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
                             <div>
                                 <label class="block text-xs font-bold text-slate-700 dark:text-slate-300 mb-1">Tên Người/Đại Diện Nhận Ủy Quyền:</label>
-                                <input type="text" id="proxy-rep-name" placeholder="Ví dụ: Ông Nguyễn Văn A (Đại diện ủy quyền)..."
+                                <input type="text" id="proxy-rep-name" placeholder="Ví dụ: Ông Nguyễn Văn A..."
                                     class="w-full px-3 py-2 text-xs bg-slate-50 dark:bg-slate-950 border border-slate-300 dark:border-slate-700 rounded-xl focus:ring-2 focus:ring-purple-500 text-slate-900 dark:text-white outline-none">
                             </div>
                             <div>
@@ -599,8 +599,8 @@
                         </div>
 
                         <div>
-                            <label class="block text-xs font-bold text-slate-700 dark:text-slate-300 mb-1">Danh sách Mã Căn Hộ Ủy Quyền (phân cách bởi dấu phẩy, khoảng trắng, hoặc xuống dòng):</label>
-                            <textarea id="proxy-codes-input" rows="4" oninput="calculateProxySummary()" placeholder="Copy từ Excel hoặc dán:&#10;B1-0101, B1-0102, B1-0103&#10;B2-0205&#10;B3-0408"
+                            <label class="block text-xs font-bold text-slate-700 dark:text-slate-300 mb-1">Danh sách Mã Căn Hộ (phân cách bởi dấu phẩy, tab, hoặc dòng):</label>
+                            <textarea id="proxy-codes-input" rows="4" oninput="calculateProxySummary()" placeholder="Ví dụ: B1-0101, B1-0102, B1-0103..."
                                 class="w-full p-3 text-xs font-mono bg-slate-50 dark:bg-slate-950 border border-slate-300 dark:border-slate-700 rounded-xl focus:ring-2 focus:ring-purple-500 text-slate-900 dark:text-white outline-none transition"></textarea>
                         </div>
 
@@ -608,11 +608,11 @@
                         <div id="proxy-live-summary" class="grid grid-cols-1 sm:grid-cols-3 gap-3 p-3 bg-purple-50/50 dark:bg-purple-950/30 border border-purple-200 dark:border-purple-800/50 rounded-xl text-xs">
                             <div class="text-center p-2 bg-white dark:bg-slate-900 rounded-lg shadow-sm">
                                 <span class="block text-slate-500 text-[11px] font-medium">Số Căn Tìm Thấy</span>
-                                <span id="proxy-summary-count" class="text-lg font-black text-purple-600 dark:text-purple-400 font-mono">0 căn</span>
+                                <span id="proxy-summary-count" class="text-lg font-black text-purple-600 dark:text-purple-400 font-mono">0</span>
                             </div>
                             <div class="text-center p-2 bg-white dark:bg-slate-900 rounded-lg shadow-sm">
-                                <span class="block text-slate-500 text-[11px] font-medium">Tổng Diện Tích UQ</span>
-                                <span id="proxy-summary-area" class="text-lg font-black text-emerald-600 dark:text-emerald-400 font-mono">0,00 m²</span>
+                                <span class="block text-slate-500 text-[11px] font-medium">Tổng Diện Tích (m²)</span>
+                                <span id="proxy-summary-area" class="text-lg font-black text-emerald-600 dark:text-emerald-400 font-mono">0,00</span>
                             </div>
                             <div class="text-center p-2 bg-white dark:bg-slate-900 rounded-lg shadow-sm">
                                 <span class="block text-slate-500 text-[11px] font-medium">Tỷ Lệ Đóng Góp (%)</span>
@@ -620,32 +620,30 @@
                             </div>
                         </div>
 
-                        <!-- Action Buttons -->
                         <div class="flex flex-col sm:flex-row items-center gap-2 pt-2">
                             <button onclick="executeApplyProxyAttendance()" class="w-full sm:w-1/2 py-2.5 bg-purple-600 hover:bg-purple-500 text-white font-bold rounded-xl text-xs transition shadow-md flex items-center justify-center gap-2">
-                                <i class="fa-solid fa-check-double"></i> Đánh Dấu Đã Tham Dự Cho Các Căn Này
+                                <i class="fa-solid fa-check-double"></i> Điểm Danh Hàng Loạt
                             </button>
                             <button onclick="executeSaveProxyLog()" class="w-full sm:w-1/2 py-2.5 bg-emerald-600 hover:bg-emerald-500 text-white font-bold rounded-xl text-xs transition shadow-md flex items-center justify-center gap-2">
-                                <i class="fa-solid fa-plus-circle"></i> Lưu Lượt Ủy Quyền Vào Nhật Ký
+                                <i class="fa-solid fa-plus-circle"></i> Lưu Nhật Ký Ủy Quyền
                             </button>
                         </div>
                     </div>
 
-                    <!-- Matched Proxy Table Details -->
                     <div class="space-y-2">
-                        <span class="font-bold text-slate-700 dark:text-slate-300 text-xs">Chi Tiết Các Căn Trong Danh Sách Ủy Quyền:</span>
+                        <span class="font-bold text-slate-700 dark:text-slate-300 text-xs">Chi Tiết Căn Hộ Ủy Quyền:</span>
                         <div class="max-h-52 overflow-y-auto border border-slate-300 dark:border-slate-800 rounded-xl custom-scrollbar">
                             <table class="w-full text-left text-xs text-slate-800 dark:text-slate-300">
                                 <thead class="bg-slate-100 dark:bg-slate-900 font-bold text-slate-600 dark:text-slate-400 sticky top-0 z-10 border-b border-slate-300 dark:border-slate-800">
                                     <tr>
                                         <th class="p-2.5">Mã Căn</th>
                                         <th class="p-2.5 text-right">Diện Tích (m²)</th>
-                                        <th class="p-2.5 text-right">Tỷ Lệ (%)</th>
-                                        <th class="p-2.5 text-center">Trạng Thái Trên Cloud</th>
+                                        <th class="p-2.5 text-right">% Đóng Góp</th>
+                                        <th class="p-2.5 text-center">Trạng Thái Cloud</th>
                                     </tr>
                                 </thead>
                                 <tbody id="proxy-matched-table-body" class="divide-y divide-slate-200 dark:divide-slate-800/80">
-                                    <tr><td colspan="4" class="p-4 text-center text-slate-500">Nhập danh sách mã căn hộ ở trên để xem tính toán chi tiết</td></tr>
+                                    <tr><td colspan="4" class="p-4 text-center text-slate-500">Dán danh sách mã căn để kiểm tra</td></tr>
                                 </tbody>
                             </table>
                         </div>
