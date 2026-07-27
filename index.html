@@ -493,9 +493,14 @@
                                 <span class="font-bold text-slate-700">Danh sách căn hộ:</span>
                                 <span id="admin-table-count" class="text-emerald-700 font-bold bg-emerald-50 px-2 py-0.5 rounded border border-emerald-200">(0 căn)</span>
                             </div>
-                            <button onclick="requestClearAllData()" class="text-rose-600 hover:text-rose-800 font-semibold flex items-center gap-1">
-                                <i class="fa-solid fa-trash-can"></i> Xóa toàn bộ dữ liệu Cloud
-                            </button>
+                            <div class="flex items-center gap-3">
+                                <button onclick="exportApartmentsToExcel()" class="px-3 py-1.5 bg-emerald-600 hover:bg-emerald-700 text-white font-bold rounded-lg text-xs transition shadow-sm flex items-center gap-1.5">
+                                    <i class="fa-solid fa-file-excel text-sm"></i> Xuất File Excel
+                                </button>
+                                <button onclick="requestClearAllData()" class="text-rose-600 hover:text-rose-800 font-semibold flex items-center gap-1">
+                                    <i class="fa-solid fa-trash-can"></i> Xóa toàn bộ dữ liệu Cloud
+                                </button>
+                            </div>
                         </div>
 
                         <!-- Admin Search & Quick Selection Toolbar -->
@@ -1406,6 +1411,47 @@
             return new Intl.NumberFormat('vi-VN', { minimumFractionDigits: 2, maximumFractionDigits: 2 }).format(val || 0);
         }
 
+        function exportApartmentsToExcel() {
+            if (!state.apartments || state.apartments.length === 0) {
+                showToast("Không có dữ liệu căn hộ để xuất Excel!", "error");
+                return;
+            }
+
+            const effectiveTotalArea = state.totalAreaOverride > 0 ? state.totalAreaOverride : DEFAULT_TOTAL_AREA;
+
+            // Chuyển đổi dữ liệu danh sách căn hộ sang dạng bảng Excel
+            const excelRows = state.apartments.map((apt, index) => {
+                const contribPercent = effectiveTotalArea > 0 ? (apt.area / effectiveTotalArea) * 100 : 0;
+                return {
+                    "STT": index + 1,
+                    "Mã Căn Hộ": apt.id,
+                    "Diện Tích (m²)": apt.area,
+                    "Tỷ Lệ (%)": parseFloat(contribPercent.toFixed(3)),
+                    "Trạng Thái Tham Dự": apt.attended ? "Đã tham dự" : "Chưa tham dự"
+                };
+            });
+
+            // Khởi tạo Worksheet và thiết lập độ rộng cột
+            const worksheet = XLSX.utils.json_to_sheet(excelRows);
+            worksheet['!cols'] = [
+                { wch: 6 },  // STT
+                { wch: 16 }, // Mã Căn Hộ
+                { wch: 16 }, // Diện Tích
+                { wch: 12 }, // Tỷ Lệ
+                { wch: 22 }  // Trạng Thái
+            ];
+
+            // Tạo Workbook và tải xuống file .xlsx
+            const workbook = XLSX.utils.book_new();
+            XLSX.utils.book_append_sheet(workbook, worksheet, "DanhSachCanHo");
+
+            const dateStr = new Date().toLocaleDateString('vi-VN').replace(/\//g, '-');
+            const fileName = `Danh_Sach_Can_Ho_Ecohome_Nhon_Binh_${dateStr}.xlsx`;
+
+            XLSX.writeFile(workbook, fileName);
+            showToast(`Đã xuất file Excel thành công (${state.apartments.length} căn hộ)!`, "success");
+        }
+
         function showToast(message, type = "success") {
             const toast = document.getElementById('toast');
             const toastMsg = document.getElementById('toast-msg');
@@ -1453,6 +1499,7 @@
         window.renderAdminTable = renderAdminTable;
         window.deleteManualIncrement = deleteManualIncrement;
         window.clearAllManualIncrements = clearAllManualIncrements;
+        window.exportApartmentsToExcel = exportApartmentsToExcel;
 
         // Initialize Firebase on DOM load
         window.addEventListener('DOMContentLoaded', initFirebaseAndSync);
