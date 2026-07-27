@@ -287,15 +287,19 @@
                     </div>
 
                     <form onsubmit="handleAdminLogin(event)" class="space-y-3 pt-2">
-                        <div class="relative">
-                            <input type="password" id="admin-pass-input" placeholder="Nhập mật khẩu (215151365)..." required
-                                class="w-full px-4 py-2.5 text-center text-sm font-semibold tracking-wider bg-slate-50 border border-slate-300 rounded-xl focus:ring-2 focus:ring-emerald-500 focus:bg-white outline-none transition">
+                        <div class="relative flex items-center">
+                            <input type="password" id="admin-pass-input" placeholder="Nhập mật khẩu (215151365)..." required enterkeyhint="go" autocomplete="current-password"
+                                class="w-full pl-4 pr-12 py-3 text-center text-sm font-semibold tracking-wider bg-slate-50 border border-slate-300 rounded-xl focus:ring-2 focus:ring-emerald-500 focus:bg-white outline-none transition shadow-sm">
+                            <button type="button" onclick="togglePasswordVisibility()" class="absolute right-3 text-slate-400 hover:text-slate-600 active:text-emerald-600 focus:outline-none p-2 text-sm transition" title="Ẩn/Hiện mật khẩu">
+                                <i id="toggle-pass-icon" class="fa-solid fa-eye-slash"></i>
+                            </button>
                         </div>
                         <div id="auth-error-msg" class="text-xs text-rose-600 font-semibold hidden flex items-center justify-center gap-1">
                             <i class="fa-solid fa-circle-exclamation"></i> Mật khẩu không chính xác!
                         </div>
-                        <button type="submit" class="w-full py-2.5 bg-emerald-600 hover:bg-emerald-700 text-white font-semibold rounded-xl text-sm transition shadow-md">
-                            Xác Nhận Đăng Nhập
+                        <button type="submit" class="w-full py-3 bg-emerald-600 hover:bg-emerald-700 active:bg-emerald-800 text-white font-semibold rounded-xl text-sm transition shadow-md flex items-center justify-center gap-2">
+                            <span>Xác Nhận Đăng Nhập</span>
+                            <i class="fa-solid fa-arrow-right text-xs"></i>
                         </button>
                     </form>
                 </div>
@@ -772,11 +776,31 @@
                 document.getElementById('admin-auth-view').classList.remove('hidden');
                 document.getElementById('admin-panel-view').classList.add('hidden');
                 document.getElementById('admin-status-text').innerText = "Chờ đăng nhập";
+                setTimeout(() => {
+                    const passInput = document.getElementById('admin-pass-input');
+                    if (passInput) passInput.focus();
+                }, 150);
             } else {
                 document.getElementById('admin-auth-view').classList.add('hidden');
                 document.getElementById('admin-panel-view').classList.remove('hidden');
                 document.getElementById('admin-status-text').innerText = "Quyền Admin: Đã xác thực";
                 renderAdminTable();
+            }
+        }
+
+        function togglePasswordVisibility() {
+            const passInput = document.getElementById('admin-pass-input');
+            const toggleIcon = document.getElementById('toggle-pass-icon');
+            if (!passInput || !toggleIcon) return;
+
+            if (passInput.type === 'password') {
+                passInput.type = 'text';
+                toggleIcon.classList.remove('fa-eye-slash');
+                toggleIcon.classList.add('fa-eye');
+            } else {
+                passInput.type = 'password';
+                toggleIcon.classList.remove('fa-eye');
+                toggleIcon.classList.add('fa-eye-slash');
             }
         }
 
@@ -978,34 +1002,6 @@
             }
         }
 
-        function handlePasteImport() {
-            const rawText = document.getElementById('paste-import-input').value.trim();
-            if (!rawText) return;
-
-            const lines = rawText.split('\n');
-            let newApartments = [];
-
-            lines.forEach(line => {
-                if (!line.trim()) return;
-                const parts = line.split(/[,|\t]+/);
-                if (parts.length >= 2) {
-                    const code = parts[0].trim().toUpperCase();
-                    const area = parseFloat(parts[1].replace(',', '.').trim());
-                    if (code && !isNaN(area) && area > 0) {
-                        newApartments.push({ id: code, area: area, attended: false });
-                    }
-                }
-            });
-
-            if (newApartments.length > 0) {
-                saveBatchApartmentsToCloud(newApartments, true);
-                document.getElementById('paste-import-input').value = '';
-                switchAdminTab('manage');
-            } else {
-                showToast("Định dạng dữ liệu không đúng. Vui lòng kiểm tra lại!", "error");
-            }
-        }
-
         async function executeQuickAttendance(statusBool) {
             const raw = document.getElementById('quick-check-input').value.trim();
             if (!raw) return;
@@ -1156,6 +1152,7 @@
         window.openAdminModal = openAdminModal;
         window.closeAdminModal = closeAdminModal;
         window.handleAdminLogin = handleAdminLogin;
+        window.togglePasswordVisibility = togglePasswordVisibility;
         window.switchAdminTab = switchAdminTab;
         window.handleFileUpload = handleFileUpload;
         window.handlePasteImport = handlePasteImport;
