@@ -44,65 +44,65 @@
 </head>
 <body class="h-full flex flex-col text-slate-800 antialiased selection:bg-brand-500 selection:text-white">
 
-    <!-- Top Navigation Header -->
-    <header class="bg-gradient-to-r from-teal-900 via-emerald-800 to-teal-950 text-white shadow-lg sticky top-0 z-30">
-        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-4">
-            <div class="flex flex-col md:flex-row md:items-center md:justify-between gap-4">
-                <div class="flex items-center space-x-3">
-                    <div class="bg-white/10 p-2.5 rounded-xl backdrop-blur-md border border-white/20">
-                        <i class="fa-solid font-bold fa-building-user text-2xl text-emerald-300"></i>
-                    </div>
-                    <div>
-                        <div class="flex items-center space-x-2">
-                            <span class="px-2.5 py-0.5 rounded-full text-xs font-semibold bg-emerald-500/30 text-emerald-200 border border-emerald-400/30">Hội Nghị 2026</span>
-                            <span id="sync-status-badge" class="text-xs text-teal-200/80"><i class="fa-solid fa-cloud-arrow-up mr-1 animate-pulse"></i>Đang kết nối Cloud Firebase...</span>
+    <!-- PUBLIC VIEW CONTAINER (TRANG CÔNG CỘNG DÀNH CHO CƯ DÂN) -->
+    <div id="public-view" class="min-h-screen flex flex-col">
+
+        <!-- Top Navigation Header -->
+        <header class="bg-gradient-to-r from-teal-900 via-emerald-800 to-teal-950 text-white shadow-lg sticky top-0 z-30">
+            <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-4">
+                <div class="flex flex-col md:flex-row md:items-center md:justify-between gap-4">
+                    <div class="flex items-center space-x-3">
+                        <div class="bg-white/10 p-2.5 rounded-xl backdrop-blur-md border border-white/20">
+                            <i class="fa-solid font-bold fa-building-user text-2xl text-emerald-300"></i>
                         </div>
-                        <h1 class="text-lg md:text-xl font-extrabold tracking-tight text-white mt-0.5">
-                            NHÀ CHUNG CƯ ECOHOME NHƠN BÌNH
-                        </h1>
+                        <div>
+                            <div class="flex items-center space-x-2">
+                                <span class="px-2.5 py-0.5 rounded-full text-xs font-semibold bg-emerald-500/30 text-emerald-200 border border-emerald-400/30">Hội Nghị 2026</span>
+                                <span id="sync-status-badge" class="text-xs text-teal-200/80"><i class="fa-solid fa-cloud-arrow-up mr-1 animate-pulse"></i>Đang kết nối Cloud Firebase...</span>
+                            </div>
+                            <h1 class="text-lg md:text-xl font-extrabold tracking-tight text-white mt-0.5">
+                                NHÀ CHUNG CƯ ECOHOME NHƠN BÌNH
+                            </h1>
+                        </div>
+                    </div>
+
+                    <div class="flex items-center justify-between md:justify-end space-x-3">
+                        <button onclick="triggerManualConfetti()" class="px-3 py-2 text-xs font-medium bg-white/10 hover:bg-white/20 text-emerald-100 rounded-lg transition border border-white/15 flex items-center gap-1.5" title="Bắn pháo hoa thử nghiệm">
+                            <i class="fa-solid fa-wand-magic-sparkles text-amber-300"></i>
+                            <span>Pháo hoa</span>
+                        </button>
+                        <button onclick="openAdminView()" class="px-4 py-2 bg-emerald-500 hover:bg-emerald-600 text-white rounded-lg font-medium text-sm transition shadow-md hover:shadow-lg flex items-center gap-2 border border-emerald-400/40">
+                            <i class="fa-solid fa-user-shield"></i>
+                            <span>Quản Lý (Admin)</span>
+                        </button>
                     </div>
                 </div>
+            </div>
+        </header>
 
-                <div class="flex items-center justify-between md:justify-end space-x-3">
-                    <button onclick="triggerManualConfetti()" class="px-3 py-2 text-xs font-medium bg-white/10 hover:bg-white/20 text-emerald-100 rounded-lg transition border border-white/15 flex items-center gap-1.5" title="Bắn pháo hoa thử nghiệm">
-                        <i class="fa-solid fa-wand-magic-sparkles text-amber-300"></i>
-                        <span>Pháo hoa</span>
-                    </button>
-                    <button onclick="openAdminView()" class="px-4 py-2 bg-emerald-500 hover:bg-emerald-600 text-white rounded-lg font-medium text-sm transition shadow-md hover:shadow-lg flex items-center gap-2 border border-emerald-400/40">
-                        <i class="fa-solid fa-user-shield"></i>
-                        <span>Quản Lý (Admin)</span>
-                    </button>
+        <!-- Sub-navigation Live Clock Bar -->
+        <div class="bg-slate-900 text-slate-200 border-b border-emerald-500/20 py-2.5 px-4 shadow-md sticky top-[73px] z-20 backdrop-blur-md">
+            <div class="max-w-7xl mx-auto flex flex-wrap items-center justify-between gap-2 text-xs sm:text-sm">
+                <div class="flex items-center gap-2 text-emerald-300 font-semibold">
+                    <span class="relative flex h-2.5 w-2.5">
+                        <span class="animate-ping absolute inline-flex h-full w-full rounded-full bg-emerald-400 opacity-75"></span>
+                        <span class="relative inline-flex rounded-full h-2.5 w-2.5 bg-emerald-500"></span>
+                    </span>
+                    <span>Hệ thống ghi nhận điểm danh tự động realtime</span>
+                </div>
+
+                <!-- Live Clock Display Box -->
+                <div class="flex items-center gap-2.5 bg-slate-800/90 px-3.5 py-1.5 rounded-xl border border-slate-700 shadow-sm ml-auto sm:ml-0">
+                    <i class="fa-regular fa-clock text-amber-400 animate-pulse text-sm"></i>
+                    <span id="live-clock-date" class="font-semibold text-slate-200 text-xs sm:text-sm">--</span>
+                    <span class="text-slate-600 font-bold">|</span>
+                    <span id="live-clock-time" class="font-mono font-extrabold text-amber-300 text-sm sm:text-base tracking-widest">00:00:00</span>
                 </div>
             </div>
         </div>
-    </header>
 
-    <!-- Sub-navigation Live Clock Bar -->
-    <div class="bg-slate-900 text-slate-200 border-b border-emerald-500/20 py-2.5 px-4 shadow-md sticky top-[73px] z-20 backdrop-blur-md">
-        <div class="max-w-7xl mx-auto flex flex-wrap items-center justify-between gap-2 text-xs sm:text-sm">
-            <div class="flex items-center gap-2 text-emerald-300 font-semibold">
-                <span class="relative flex h-2.5 w-2.5">
-                    <span class="animate-ping absolute inline-flex h-full w-full rounded-full bg-emerald-400 opacity-75"></span>
-                    <span class="relative inline-flex rounded-full h-2.5 w-2.5 bg-emerald-500"></span>
-                </span>
-                <span>Hệ thống ghi nhận điểm danh tự động realtime</span>
-            </div>
-
-            <!-- Live Clock Display Box -->
-            <div class="flex items-center gap-2.5 bg-slate-800/90 px-3.5 py-1.5 rounded-xl border border-slate-700 shadow-sm ml-auto sm:ml-0">
-                <i class="fa-regular fa-clock text-amber-400 animate-pulse text-sm"></i>
-                <span id="live-clock-date" class="font-semibold text-slate-200 text-xs sm:text-sm">--</span>
-                <span class="text-slate-600 font-bold">|</span>
-                <span id="live-clock-time" class="font-mono font-extrabold text-amber-300 text-sm sm:text-base tracking-widest">00:00:00</span>
-            </div>
-        </div>
-    </div>
-
-    <!-- Main Content Area -->
-    <main class="flex-1 max-w-7xl w-full mx-auto px-4 sm:px-6 lg:px-8 py-6 space-y-6">
-
-        <!-- Quorum Threshold Banner & Interactive Bar -->
-        <div class="bg-white rounded-2xl p-6 shadow-sm border border-slate-200/80 relative overflow-hidden">
+        <!-- Main Content Area -->
+        <main class="flex-1 max-w-7xl w-full mx-auto px-4 sm:px-6 lg:px-8 py-6 space-y-6">
             <div class="flex flex-col lg:flex-row lg:items-center justify-between gap-4 mb-4">
                 <div>
                     <div class="flex items-center gap-2">
@@ -270,18 +270,18 @@
 
     </main>
 
-    <!-- Footer -->
-    <footer class="bg-slate-900 text-slate-400 text-xs py-6 mt-12 border-t border-slate-800">
-        <div class="max-w-7xl mx-auto px-4 text-center space-y-2">
-            <p class="font-medium text-slate-300">Ban Quản Tị / Ban Tổ Chức Hội Nghị Nhà Chung Cư Ecohome Nhơn Bình 2026</p>
-            <p class="text-slate-500">Mã hóa mật khẩu hệ thống quản trị an toàn • Mốc tổng diện tích tính toán mặc định: 27.734,30 m²</p>
-        </div>
-    </footer>
+        <!-- Footer -->
+        <footer class="bg-slate-900 text-slate-400 text-xs py-6 mt-12 border-t border-slate-800">
+            <div class="max-w-7xl mx-auto px-4 text-center space-y-2">
+                <p class="font-medium text-slate-300">Ban Quản Tị / Ban Tổ Chức Hội Nghị Nhà Chung Cư Ecohome Nhơn Bình 2026</p>
+                <p class="text-slate-500">Mã hóa mật khẩu hệ thống quản trị an toàn • Mốc tổng diện tích tính toán mặc định: 27.734,30 m²</p>
+            </div>
+        </footer>
 
     </div><!-- END PUBLIC VIEW CONTAINER -->
 
-    <!-- DEDICATED FULL-PAGE ADMIN VIEW -->
-    <div id="admin-page-view" class="hidden min-h-screen flex-col bg-slate-100 text-slate-800 z-50">
+    <!-- DEDICATED FULL-PAGE STANDALONE ADMIN VIEW (TRANG QUẢN TRỊ ADMIN ĐỘC LẬP) -->
+    <div id="admin-page-view" class="hidden min-h-screen w-full flex-col bg-slate-100 text-slate-800 z-50">
         <!-- Dedicated Admin Header Bar -->
         <header class="bg-gradient-to-r from-slate-900 via-teal-950 to-slate-900 text-white shadow-lg sticky top-0 z-30">
             <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-4 flex flex-col sm:flex-row items-center justify-between gap-4">
@@ -291,7 +291,7 @@
                     </div>
                     <div>
                         <div class="flex items-center space-x-2">
-                            <span class="px-2.5 py-0.5 rounded-full text-xs font-semibold bg-emerald-500/30 text-emerald-200 border border-emerald-400/30">Giao Diện Quản Trị Admin</span>
+                            <span class="px-2.5 py-0.5 rounded-full text-xs font-semibold bg-emerald-500/30 text-emerald-200 border border-emerald-400/30">Trang Quản Trị Admin Độc Lập</span>
                             <span id="admin-sync-badge" class="text-xs text-teal-200/80"><i class="fa-solid fa-cloud text-emerald-300 mr-1"></i>Firebase Cloud Realtime</span>
                         </div>
                         <h1 class="text-lg md:text-xl font-extrabold tracking-tight text-white mt-0.5">
@@ -300,10 +300,16 @@
                     </div>
                 </div>
 
-                <button onclick="closeAdminView()" class="px-4 py-2 bg-white/10 hover:bg-white/20 text-white rounded-xl text-xs font-bold transition border border-white/20 flex items-center gap-2 shadow-sm">
-                    <i class="fa-solid fa-arrow-left text-amber-300"></i>
-                    <span>Quay Về Trang Công Cộng</span>
-                </button>
+                <div class="flex items-center gap-2">
+                    <button id="admin-logout-btn" onclick="handleAdminLogout()" class="hidden px-3.5 py-2 bg-rose-500/20 hover:bg-rose-500/30 text-rose-200 rounded-xl text-xs font-bold transition border border-rose-500/30 flex items-center gap-1.5" title="Đăng xuất khỏi phiên Admin">
+                        <i class="fa-solid fa-right-from-bracket"></i>
+                        <span>Đăng Xuất</span>
+                    </button>
+                    <button onclick="closeAdminView()" class="px-4 py-2 bg-white/10 hover:bg-white/20 text-white rounded-xl text-xs font-bold transition border border-white/20 flex items-center gap-2 shadow-sm">
+                        <i class="fa-solid fa-arrow-left text-amber-300"></i>
+                        <span>Quay Về Trang Công Cộng</span>
+                    </button>
+                </div>
             </div>
         </header>
 
@@ -328,6 +334,13 @@
                             <i id="toggle-pass-icon" class="fa-solid fa-eye-slash"></i>
                         </button>
                     </div>
+
+                    <!-- Remember session checkbox -->
+                    <div class="flex items-center justify-center gap-2 text-xs text-slate-600">
+                        <input type="checkbox" id="remember-session-chk" checked class="w-4 h-4 text-emerald-600 rounded border-slate-300 focus:ring-emerald-500 cursor-pointer">
+                        <label for="remember-session-chk" class="cursor-pointer select-none font-medium">Ghi nhớ phiên đăng nhập trên thiết bị này</label>
+                    </div>
+
                     <div id="auth-error-msg" class="text-xs text-rose-600 font-semibold hidden flex items-center justify-center gap-1">
                         <i class="fa-solid fa-circle-exclamation"></i> Mật khẩu không chính xác!
                     </div>
@@ -341,6 +354,37 @@
             <!-- STATE 2: ADMIN PANEL DASHBOARD -->
             <div id="admin-panel-view" class="hidden space-y-6">
                 
+                <!-- Smart Admin Summary Overview Header -->
+                <div id="admin-summary-overview" class="bg-gradient-to-r from-slate-900 via-teal-900 to-slate-900 rounded-2xl p-5 text-white shadow-md border border-teal-800/50 flex flex-col md:flex-row items-center justify-between gap-4">
+                    <div class="flex items-center gap-4">
+                        <div class="w-12 h-12 rounded-2xl bg-emerald-500/20 border border-emerald-400/30 flex items-center justify-center text-emerald-300 text-xl shrink-0">
+                            <i class="fa-solid fa-chart-line"></i>
+                        </div>
+                        <div>
+                            <div class="flex items-center gap-2">
+                                <span class="text-xs text-teal-200 font-semibold uppercase tracking-wider">Tổng Quan Tiến Độ Realtime</span>
+                                <span id="admin-summary-badge" class="px-2.5 py-0.5 rounded-full text-[11px] font-bold bg-amber-500/20 text-amber-300 border border-amber-400/30">Chưa đạt 50%</span>
+                            </div>
+                            <div class="flex items-baseline gap-2 mt-1">
+                                <span id="admin-summary-percent" class="text-3xl font-black text-emerald-400">0.00%</span>
+                                <span id="admin-summary-area" class="text-xs text-slate-300">(0.00 / 27.734,30 m²)</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="flex items-center gap-2 w-full md:w-auto overflow-x-auto pb-1 md:pb-0">
+                        <button onclick="switchAdminTab('quick-check')" class="px-3 py-2 bg-emerald-500/20 hover:bg-emerald-500/30 border border-emerald-500/30 text-emerald-200 rounded-xl text-xs font-bold transition whitespace-nowrap flex items-center gap-1.5">
+                            <i class="fa-solid fa-bolt text-amber-300"></i> Điểm danh nhanh
+                        </button>
+                        <button onclick="exportApartmentsToExcel()" class="px-3 py-2 bg-white/10 hover:bg-white/20 border border-white/20 text-white rounded-xl text-xs font-bold transition whitespace-nowrap flex items-center gap-1.5">
+                            <i class="fa-solid fa-file-excel text-emerald-400"></i> Xuất Excel
+                        </button>
+                        <button onclick="switchAdminTab('stats')" class="px-3 py-2 bg-white/10 hover:bg-white/20 border border-white/20 text-white rounded-xl text-xs font-bold transition whitespace-nowrap flex items-center gap-1.5">
+                            <i class="fa-solid fa-building text-indigo-300"></i> Xem theo Tòa
+                        </button>
+                    </div>
+                </div>
+
                 <!-- Admin Tabs Navigation -->
                 <div class="flex border border-slate-200 bg-white p-2 rounded-2xl shadow-sm text-xs font-bold text-slate-500 gap-2 overflow-x-auto">
                     <button onclick="switchAdminTab('import')" id="tab-btn-import" class="py-2.5 px-4 border-b-2 border-emerald-600 text-emerald-600 flex items-center gap-2 bg-emerald-50/50 rounded-xl">
@@ -599,6 +643,32 @@
                                 <i class="fa-solid fa-right-left text-xs"></i>Đảo chọn
                             </button>
                         </div>
+                    </div>
+
+                    <!-- Quick Filter Chips Bar -->
+                    <div class="flex items-center gap-1.5 overflow-x-auto pb-1 text-xs">
+                        <span class="text-slate-400 font-semibold text-[11px] shrink-0 mr-1">Lọc nhanh:</span>
+                        <button onclick="setAdminQuickFilter('all', 'all')" class="px-2.5 py-1 bg-slate-200 hover:bg-slate-300 text-slate-700 rounded-lg font-bold text-[11px] transition shrink-0">
+                            Tất cả
+                        </button>
+                        <button onclick="setAdminQuickFilter('NO1', 'all')" class="px-2.5 py-1 bg-teal-50 hover:bg-teal-100 text-teal-700 border border-teal-200 rounded-lg font-bold text-[11px] transition shrink-0">
+                            Khối NO1
+                        </button>
+                        <button onclick="setAdminQuickFilter('NO2', 'all')" class="px-2.5 py-1 bg-teal-50 hover:bg-teal-100 text-teal-700 border border-teal-200 rounded-lg font-bold text-[11px] transition shrink-0">
+                            Khối NO2
+                        </button>
+                        <button onclick="setAdminQuickFilter('NO3', 'all')" class="px-2.5 py-1 bg-teal-50 hover:bg-teal-100 text-teal-700 border border-teal-200 rounded-lg font-bold text-[11px] transition shrink-0">
+                            Khối NO3
+                        </button>
+                        <button onclick="setAdminQuickFilter('NO4', 'all')" class="px-2.5 py-1 bg-teal-50 hover:bg-teal-100 text-teal-700 border border-teal-200 rounded-lg font-bold text-[11px] transition shrink-0">
+                            Khối NO4
+                        </button>
+                        <button onclick="setAdminQuickFilter('NO5', 'all')" class="px-2.5 py-1 bg-teal-50 hover:bg-teal-100 text-teal-700 border border-teal-200 rounded-lg font-bold text-[11px] transition shrink-0">
+                            Khối NO5
+                        </button>
+                        <button onclick="setAdminQuickFilter('all', 'absent')" class="px-2.5 py-1 bg-amber-50 hover:bg-amber-100 text-amber-800 border border-amber-200 rounded-lg font-bold text-[11px] transition shrink-0">
+                            Chưa tham dự
+                        </button>
                     </div>
 
                     <div class="max-h-[500px] overflow-y-auto border border-slate-200 rounded-xl custom-scrollbar">
@@ -931,6 +1001,13 @@
         }
 
         function openAdminView() {
+            // Mở cửa sổ / tab mới độc lập dành riêng cho trang Admin Quản Trị
+            if (window.location.hash !== '#admin') {
+                const adminUrl = window.location.origin + window.location.pathname + window.location.search + '#admin';
+                window.open(adminUrl, '_blank');
+                return;
+            }
+
             const publicView = document.getElementById('public-view');
             const adminPageView = document.getElementById('admin-page-view');
 
@@ -940,21 +1017,30 @@
                 adminPageView.classList.add('flex');
             }
 
+            // Check saved session in localStorage or sessionStorage
+            const isSavedSession = localStorage.getItem('admin_session') === 'true' || sessionStorage.getItem('admin_session') === 'true';
+            if (!state.isAdminAuthenticated && isSavedSession) {
+                state.isAdminAuthenticated = true;
+            }
+
             if (!state.isAdminAuthenticated) {
-                document.getElementById('admin-auth-view').classList.remove('hidden');
-                document.getElementById('admin-panel-view').classList.add('hidden');
+                document.getElementById('admin-auth-view')?.classList.remove('hidden');
+                document.getElementById('admin-panel-view')?.classList.add('hidden');
+                document.getElementById('admin-logout-btn')?.classList.add('hidden');
                 setTimeout(() => {
                     const passInput = document.getElementById('admin-pass-input');
                     if (passInput) passInput.focus();
                 }, 150);
             } else {
-                document.getElementById('admin-auth-view').classList.add('hidden');
-                document.getElementById('admin-panel-view').classList.remove('hidden');
+                document.getElementById('admin-auth-view')?.classList.add('hidden');
+                document.getElementById('admin-panel-view')?.classList.remove('hidden');
+                document.getElementById('admin-logout-btn')?.classList.remove('hidden');
+                renderAdminOverviewHeader();
                 renderAdminTable();
                 renderBuildingStats();
             }
 
-            window.location.hash = 'admin';
+            window.scrollTo(0, 0);
         }
 
         function closeAdminView() {
@@ -970,6 +1056,82 @@
             if (window.location.hash === '#admin') {
                 history.pushState("", document.title, window.location.pathname + window.location.search);
             }
+            window.scrollTo(0, 0);
+        }
+
+        function handleAdminLogin(e) {
+            e.preventDefault();
+            const pass = document.getElementById('admin-pass-input').value;
+            const errEl = document.getElementById('auth-error-msg');
+            const rememberSession = document.getElementById('remember-session-chk')?.checked;
+
+            if (pass === ADMIN_PASS) {
+                state.isAdminAuthenticated = true;
+                if (rememberSession) {
+                    localStorage.setItem('admin_session', 'true');
+                } else {
+                    sessionStorage.setItem('admin_session', 'true');
+                }
+                errEl.classList.add('hidden');
+                document.getElementById('admin-auth-view').classList.add('hidden');
+                document.getElementById('admin-panel-view').classList.remove('hidden');
+                document.getElementById('admin-logout-btn')?.classList.remove('hidden');
+                renderAdminOverviewHeader();
+                renderAdminTable();
+                renderBuildingStats();
+                showToast("Đăng nhập Admin thành công!", "success");
+            } else {
+                errEl.classList.remove('hidden');
+            }
+        }
+
+        function handleAdminLogout() {
+            state.isAdminAuthenticated = false;
+            sessionStorage.removeItem('admin_session');
+            localStorage.removeItem('admin_session');
+            const passInput = document.getElementById('admin-pass-input');
+            if (passInput) passInput.value = '';
+            
+            document.getElementById('admin-auth-view').classList.remove('hidden');
+            document.getElementById('admin-panel-view').classList.add('hidden');
+            document.getElementById('admin-logout-btn')?.classList.add('hidden');
+            showToast("Đã đăng xuất khỏi tài khoản Admin", "info");
+        }
+
+        function renderAdminOverviewHeader() {
+            const effectiveTotal = state.totalAreaOverride > 0 ? state.totalAreaOverride : DEFAULT_TOTAL_AREA;
+            let attendedArea = 0;
+            state.apartments.forEach(apt => {
+                if (apt.attended) attendedArea += apt.area;
+            });
+            const manualSum = (state.manualEntries || []).reduce((sum, item) => sum + (parseFloat(item.area) || 0), 0);
+            const totalAttended = attendedArea + manualSum;
+            const percent = effectiveTotal > 0 ? (totalAttended / effectiveTotal) * 100 : 0;
+
+            const percentEl = document.getElementById('admin-summary-percent');
+            const areaEl = document.getElementById('admin-summary-area');
+            const badgeEl = document.getElementById('admin-summary-badge');
+
+            if (percentEl) percentEl.innerText = `${percent.toFixed(2)}%`;
+            if (areaEl) areaEl.innerText = `(${formatNumber(totalAttended)} / ${formatNumber(effectiveTotal)} m²)`;
+
+            if (badgeEl) {
+                if (percent >= 50) {
+                    badgeEl.className = "px-2.5 py-0.5 rounded-full text-[11px] font-bold bg-emerald-500/30 text-emerald-200 border border-emerald-400/30";
+                    badgeEl.innerHTML = `<i class="fa-solid fa-circle-check text-emerald-300 mr-1"></i>ĐÃ ĐỦ ĐIỀU KIỆN 50%`;
+                } else {
+                    badgeEl.className = "px-2.5 py-0.5 rounded-full text-[11px] font-bold bg-amber-500/20 text-amber-300 border border-amber-400/30";
+                    badgeEl.innerHTML = `<i class="fa-solid fa-hourglass-half mr-1"></i>Chưa đạt 50%`;
+                }
+            }
+        }
+
+        function setAdminQuickFilter(buildingVal, statusVal) {
+            const bSelect = document.getElementById('admin-filter-building');
+            const sSelect = document.getElementById('admin-filter-status');
+            if (bSelect) bSelect.value = buildingVal;
+            if (sSelect) sSelect.value = statusVal;
+            renderAdminTable();
         }
 
         function togglePasswordVisibility() {
@@ -985,24 +1147,6 @@
                 passInput.type = 'password';
                 toggleIcon.classList.remove('fa-eye');
                 toggleIcon.classList.add('fa-eye-slash');
-            }
-        }
-
-        function handleAdminLogin(e) {
-            e.preventDefault();
-            const pass = document.getElementById('admin-pass-input').value;
-            const errEl = document.getElementById('auth-error-msg');
-
-            if (pass === ADMIN_PASS) {
-                state.isAdminAuthenticated = true;
-                errEl.classList.add('hidden');
-                document.getElementById('admin-auth-view').classList.add('hidden');
-                document.getElementById('admin-panel-view').classList.remove('hidden');
-                renderAdminTable();
-                renderBuildingStats();
-                showToast("Đăng nhập Admin thành công!", "success");
-            } else {
-                errEl.classList.remove('hidden');
             }
         }
 
@@ -1651,6 +1795,9 @@
         window.openAdminModal = openAdminView;
         window.closeAdminModal = closeAdminView;
         window.handleAdminLogin = handleAdminLogin;
+        window.handleAdminLogout = handleAdminLogout;
+        window.renderAdminOverviewHeader = renderAdminOverviewHeader;
+        window.setAdminQuickFilter = setAdminQuickFilter;
         window.togglePasswordVisibility = togglePasswordVisibility;
         window.switchAdminTab = switchAdminTab;
         window.handleFileUpload = handleFileUpload;
@@ -1685,6 +1832,14 @@
 
             if (window.location.hash === '#admin') {
                 openAdminView();
+            }
+        });
+
+        window.addEventListener('hashchange', () => {
+            if (window.location.hash === '#admin') {
+                openAdminView();
+            } else {
+                closeAdminView();
             }
         });
     </script>
